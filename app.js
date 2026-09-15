@@ -21,7 +21,47 @@ let filteredVehicles = [];
 
 let comparison = [];
 
+/* ==========================================================================
+   GLOBAL UTILITY & LABEL HELPERS
+   ========================================================================== */
 
+function displayValue(val) {
+  if (val === null || val === undefined || val === '') return 'N/A';
+  return String(val).trim();
+}
+
+function yearLabel(v) {
+  if (typeof v === 'object' && v !== null) return v.year ? String(v.year) : 'N/A';
+  return v ? String(v) : 'N/A';
+}
+
+function priceLabel(v) {
+  const price = typeof v === 'object' && v !== null ? v.price : v;
+  if (price === null || price === undefined || price === '') return 'N/A';
+  return `R ${Number(price).toLocaleString('en-ZA')}`;
+}
+
+function mileageLabel(v) {
+  const km = typeof v === 'object' && v !== null ? (v.mileage ?? v.km) : v;
+  if (km === null || km === undefined || km === '') return 'N/A';
+  return `${Number(km).toLocaleString('en-ZA')} km`;
+}
+
+function vehicleLabel(v) {
+  if (!v) return 'Unknown Vehicle';
+  if (v.title) return v.title;
+  return [v.year, v.make, v.model, v.variant].filter(Boolean).join(' ') || `Vehicle #${v.id || ''}`;
+}
+
+function escapeHtml(value) {
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 /* ============================================================
    FORMATTING
 ============================================================ */
