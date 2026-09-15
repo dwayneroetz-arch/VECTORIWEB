@@ -6,7 +6,7 @@ let vehicles = [];
 let filteredVehicles = [];
 let comparison = [];
 let currentPage = 1;
-const itemsPerPage = 15;
+const itemsPerPage = 15; // 150 vehicles => 10 pages, with 15 vehicles per page.
 
 /* ==========================================================================
    GLOBAL UTILITY & LABEL HELPERS
@@ -282,7 +282,7 @@ function renderPagination(totalItems, totalPages) {
   }
 
   let buttonsHtml = `
-    <button class="btn btn-secondary btn-sm" ${currentPage === 1 ? "disabled style='opacity:0.5;cursor:not-allowed'" : ""} onclick="goToPage(${currentPage - 1})">
+    <button class="btn btn-secondary btn-sm" ${currentPage === 1 ? "disabled" : ""} aria-label="Previous page" onclick="goToPage(${currentPage - 1})">
       &laquo; Prev
     </button>
   `;
@@ -290,22 +290,21 @@ function renderPagination(totalItems, totalPages) {
   for (let i = 1; i <= totalPages; i++) {
     const isCurrent = i === currentPage;
     buttonsHtml += `
-      <button class="btn ${isCurrent ? "btn-primary" : "btn-secondary"} btn-sm" style="min-width:36px; ${isCurrent ? 'font-weight:bold;' : ''}" onclick="goToPage(${i})">
+      <button class="btn ${isCurrent ? "btn-primary" : "btn-secondary"} btn-sm page-number" aria-label="Page ${i}" aria-current="${isCurrent ? "page" : "false"}" onclick="goToPage(${i})">
         ${i}
       </button>
     `;
   }
 
   buttonsHtml += `
-    <button class="btn btn-secondary btn-sm" ${currentPage === totalPages ? "disabled style='opacity:0.5;cursor:not-allowed'" : ""} onclick="goToPage(${currentPage + 1})">
+    <button class="btn btn-secondary btn-sm" ${currentPage === totalPages ? "disabled" : ""} aria-label="Next page" onclick="goToPage(${currentPage + 1})">
       Next &raquo;
     </button>
   `;
 
   pagEl.innerHTML = `
-    <div style="display:flex; justify-content:center; align-items:center; gap:6px; flex-wrap:wrap;">
-      ${buttonsHtml}
-    </div>
+    <div class="pagination">${buttonsHtml}</div>
+    <div class="pagination-summary">Page ${currentPage} of ${totalPages} · ${itemsPerPage} vehicles per page</div>
   `;
 }
 
@@ -423,7 +422,10 @@ function applyFilters(){
     if(isFinite(maxMileage) && Number.isFinite(v.mileage) && v.mileage > maxMileage) return false;
 
     if(search){
-      const text = `${vehicleLabel(v)} ${displayValue(v.dealer,"")} ${displayValue(v.listingId,"")}`.toLowerCase();
+      const text = [
+        vehicleLabel(v), v.make, v.model, v.variant,
+        v.fuel, v.transmission, v.dealer, v.province, v.listingId
+      ].filter(Boolean).join(" ").toLowerCase();
       if(!text.includes(search)) return false;
     }
 
@@ -669,7 +671,7 @@ function calculate(vehicle){
   if(!Number.isFinite(tyreCost) || tyreCost < 0) errors.push("Tyre cost cannot be negative.");
   if(!Number.isFinite(tyreLife) || tyreLife < 0) errors.push("Tyre life cannot be negative.");
   if(!Number.isFinite(income) || income <= 0) errors.push("Gross monthly income is required for affordability.");
-  if(deposit + tradeIn >= price && Number.isFinite(price)) errors.push("Deposit plus trade-in must be lower than the asking price.");
+  if(deposit + tradeIn > price && Number.isFinite(price)) errors.push("Deposit plus trade-in cannot exceed the asking price.");
 
   if(errors.length) return { errors };
 
@@ -692,9 +694,11 @@ function calculate(vehicle){
   const financeCashMonthly = financePayment + adminFee;
   const operatingMonthly = fuelMonthly + insurance + maintenanceMonthly + licenceMonthly + tyresMonthly + otherVehicle;
   const totalCashMonthly = financeCashMonthly + operatingMonthly;
-  const totalEconomicMonthly = totalCashMonthly + depreciationMonthly - (principal > 0 ? principal / Math.max(term, 1) : 0);
+  const principalReductionMonthly = principal > 0 ? (principal - balloonAmount) / term : 0;
+  const upfrontCashRequired = deposit + initiationFee;
   const totalFinanceRepayment = financePayment * term + balloonAmount + initiationFee + adminFee * term;
   const estimatedInterest = Math.max(0, totalFinanceRepayment - principal);
+  const totalEconomicMonthly = totalCashMonthly - principalReductionMonthly + depreciationMonthly + (initiationFee / horizonMonths);
   const cashRemaining = income - debt - living - totalCashMonthly;
   const vehicleRatio = totalCashMonthly / income * 100;
   const debtServiceRatio = (debt + financePayment + adminFee) / income * 100;
@@ -707,7 +711,7 @@ function calculate(vehicle){
 
   return {
     errors: [], price, market, principal, netPurchasePrice, balloonAmount, balloonPct, financePayment,
-    totalFinanceRepayment, estimatedInterest, adminFee, initiationFee, fuelMonthly, insurance,
+    totalFinanceRepayment, estimatedInterest, adminFee, initiationFee, upfrontCashRequired, principalReductionMonthly, fuelMonthly, insurance,
     maintenanceMonthly, licenceMonthly, tyresMonthly, otherVehicle, depreciationMonthly, totalCashMonthly,
     totalEconomicMonthly, vehicleRatio, debtServiceRatio, cashRemaining, stressTotal, balloonReserve,
     marketDelta, marketPct, vehicle
@@ -739,6 +743,7 @@ function runCalculator(){
     <div class="big-output"><span>Estimated monthly cash ownership burden</span><strong>${money(result.totalCashMonthly)}</strong></div>
     <div class="output-card"><span>Finance instalment</span><strong>${money(result.financePayment)}</strong></div>
     <div class="output-card"><span>Monthly finance admin</span><strong>${money(result.adminFee)}</strong></div>
+    <div class="output-card"><span>Upfront deposit + initiation fee</span><strong>${money(result.upfrontCashRequired)}</strong></div>
     <div class="output-card"><span>Balloon at term end</span><strong>${money(result.balloonAmount)}</strong></div>
     <div class="output-card"><span>Fuel</span><strong>${money(result.fuelMonthly)}</strong></div>
     <div class="output-card"><span>Insurance</span><strong>${money(result.insurance)}</strong></div>
@@ -1107,10 +1112,24 @@ function showInventoryError(error){
   if(results) results.innerHTML = `<div class="notice notice-warning"><strong>Inventory unavailable.</strong><br>${escapeHtml(message)}<br><span class="muted">Check that data/inventory.json was deployed with the site. No vehicle data has been fabricated.</span></div>`;
 }
 
+function initMobileNav(){
+  const toggle = document.querySelector(".nav-toggle");
+  const nav = document.getElementById("primaryNav");
+  if(!toggle || !nav) return;
+  const close = () => { nav.classList.remove("is-open"); toggle.setAttribute("aria-expanded", "false"); };
+  toggle.addEventListener("click", () => {
+    const open = nav.classList.toggle("is-open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  nav.querySelectorAll("a").forEach(link => link.addEventListener("click", close));
+  document.addEventListener("keydown", event => { if(event.key === "Escape") close(); });
+}
+
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
     try {
+      initMobileNav();
       await loadInventory();
       populateFilters();
       renderVehicles(vehicles);

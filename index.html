@@ -1,21 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VECTORI — Vehicle Purchase Intelligence</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b12">
+  <meta name="description" content="VECTORI vehicle purchase intelligence — search, compare and model vehicle ownership costs.">
+  <title>VECTORI — Vehicle Purchase Intelligence</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- all your original HTML content from the file you provided goes here unchanged -->
-<!-- (the entire <nav>, <main>, sections, modals, etc. are exactly as you had them) -->
-
-<script src="app.js" defer></script>
-<div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.2</div>
-</body>
-</html>
-
 <!-- =========================
      NAVIGATION
 ========================= -->
@@ -28,7 +21,9 @@
       <span>VECTORI</span>
     </a>
 
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Open navigation">☰</button>
+
+    <div class="nav-links" id="primaryNav">
       <a href="#find">01 Find</a>
       <a href="#compare">02 Compare</a>
       <a href="#intelligence">03 Intelligence</a>
@@ -246,7 +241,7 @@
         </div>
 
         <div class="small muted">
-          153 development vehicles • source-derived demo data • not live stock
+          Development/demo vehicles • source-derived data • not live stock
         </div>
       </div>
 
@@ -974,7 +969,8 @@
 </div>
 
 
+
 <script src="app.js" defer></script>
-<div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.2</div>
+<div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.4</div>
 </body>
 </html>
