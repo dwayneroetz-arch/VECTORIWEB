@@ -4,6 +4,13 @@ function displayValue(val) {
     return String(val).trim();
 }
 
+// Helper function to format display text for vehicles
+function vehicleLabel(v) {
+  if (!v) return 'Unknown Vehicle';
+  if (v.title) return v.title;
+  return [v.year, v.make, v.model, v.variant].filter(Boolean).join(' ') || `Vehicle #${v.id || ''}`;
+}
+
 /* Inventory is loaded from data/inventory.json for GitHub Pages / Cloudflare Pages compatibility. */
 /* ============================================================
    GLOBAL STATE
