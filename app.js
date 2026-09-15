@@ -307,57 +307,42 @@ function marketPosition(vehicle){
 
 }
 
-
-/* ============================================================
+/* ==========================================================================
    FILTER OPTIONS
-============================================================ */
+   ========================================================================== */
 
 function populateFilters(){
-  
-  const options = items.map(item => displayValue(item.province));
 
-  const makes = [...new Set(vehicles.map(v => v.make).filter(Boolean))].sort();
+  const makes = [...new Set(vehicles.map(v => v.make))].filter(Boolean).sort();
+  const models = [...new Set(vehicles.map(v => v.model))].filter(Boolean).sort();
+  const dealers = [...new Set(vehicles.map(v => displayValue(v.dealer)))].filter(Boolean).sort();
+  const provinces = [...new Set(vehicles.map(v => v.province))].filter(Boolean).sort();
 
-  const models = [...new Set(vehicles.map(v => v.model).filter(Boolean))].sort();
+  populateSelect("filterMake", makes, "All makes");
+  populateSelect("filterModel", models, "All models");
+  populateSelect("filterDealer", dealers, "All dealers");
+  populateSelect("filterProvince", provinces, "All provinces");
 
-  const dealers = [...new Set(vehicles.map(v => displayValue(v.dealer)).filter(Boolean))].sort();
-
-  const provinces = [...new Set(vehicles.map(v => v.province).filter(Boolean))].sort();
-
-
-  populateSelect("filterMake",makes,"All makes");
-  populateSelect("filterModel",models,"All models");
-  populateSelect("filterDealer",dealers,"All dealers");
-  populateSelect("filterProvince",provinces,"All provinces");
-
-
-  const calc =
-    document.getElementById("calcVehicle");
-
-  calc.innerHTML =
-    `<option value="">Select vehicle</option>` +
-    vehicles.map(v =>
-      `<option value="${v.id}">
-        ${escapeHtml(vehicleLabel(v))}
-      </option>`
-    ).join("");
-
+  const calc = document.getElementById("calcVehicle");
+  if (calc) {
+    calc.innerHTML =
+      `<option value="">Select vehicle</option>` +
+      vehicles.map(v =>
+        `<option value="${v.id}">${escapeHtml(vehicleLabel(v))}</option>`
+      ).join("");
+  }
 }
 
-
-function populateSelect(id,values,defaultLabel){
-
-  const select =
-    document.getElementById(id);
+function populateSelect(id, values, defaultLabel){
+  const select = document.getElementById(id);
+  if (!select) return;
 
   select.innerHTML =
     `<option value="">${defaultLabel}</option>` +
     values.map(v =>
       `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`
     ).join("");
-
 }
-
 
 /* ============================================================
    ESCAPE
