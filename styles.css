@@ -129,7 +129,42 @@ a{
 /* =========================
    GENERAL LAYOUT (APP + AD MANAGER)
 ========================= */
+/* Container: 3 vehicles per row */
+#vehicleResults {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
 
+/* Adjust card layout to stack nicely within narrow columns */
+.vehicle-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Ensure images inside cards resize cleanly */
+.vehicle-card .vehicle-image svg,
+.vehicle-card .vehicle-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Responsive adjustments for mobile and tablet */
+@media (max-width: 1024px) {
+  #vehicleResults {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablets */
+  }
+}
+
+@media (max-width: 640px) {
+  #vehicleResults {
+    grid-template-columns: 1fr; /* 1 per row on mobile */
+  }
+}
 .container{
   max-width:1400px;
   margin:auto;

@@ -6,7 +6,7 @@ let vehicles = [];
 let filteredVehicles = [];
 let comparison = [];
 let currentPage = 1;
-const itemsPerPage = 10;
+const itemsPerPage = 15;
 
 /* ==========================================================================
    GLOBAL UTILITY & LABEL HELPERS
