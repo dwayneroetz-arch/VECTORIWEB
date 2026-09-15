@@ -1,4 +1,8 @@
-
+// Helper function to safely format filter dropdown values
+function displayValue(val) {
+    if (val === null || val === undefined || val === '') return 'N/A';
+    return String(val).trim();
+}
 
 /* Inventory is loaded from data/inventory.json for GitHub Pages / Cloudflare Pages compatibility. */
 /* ============================================================
@@ -309,6 +313,8 @@ function marketPosition(vehicle){
 ============================================================ */
 
 function populateFilters(){
+  
+  const options = items.map(item => displayValue(item.province));
 
   const makes = [...new Set(vehicles.map(v => v.make).filter(Boolean))].sort();
 
