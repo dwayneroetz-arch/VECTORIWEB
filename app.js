@@ -5,6 +5,8 @@
 let vehicles = [];
 let filteredVehicles = [];
 let comparison = [];
+let currentPage = 1;
+const itemsPerPage = 10;
 
 /* ==========================================================================
    GLOBAL UTILITY & LABEL HELPERS
@@ -221,27 +223,99 @@ function populateSelect(id, values, defaultLabel){
 }
 
 /* ============================================================
-   RENDER VEHICLES
+   RENDER VEHICLES & PAGINATION
 ============================================================ */
 
 function renderVehicles(list){
   const container = document.getElementById("vehicleResults");
   const countEl = document.getElementById("resultsCount");
 
+  const totalItems = list.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageList = list.slice(start, end);
+
   if (countEl) {
-    countEl.textContent = `${list.length} vehicle${list.length === 1 ? "" : "s"} found`;
+    if (totalItems > 0) {
+      countEl.textContent = `Showing ${start + 1}–${Math.min(end, totalItems)} of ${totalItems} vehicles (Page ${currentPage} of ${totalPages})`;
+    } else {
+      countEl.textContent = `0 vehicles found`;
+    }
   }
 
-  if(!list.length){
+  if(!totalItems){
     container.innerHTML = `
       <div class="empty-state">
         No vehicles match the selected criteria.
       </div>
     `;
+    renderPagination(0, 1);
     return;
   }
 
-  container.innerHTML = list.map(vehicleCard).join("");
+  container.innerHTML = pageList.map(vehicleCard).join("");
+  renderPagination(totalItems, totalPages);
+}
+
+function renderPagination(totalItems, totalPages) {
+  let pagEl = document.getElementById("paginationControls");
+  if (!pagEl) {
+    const resultsContainer = document.getElementById("vehicleResults");
+    if (resultsContainer) {
+      pagEl = document.createElement("div");
+      pagEl.id = "paginationControls";
+      pagEl.style.marginTop = "24px";
+      resultsContainer.after(pagEl);
+    } else {
+      return;
+    }
+  }
+
+  if (totalPages <= 1) {
+    pagEl.innerHTML = "";
+    return;
+  }
+
+  let buttonsHtml = `
+    <button class="btn btn-secondary btn-sm" ${currentPage === 1 ? "disabled style='opacity:0.5;cursor:not-allowed'" : ""} onclick="goToPage(${currentPage - 1})">
+      &laquo; Prev
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    const isCurrent = i === currentPage;
+    buttonsHtml += `
+      <button class="btn ${isCurrent ? "btn-primary" : "btn-secondary"} btn-sm" style="min-width:36px; ${isCurrent ? 'font-weight:bold;' : ''}" onclick="goToPage(${i})">
+        ${i}
+      </button>
+    `;
+  }
+
+  buttonsHtml += `
+    <button class="btn btn-secondary btn-sm" ${currentPage === totalPages ? "disabled style='opacity:0.5;cursor:not-allowed'" : ""} onclick="goToPage(${currentPage + 1})">
+      Next &raquo;
+    </button>
+  `;
+
+  pagEl.innerHTML = `
+    <div style="display:flex; justify-content:center; align-items:center; gap:6px; flex-wrap:wrap;">
+      ${buttonsHtml}
+    </div>
+  `;
+}
+
+function goToPage(page) {
+  currentPage = page;
+  renderVehicles(filteredVehicles);
+  const findSection = document.getElementById("find");
+  if (findSection) {
+    findSection.scrollIntoView({ behavior: "smooth" });
+  }
 }
 
 function vehicleCard(v){
@@ -388,6 +462,7 @@ function applyFilters(){
     return decisionScore(b) - decisionScore(a);
   });
 
+  currentPage = 1;
   renderVehicles(filteredVehicles);
 }
 
@@ -402,6 +477,7 @@ function resetFilters(){
   document.getElementById("filterSort").value = "best";
 
   filteredVehicles = [...vehicles];
+  currentPage = 1;
   renderVehicles(filteredVehicles);
 }
 
