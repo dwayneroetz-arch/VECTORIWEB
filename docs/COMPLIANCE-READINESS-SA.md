@@ -1,69 +1,47 @@
-# VECTORI 2.1 — South Africa Compliance Readiness Matrix
+# VECTORI 2.2 — South Africa Compliance Readiness
 
-**Research date:** 16 September 2026  
-**Scope:** consumer-facing multi-asset marketplace and intelligence platform covering automotive, property, fine jewellery, finance and insurance.
+Research date: 16 September 2026.
 
-This document is an engineering/control framework, not legal advice, certification or a statement that a commercial implementation is compliant. The final operating model must be reviewed by qualified South African legal/compliance professionals and the relevant authorised/registered partners.
+This document is an engineering control framework, not legal advice or a certificate of compliance.
 
-| Area | Control required | VECTORI design response | Launch dependency |
-|---|---|---|---|
-| POPIA | Lawful processing, purpose limitation, minimisation, security, retention/deletion and data-subject controls | Customer inputs, evidence and calculations are separated; production consent/privacy/security backend remains required | Privacy counsel, Information Officer, security implementation |
-| POPIA automated decisions | Avoid presenting material legal/substantial decisions as solely automated where section 71 applies | Outcome engine is labelled decision support; no lender/insurer approval is generated | Human/provider review and legal sign-off for any regulated journey |
-| NCA / credit | Credit providers conduct the regulated credit/affordability process; consumer data must not be treated as approval | VECTORI affordability ratio is explicitly a customer-input scenario, not lender approval | Authorised credit provider integration |
-| FAIS | Advice/intermediary activity may require FSP authorisation and appropriate representatives | Finance/insurance modules are separated from regulated advice/application flows | FSCA/FSP legal classification and contracts |
-| Insurance / PPR | Advertising and distribution must not mislead; insurer identity and material information must be clear | Ads are labelled; provider identity is rendered; production insurer data must include legal entity, terms, wording and freshness | Licensed insurer/FSP/intermediary review |
-| Property Practitioners Act | Property practitioner activity, conduct, advertising and FFC requirements can apply | Property listings identify the agent/agency; VECTORI does not claim to perform professional valuations | PPRA classification, FFC/mandate checks where applicable |
-| Property valuation | Property practitioners should not hold themselves out as professional valuers without the relevant registration | UI calls market figures benchmarks/evidence, not professional valuations | SACPVP/PPRA legal review where valuation functionality is introduced |
-| Precious metals/jewellery | Precious-metals/diamond activities may require permits/licences and regulated dealer arrangements | Jewellery adapter is an intelligence/listing layer only; it does not create a dealer licence | SADPMR/legal review and verified dealer credentials |
-| CPA | Consumer-facing prices, descriptions and marketing must not be false, misleading or deceptive | Source/evidence labels, missing-data states and advertising labels are explicit | Content/legal review and complaint process |
-| ECTA | Electronic transactions require appropriate notices/disclosures and transaction controls where applicable | Production legal identity, terms, transaction and recordkeeping controls are a launch gate | ECTA/legal review |
-| Advertising | Sponsored content must be distinguishable from independent intelligence; regulated financial ads need extra controls | Woven ads have an Advertisement label and sponsor identity; no ad is presented as VECTORI evidence | Campaign approval workflow |
-| Data provenance | Inventory and provider data need permission/licence and freshness | Authorised feed architecture and source fields are retained | Dealer/provider contracts and feed monitoring |
-| Image rights | Listing imagery requires contractual/licensed rights | Prototype uses generated demo art; production source rights are explicit | Dealer/feed/image licence |
-| Auditability | Calculation version, input snapshot, source timestamp and scenario should be recoverable | Engine version and evidence objects exist; production persistence is still required | Audit-log backend |
-| Security | Customer/lead data needs access control, encryption, monitoring and incident response | Front-end prototype does not claim production security | Secure backend, secrets management, logging, incident plan |
+## 1. Consumer advertising
+Sponsored ranking/boosting on digital platforms should be clearly identifiable as advertising under the current Advertising Regulatory Board Code; labels such as Sponsored, Promoted or Ad are contemplated. VECTORI therefore labels woven placements as Advertisement and keeps paid placement separate from intelligence calculations. See ARB Code, Section II, 12.5.
 
-## Advertising and marketplace control
+## 2. Property
+The Property Practitioners Act 22 of 2019 regulates property practitioners and provides for consumer protection. Production property inventory must therefore identify the responsible practitioner/agency and preserve required regulatory evidence, including applicable PPRA registration/FFC controls. VECTORI must not imply that its marketplace intelligence is a property valuation or that it itself is acting as a property practitioner unless the legal role and authorisations support that activity.
 
-1. Every sponsored placement must be visually identified as an advertisement.
-2. A finance/insurance advertisement must identify the relevant legal/provider identity where required by the applicable rules.
-3. Sponsored placement must not be allowed to alter the calculation inputs, evidence status or outcome methodology.
-4. Paid placement must not silently become a ranking factor in the intelligence engine.
-5. Dealer listings must retain the authorised dealer/agent identity and source provenance.
-6. The dealer-diversity algorithm is presentation logic only and does not imply dealer quality or endorsement.
+PPRA current notices also confirm ongoing FFC/Registration Certificate renewal requirements. Production ingestion should validate provider status before publication.
 
-## Property-specific launch gates
+## 3. Fine jewellery / precious metals
+The South African Diamond and Precious Metals Regulator publishes licensing and permit categories including a Jeweller's Permit and other precious-metals permissions. Production jewellery onboarding therefore requires a role/permit review for the seller and the activity being performed. VECTORI should distinguish marketplace advertising from regulated dealing/manufacturing/import/export activity.
 
-- Confirm whether VECTORI is merely a portal/advertising platform or is performing acts that fall within the definition of property practitioner.
-- Verify each agent/agency's PPRA/Fidelity Fund Certificate status where required.
-- Store mandate/source authority for listings.
-- Do not label a market estimate as a professional valuation unless performed by an appropriately registered valuer.
-- Review commission/lead arrangements and any conflict-of-interest disclosures.
+## 4. Finance / credit
+The National Credit Act and its regulations remain relevant where credit products are advertised, compared, facilitated or provided. VECTORI's calculator is decision support and must not be represented as lender approval. Current provider terms, fees, rates, balloon/GFV mechanics and eligibility must be dated and sourced from authorised providers.
 
-## Jewellery-specific launch gates
+## 5. Insurance
+Insurance advertising and conduct requirements apply to insurers and relevant persons acting on their behalf. The Policyholder Protection Rules require controls around advertising, clear insurer identity, appropriate language, records and comparative marketing. VECTORI must identify the insurer/product source where insurance information is displayed and must not represent a modelled premium as a live quote.
 
-- Confirm whether the business model involves dealing in precious metals/diamonds, broking, financing or merely advertising third-party stock.
-- Verify relevant SADPMR licences/permits for dealers where applicable.
-- Verify diamond/stone certification and provenance fields where claimed.
-- Do not convert a seller's claimed valuation into an independent VECTORI valuation without evidence and appropriate professional basis.
+## 6. POPIA
+Personal information and financial information require lawful processing, security, purpose limitation, retention/deletion and data-subject controls. Automated processing must not be used as the sole basis for decisions producing legal consequences or substantially affecting a person where POPIA Section 71 applies. VECTORI's affordability output is therefore a user-input scenario, not an automated approval decision.
 
-## Financial-product launch gates
+## 7. CPA / direct marketing
+The Consumer Protection Act includes protections against unwanted direct marketing. Current 2026 amendments and the national Opt-Out Registry framework make direct-marketing suppression and auditability a production requirement. Lead-generation flows must capture lawful consent/marketing status and respect applicable opt-out controls.
 
-- Confirm whether the exact journey is information, lead generation, advice, intermediary service, application processing or another regulated activity.
-- Contract only with appropriately authorised providers/intermediaries for regulated steps.
-- Do not use VECTORI's automated result as a sole approval/underwriting decision.
-- Keep provider rate/fee/term/GFV/coverage data dated and expirable.
-- Present customer-specific affordability as a scenario, not a lender decision.
+## 8. ECTA / electronic transactions
+Electronic transaction flows must provide the information and transaction controls required by the Electronic Communications and Transactions Act. If VECTORI later becomes the transaction counterparty rather than a marketplace/intelligence layer, the compliance scope changes and must be re-reviewed.
 
-## Launch gates — all verticals
+## 9. Launch gates
+Before commercial launch:
 
-1. Confirm VECTORI's legal entity, role and remuneration model per vertical.
-2. Obtain South African legal/compliance sign-off for each regulated workflow.
-3. Contract with authorised/registered providers where applicable.
-4. Implement POPIA privacy notice, lawful-basis/consent, retention/deletion, security and data-subject processes.
-5. Implement source freshness, provider expiry and feed-health controls.
-6. Never present demo/synthetic data as live stock or a live quote.
-7. Keep advertising separate from intelligence methodology.
-8. Add human/provider review where the workflow could have legal or similarly significant effects.
-9. Persist calculation version, inputs, evidence, provider source timestamp and scenario ID.
-10. Maintain a complaints/escalation route appropriate to the operating model.
+1. Confirm VECTORI's exact legal role for each vertical.
+2. Obtain South African legal/compliance sign-off for finance, insurance, property and jewellery workflows.
+3. Verify provider licences/authorisations/registrations where applicable.
+4. Establish contracts and data/image/content rights with each inventory provider.
+5. Establish privacy notices, lawful basis, consent, retention, deletion and security controls.
+6. Implement dated source records and product/advert expiry.
+7. Keep paid placement separate from organic intelligence and calculation logic.
+8. Preserve an audit trail of inputs, source versions, formulas and outputs.
+9. Route regulated applications/quotes/decisions to authorised providers.
+10. Add human/provider review wherever required by law or product rules.
+11. Do not present synthetic demo data as live inventory or a live quote.
+12. Maintain a jurisdiction-specific review whenever VECTORI enters another country or a new regulated activity.

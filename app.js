@@ -1426,3 +1426,268 @@ document.addEventListener(
     }
   }
 );
+/* ============================================================
+   VECTORI 2.2 — TRUE MULTI-ASSET MARKETPLACE + WOVEN ADS
+   Final overrides intentionally sit after legacy functions so the
+   current codebase can evolve without removing the earlier demo logic.
+============================================================ */
+let vectoriSelectedAssetType = '';
+
+function assetTypeLabel(type){
+  return type === 'property' ? 'Property' : type === 'fine_jewellery' ? 'Fine Jewellery' : 'Automotive';
+}
+function assetProviderLabel(v){
+  const type=v?.assetType||'automotive';
+  return type==='property' ? (v.agent||v.agency||v.dealer||'Property practitioner') : type==='fine_jewellery' ? (v.jeweller||v.seller||v.dealer||'Jeweller') : (v.dealer||v.dealership||'Dealer');
+}
+function assetTitle(v){
+  if(!v) return 'Unknown asset';
+  if(v.title) return v.title;
+  if((v.assetType||'automotive')==='property') return [v.propertyType,v.suburb,v.city].filter(Boolean).join(' • ') || 'Property listing';
+  if((v.assetType||'automotive')==='fine_jewellery') return [v.brand,v.itemType,v.reference].filter(Boolean).join(' • ') || 'Fine jewellery listing';
+  return [v.year,v.make,v.model].filter(Boolean).join(' ') || 'Vehicle listing';
+}
+function assetReferenceValue(v){
+  return Number.isFinite(v?.valuation) ? v.valuation : Number.isFinite(v?.market) ? v.market : null;
+}
+
+function vehicleCard(v){
+  const position=marketPosition(v);
+  const selected=comparison.includes(v.id);
+  const type=v.assetType||'automotive';
+  const isAuto=type==='automotive';
+  const isProperty=type==='property';
+  const meta=isAuto
+    ? `<span class="tag">${escapeHtml(yearLabel(v))}</span><span class="tag">${Number.isFinite(v.mileage)?`${number(v.mileage)} km`:'Mileage not supplied'}</span><span class="tag">${escapeHtml(displayValue(v.fuel))}</span>`
+    : isProperty
+      ? `<span class="tag">${escapeHtml(displayValue(v.propertyType,'Property'))}</span><span class="tag">${escapeHtml(displayValue(v.suburb,displayValue(v.city)))}</span>`
+      : `<span class="tag">${escapeHtml(displayValue(v.itemType,'Jewellery'))}</span><span class="tag">${escapeHtml(displayValue(v.brand,'Brand not supplied'))}</span>`;
+  const secondary = isAuto
+    ? `Market reference ${Number.isFinite(v.market)?money(v.market):'Missing'}`
+    : isProperty
+      ? `Reference ${Number.isFinite(v.market)?money(v.market):'Missing'}`
+      : `Valuation ${Number.isFinite(v.valuation)?money(v.valuation):'Missing'}`;
+  return `
+    <article class="vehicle-card asset-card asset-card-${type}">
+      <div class="vehicle-image">${vehicleSvg(v)}</div>
+      <div class="vehicle-info">
+        <div class="vehicle-top"><div><div class="vehicle-title">${escapeHtml(assetTitle(v))}</div><div class="vehicle-variant">${escapeHtml(type==='automotive'?(v.variant||''):type==='property'?(v.propertyType||''):(v.reference||''))}</div></div></div>
+        <div class="vehicle-meta"><span class="asset-badge">${assetTypeLabel(type)}</span>${meta}</div>
+        <div class="vehicle-dealer-badge">${escapeHtml(assetProviderLabel(v))}</div>
+        <div class="vehicle-description">${escapeHtml(v.description||'')}</div>
+        <div class="vehicle-data">
+          <div class="data-box"><span>Provider</span><strong>${escapeHtml(assetProviderLabel(v))}</strong></div>
+          <div class="data-box"><span>Location</span><strong>${escapeHtml(displayValue(v.province,displayValue(v.location)))}</strong></div>
+          <div class="data-box"><span>${isProperty?'Reference value':isAuto?'Market reference':'Current valuation'}</span><strong>${escapeHtml(secondary.replace(/^Market reference |^Reference |^Valuation /,''))}</strong></div>
+          <div class="data-box"><span>Evidence</span><strong>${escapeHtml(v.evidence||'Missing')}</strong></div>
+        </div>
+        <div class="small muted" style="margin-top:10px">Source: ${escapeHtml(displayValue(v.source,'VECTORI Database'))}${v.sourceUrl?` • <a href="${escapeHtml(v.sourceUrl)}" target="_blank" rel="noopener noreferrer">View source listing</a>`:''}</div>
+      </div>
+      <div class="vehicle-side">
+        <div><div class="price">${money(v.price)}</div><div class="market ${position.className}">${position.label}</div></div>
+        <div class="asset-card-actions">
+          <button class="btn btn-compare ${selected?'is-selected':''}" type="button" aria-pressed="${selected?'true':'false'}" onclick="toggleComparison('${escapeHtml(v.id)}',${selected?'false':'true'})">${selected?'✓ Compared':'＋ Add to Compare'}</button>
+          <button class="btn btn-secondary" type="button" onclick="analyseVehicle('${escapeHtml(v.id)}')">Run ${assetTypeLabel(type).toLowerCase()} intelligence</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function wovenAdMarkup(index){
+  const format='Medium Rectangle';
+  const side=index % 2 === 0 ? 'woven-ad-right' : 'woven-ad-left';
+  return `<div class="woven-ad ${side}" aria-label="Sponsored advertisement"><div class="ad-slot" data-format="${format}" data-vertical="${escapeHtml(vectoriSelectedAssetType||'all')}" data-ad-slot-index="${index}"></div></div>`;
+}
+
+function refreshWovenAds(){
+  if(!window.AdManager) return;
+  document.querySelectorAll('#vehicleResults .woven-ad .ad-slot').forEach(slot=>{
+    window.AdManager.renderAd(slot, slot.dataset.format || 'Medium Rectangle', slot.dataset.vertical || vectoriSelectedAssetType || 'all');
+  });
+}
+
+function populateFilters(){
+  const types=[...new Set(vehicles.map(v=>v.assetType||'automotive'))].filter(Boolean);
+  const activeType=document.getElementById('filterAssetType')?.value || vectoriSelectedAssetType || '';
+  const pool=activeType ? vehicles.filter(v=>(v.assetType||'automotive')===activeType) : vehicles;
+  const makes=[...new Set(pool.map(v=>v.make||v.brand))].filter(Boolean).sort();
+  const models=[...new Set(pool.map(v=>v.model||v.propertyType||v.itemType))].filter(Boolean).sort();
+  const dealers=[...new Set(pool.map(v=>assetProviderLabel(v)))].filter(Boolean).sort();
+  const provinces=[...new Set(pool.map(v=>v.province||v.location))].filter(Boolean).sort();
+  const assetSelect=document.getElementById('filterAssetType');
+  if(assetSelect){
+    assetSelect.innerHTML='<option value="">All asset markets</option>'+types.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(assetTypeLabel(v))}</option>`).join('');
+    assetSelect.value=activeType;
+  }
+  populateSelect('filterMake',makes,'All brands / agencies');
+  populateSelect('filterModel',models,'All models / property / items');
+  populateSelect('filterDealer',dealers,'All dealers / agents / jewellers');
+  populateSelect('filterProvince',provinces,'All provinces / locations');
+  const calc=document.getElementById('calcVehicle');
+  if(calc){
+    calc.innerHTML='<option value="">Select listing</option>'+pool.map(v=>`<option value="${escapeHtml(v.id)}">${escapeHtml(assetTitle(v))} — ${escapeHtml(assetProviderLabel(v))}</option>`).join('');
+  }
+  const mileageField=document.getElementById('mileageFilterField');
+  if(mileageField) mileageField.hidden=activeType && activeType!=='automotive';
+}
+
+function selectAssetMarket(type){
+  vectoriSelectedAssetType=type||'';
+  const select=document.getElementById('filterAssetType'); if(select) select.value=vectoriSelectedAssetType;
+  document.querySelectorAll('[data-asset-tab]').forEach(btn=>btn.classList.toggle('is-active',(btn.dataset.assetTab||'')===vectoriSelectedAssetType));
+  populateFilters();
+  applyFilters();
+  const first=filteredVehicles[0];
+  if(first){ setCalculatorAsset(first); }
+}
+
+function diversifyListings(list, limit){
+  const explicitDealer=document.getElementById('filterDealer')?.value;
+  if(explicitDealer || !window.VECTORIListingUtils) return (list||[]).slice(0,limit);
+  return window.VECTORIListingUtils.diversifyByDealer(list, Math.min(limit,list.length));
+}
+
+function renderDealerMix(list){
+  const el=document.getElementById('dealerMixSummary'); if(!el) return;
+  const audit=window.VECTORIListingUtils?.distributionAudit(list,itemsPerPage);
+  if(!audit||!audit.mix.length){el.textContent='No provider inventory available for this selection.';return;}
+  const labels=audit.mix.map(x=>`<span class="dealer-mix-pill">${escapeHtml(x[0])} · ${x[1]}</span>`).join('');
+  el.innerHTML=`<div class="dealer-mix-bar"><span class="dealer-mix-label">Provider distribution</span>${labels}<span class="dealer-mix-note">Interleaved across available providers; explicit provider filters remain exclusive.</span></div>`;
+}
+
+function renderMarketStream(pageList){
+  const items=[];
+  // Row 1: 3 listings + 1 ad. Row 2: 1 ad + 3 listings.
+  // Across the two rows this is exactly 6 listing slots / 2 ad slots = 75/25.
+  pageList.slice(0,3).forEach(v=>items.push(vehicleCard(v)));
+  if(pageList.length>3) items.push(wovenAdMarkup(0));
+  if(pageList.length>3) items.push(wovenAdMarkup(1));
+  pageList.slice(3,6).forEach(v=>items.push(vehicleCard(v)));
+  if(pageList.length<=3 && pageList.length>0) items.push(wovenAdMarkup(1));
+  return items.join('');
+}
+
+function renderVehicles(list){
+  const container=document.getElementById('vehicleResults'); const countEl=document.getElementById('resultsCount'); if(!container)return;
+  const explicitDealer=document.getElementById('filterDealer')?.value;
+  const distributed=explicitDealer ? list.slice() : (window.VECTORIListingUtils ? window.VECTORIListingUtils.diversifyByDealer(list,list.length) : list.slice());
+  const totalItems=distributed.length; const totalPages=Math.ceil(totalItems/itemsPerPage)||1;
+  if(currentPage>totalPages) currentPage=totalPages; if(currentPage<1)currentPage=1;
+  const start=(currentPage-1)*itemsPerPage; const pageList=distributed.slice(start,start+itemsPerPage);
+  if(countEl) countEl.textContent=totalItems?`Showing ${start+1}–${Math.min(start+pageList.length,totalItems)} of ${totalItems} listings · Page ${currentPage} of ${totalPages}`:'0 listings found';
+  renderDealerMix(pageList);
+  if(!totalItems){container.innerHTML='<div class="empty-state">No listings match the selected criteria.</div>';renderPagination(0,1);return;}
+  container.innerHTML=renderMarketStream(pageList);
+  renderPagination(totalItems,totalPages); refreshWovenAds();
+}
+
+function applyFilters(){
+  const assetType=document.getElementById('filterAssetType')?.value||'';
+  vectoriSelectedAssetType=assetType;
+  const make=document.getElementById('filterMake')?.value||''; const model=document.getElementById('filterModel')?.value||'';
+  const search=(document.getElementById('filterSearch')?.value||'').trim().toLowerCase(); const dealer=document.getElementById('filterDealer')?.value||'';
+  const province=document.getElementById('filterProvince')?.value||''; const maxPrice=parseFloat(document.getElementById('filterMaxPrice')?.value); const maxMileage=parseFloat(document.getElementById('filterMaxMileage')?.value);
+  const sort=document.getElementById('filterSort')?.value||'best';
+  filteredVehicles=vehicles.filter(v=>{
+    const type=v.assetType||'automotive';
+    if(assetType&&type!==assetType)return false;
+    if(make&&(v.make||v.brand)!==make)return false;
+    if(model&&(v.model||v.propertyType||v.itemType)!==model)return false;
+    if(dealer&&assetProviderLabel(v)!==dealer)return false;
+    if(province&&(v.province||v.location)!==province)return false;
+    if(Number.isFinite(maxPrice)&&Number.isFinite(v.price)&&v.price>maxPrice)return false;
+    if(Number.isFinite(maxMileage)&&type==='automotive'&&Number.isFinite(v.mileage)&&v.mileage>maxMileage)return false;
+    if(search){const text=[assetTitle(v),v.make,v.brand,v.model,v.propertyType,v.itemType,v.variant,v.fuel,v.transmission,assetProviderLabel(v),v.province,v.location,v.listingId,v.reference].filter(Boolean).join(' ').toLowerCase();if(!text.includes(search))return false;}
+    return true;
+  });
+  filteredVehicles.sort((a,b)=>{
+    if(sort==='price')return (Number.isFinite(a.price)?a.price:Infinity)-(Number.isFinite(b.price)?b.price:Infinity);
+    if(sort==='year')return (Number.isFinite(b.year)?b.year:-Infinity)-(Number.isFinite(a.year)?a.year:-Infinity);
+    if(sort==='deal'){const ad=Number.isFinite(a.market)&&a.market>0&&Number.isFinite(a.price)?(a.price-a.market)/a.market:Infinity;const bd=Number.isFinite(b.market)&&b.market>0&&Number.isFinite(b.price)?(b.price-b.market)/b.market:Infinity;return ad-bd;}
+    if(sort==='burden')return modelledBurden(a)-modelledBurden(b);
+    return 0;
+  });
+  currentPage=1; renderVehicles(filteredVehicles);
+}
+function resetFilters(){
+  ['filterAssetType','filterMake','filterModel','filterSearch','filterDealer','filterProvince','filterMaxPrice','filterMaxMileage'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const sort=document.getElementById('filterSort');if(sort)sort.value='best'; vectoriSelectedAssetType=''; document.querySelectorAll('[data-asset-tab]').forEach(btn=>btn.classList.toggle('is-active',(btn.dataset.assetTab||'')==='')); populateFilters(); filteredVehicles=[...vehicles]; currentPage=1; renderVehicles(filteredVehicles);
+}
+
+function setCalculatorAsset(v){
+  if(!v)return; const type=v.assetType||'automotive'; const calc=document.getElementById('calcVehicle'); if(calc){populateFilters();calc.value=v.id;}
+  vectoriSelectedAssetType=type;
+  const label=document.getElementById('selectedAssetModuleLabel'); if(label)label.textContent=assetTypeLabel(type);
+  const title=document.getElementById('outcomeProfileTitle'); if(title)title.textContent=`${assetTypeLabel(type)} profile`;
+  const help=document.getElementById('outcomeProfileHelp'); if(help)help.textContent=type==='automotive'?'Vehicle operating, finance and insurance inputs.':type==='property'?'Property acquisition, holding, finance, insurance and exit inputs.':'Fine jewellery acquisition, protection, holding, finance and resale inputs.';
+  document.getElementById('autoFields').hidden=type!=='automotive'; document.getElementById('propertyFields').hidden=type!=='property'; document.getElementById('jewelleryFields').hidden=type!=='fine_jewellery';
+  const set=(id,val)=>{const el=document.getElementById(id);if(el&&val!==undefined&&val!==null)el.value=val;};
+  set('calcPrice',v.price); set('calcMarket',v.market); set('calcFutureValue',v.futureValue); set('calcTradeIn',0);
+  if(type==='automotive'){set('calcConsumption',v.consumption);}
+  if(type==='property'){set('calcFutureValue',v.futureValue);set('calcMarket',v.market);set('calcTransferCosts',v.transferCosts||0);set('calcBondRegistration',v.bondRegistration||0);}
+  if(type==='fine_jewellery'){set('calcValuation',v.valuation);set('calcFutureValue',v.futureValue);}
+}
+function loadCalculatorVehicle(){const id=document.getElementById('calcVehicle')?.value;const v=vehicles.find(x=>x.id===id);if(v)setCalculatorAsset(v);}
+function analyseVehicle(id){const v=vehicles.find(x=>x.id===id);if(!v)return;setCalculatorAsset(v);document.getElementById('intelligence')?.scrollIntoView({behavior:'smooth',block:'start'});}
+
+function moduleState(){return {asset:true,automotive:true,insurance:document.getElementById('moduleInsurance')?.checked!==false,finance:document.getElementById('moduleFinance')?.checked!==false};}
+function buildOutcomeInput(vehicle){
+  const type=vehicle?.assetType||vectoriSelectedAssetType||'automotive';
+  return {
+    assetType:type, modules:moduleState(), price:getNum('calcPrice',vehicle?.price), market:getNum('calcMarket',vehicle?.market), futureValue:getNum('calcFutureValue',null), tradeIn:getNum('calcTradeIn',0), horizon:getNum('calcHorizon',60),
+    monthlyKm:getNum('calcKm',1500), fuelPrice:getNum('calcFuel',26.92), consumption:getNum('calcConsumption',vehicle?.consumption), maintenancePerKm:getNum('calcMaintenance',0.8), tyreCost:getNum('calcTyreCost',5000), tyreLife:getNum('calcTyreLife',50000), licenceAnnual:getNum('calcLicence',1800), servicePlanMonthly:getNum('calcServicePlan',0), tollsMonthly:getNum('calcTolls',0), parkingMonthly:getNum('calcParking',0), otherVehicleMonthly:getNum('calcOtherVehicle',0),
+    transferCosts:getNum('calcTransferCosts',0), bondRegistration:getNum('calcBondRegistration',0), ratesMonthly:getNum('calcRates',0), leviesMonthly:getNum('calcLevies',0), propertyMaintenanceMonthly:getNum('calcPropertyMaintenance',0), utilitiesMonthly:getNum('calcUtilities',0), propertyInsuranceMonthly:getNum('calcPropertyInsurance',0), rentalIncomeMonthly:getNum('calcRentalIncome',0), otherPropertyMonthly:getNum('calcOtherProperty',0), saleCosts:getNum('calcSaleCosts',0),
+    valuation:getNum('calcValuation',null), jewelleryInsuranceMonthly:getNum('calcJewelleryInsurance',0), storageMonthly:getNum('calcStorage',0), valuationCost:getNum('calcValuationCost',0), jewelleryMaintenanceMonthly:getNum('calcJewelleryMaintenance',0), otherJewelleryMonthly:getNum('calcOtherJewellery',0), resaleCosts:getNum('calcResaleCosts',0),
+    financeType:document.getElementById('calcFinanceType')?.value||'instalment_sale', rate:getNum('calcInterest',12.5), term:getNum('calcTerm',72), deposit:getNum('calcDeposit',0), balloonPct:getNum('calcBalloonPct',0), gfvAmount:getNum('calcGfvAmount',null), monthlyFee:getNum('calcAdminFee',0), initiationFee:getNum('calcInitiationFee',0), extras:type==='property'?(getNum('calcTransferCosts',0)+getNum('calcBondRegistration',0)):0,
+    premiumMonthly:getNum('calcInsurance',0), excess:getNum('calcInsuranceExcess',0), shortfallCoverMonthly:getNum('calcShortfall',0), creditProtectionMonthly:getNum('calcCreditProtection',0), otherInsuranceMonthly:getNum('calcOtherInsurance',0),
+    netIncome:getNum('calcIncome',35000), existingDebt:getNum('calcDebt',3000), livingCosts:getNum('calcLiving',18000), otherUpfront:0
+  };
+}
+function calculate(vehicle){
+  if(!vehicle)return {errors:['Select an asset before running the outcome.']}; const input=buildOutcomeInput(vehicle); const errors=[];
+  if(!Number.isFinite(input.price)||input.price<=0)errors.push(`A valid ${assetTypeLabel(input.assetType).toLowerCase()} price is required.`);
+  if(input.assetType==='automotive'&&(!Number.isFinite(input.consumption)||input.consumption<=0))errors.push('Fuel/energy consumption is missing.');
+  if(input.modules.finance&&(!Number.isFinite(input.rate)||input.rate<0||!Number.isFinite(input.term)||input.term<=0))errors.push('Finance rate and term are required when Finance is selected.');
+  if(input.modules.insurance&&(!Number.isFinite(input.premiumMonthly)||input.premiumMonthly<0))errors.push('Insurance premium is required when Insurance is selected.');
+  if(errors.length)return {errors,input,vehicle};
+  const outcome=window.VECTORIOutcomeEngine.customerOutcome(input); outcome.vehicle=vehicle; outcome.input=input; outcome.validation=window.VECTORIOutcomeEngine.validateResult(outcome); return {errors:[],...outcome};
+}
+function renderDecision(result){
+  const panel=document.getElementById('decisionPanel');if(!panel)return;if(result.errors?.length){panel.innerHTML=`<div class="warning-list">${result.errors.map(e=>`<div class="warning">${escapeHtml(e)}</div>`).join('')}</div>`;return;}
+  const e=result; const missing=e.evidence?.filter(x=>x.status==='MISSING')||[]; const status=missing.length?'INCOMPLETE EVIDENCE':'MODEL COMPLETE FOR SUPPLIED INPUTS';
+  const assetMetric=e.assetType==='property'?(e.property?e.property.operatingMonthly:0):e.assetType==='fine_jewellery'?(e.jewellery?e.jewellery.operatingMonthly:0):(e.automotive?e.automotive.operatingMonthly:0);
+  panel.innerHTML=`<div class="outcome-status">${status}</div><h3>${escapeHtml(assetTitle(e.vehicle))}</h3><div class="outcome-headline"><span>Monthly real cash exposure</span><strong>${money(e.monthlyCashOutflow)}</strong></div><div class="outcome-metrics"><div><span>Horizon cash outflow</span><strong>${money(e.cashOutflowHorizon)}</strong></div><div><span>Economic cost</span><strong>${Number.isFinite(e.economicCost)?money(e.economicCost):'Insufficient exit value'}</strong></div><div><span>Net equity at horizon</span><strong>${Number.isFinite(e.netEquity)?money(e.netEquity):'Insufficient exit value'}</strong></div><div><span>Cash remaining / month</span><strong>${Number.isFinite(e.cashRemaining)?money(e.cashRemaining):'Insufficient income'}</strong></div><div><span>Asset operating cost</span><strong>${money(assetMetric)}</strong></div><div><span>Evidence completeness</span><strong>${e.evidenceCompleteness}%</strong></div></div><div class="outcome-breakdown"><div><strong>${assetTypeLabel(e.assetType)}</strong><span>${money(assetMetric)} / month</span></div><div><strong>Finance</strong><span>${e.finance?money(e.finance.monthlyPayment||0)+' / month':'Not selected'}</span></div><div><strong>Insurance</strong><span>${e.insurance?money(e.insurance.monthly)+' / month':'Not selected'}</span></div></div><div class="scenario-row"><button class="scenario-btn" onclick="runOutcomeScenario('stress')">Stress view</button><button class="scenario-btn" onclick="runOutcomeScenario('downside')">Downside view</button></div><div class="status-box"><strong>Evidence ledger</strong><br><br>${e.evidence?.length?e.evidence.map(x=>`${evidenceBadge(x.status)} ${escapeHtml(x.label)}`).join(' &nbsp; '):'All required inputs supplied.'}</div><p class="small muted">This is analytical decision support. A lender, insurer, property practitioner or jewellery business remains responsible for its regulated decision, quote, valuation or transaction.</p>`;
+}
+function runCalculator(){const id=document.getElementById('calcVehicle')?.value;const v=vehicles.find(x=>x.id===id);const out=document.getElementById('calcOutputs');if(!v){if(out)out.innerHTML='<div class="empty-state">Select an asset listing first.</div>';return;}const r=calculate(v);if(r.errors?.length){out.innerHTML=`<div class="warning-list">${r.errors.map(e=>`<div class="warning">${escapeHtml(e)}</div>`).join('')}</div>`;renderDecision(r);return;}out.innerHTML=`<div class="big-output"><span>Real-world monthly cash exposure</span><strong>${money(r.monthlyCashOutflow)}</strong></div><div class="output-card"><span>Horizon cash outflow</span><strong>${money(r.cashOutflowHorizon)}</strong></div><div class="output-card"><span>Economic cost</span><strong>${Number.isFinite(r.economicCost)?money(r.economicCost):'Supply exit value'}</strong></div><div class="output-card"><span>Expected exit value</span><strong>${Number.isFinite(r.assetValue)?money(r.assetValue):'Missing'}</strong></div><div class="output-card"><span>Finance balance</span><strong>${money(r.financeBalanceAtHorizon)}</strong></div><div class="output-card"><span>Net equity</span><strong>${Number.isFinite(r.netEquity)?money(r.netEquity):'Missing'}</strong></div><div class="output-card"><span>Asset operating cost</span><strong>${money(r.assetType==='property'?r.property?.operatingMonthly:r.assetType==='fine_jewellery'?r.jewellery?.operatingMonthly:r.automotive?.operatingMonthly)}</strong></div><div class="output-card"><span>Finance payment</span><strong>${r.finance?money(r.finance.monthlyPayment||0):'Not selected'}</strong></div><div class="output-card"><span>Insurance exposure</span><strong>${r.insurance?money(r.insurance.monthly):'Not selected'}</strong></div><div class="output-card"><span>Contingent insurance excess</span><strong>${r.insurance?money(r.contingentInsuranceExposure):'Not selected'}</strong></div>`;renderDecision(r);}
+
+// Expose the existing lexical AdManager to the window so woven placements can target it.
+if(typeof AdManager !== 'undefined') window.AdManager=AdManager;
+
+// Advertising: target verticals and rotate eligible campaigns so a single campaign does not own every woven slot.
+if(window.AdManager){
+  const originalChoose=window.AdManager.choose.bind(window.AdManager);
+  window.AdManager.choose=function(format,vertical='all',slotKey=''){
+    const eligible=this.campaigns.filter(c=>c.active&&c.formats.includes(format)&&(!c.verticals||c.verticals.includes('all')||c.verticals.includes(vertical)));
+    if(!eligible.length)return originalChoose(format);
+    const offset=(Number(slotKey)||0)%eligible.length;
+    return eligible.sort((a,b)=>b.priority-a.priority)[offset]||eligible[0];
+  };
+  const originalRender=this.AdManager.renderAd.bind(this.AdManager);
+  this.AdManager.renderAd=function(slot,format,vertical='all'){
+    const c=this.choose(format,vertical,slot.dataset.adSlotIndex||'0'); const d=this.dims[format]||this.dims['Medium Rectangle']; slot.style.height=d.h;slot.style.maxWidth=d.mw;slot.classList.add('ad-container');const id=c?c.id:'fallback';slot.innerHTML=`<div class="ad-label">Advertisement${c?.company?' · '+escapeHtml(c.company):''}</div>${c?c.content:`<div class="ad-empty">${escapeHtml(format)}<br>Space available</div>`}`;if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting&&entry.intersectionRatio>=0.5){this.trackImpression(id);observer.disconnect();}}),{threshold:[0.5]});observer.observe(slot);}if(c){slot.querySelectorAll('.ad-cta').forEach(btn=>btn.addEventListener('click',()=>this.trackClick(id)));}}
+}
+
+// Add vertical metadata to the existing campaign registry without changing legacy campaign objects.
+if(window.AdManager){window.AdManager.campaigns.forEach(c=>{if(c.id==='CMP-001'||c.id==='CMP-005')c.verticals=['automotive'];else if(c.id==='CMP-002')c.verticals=['automotive','property','fine_jewellery'];else if(c.id==='CMP-003')c.verticals=['automotive'];else c.verticals=['all'];});}
+
+// Re-run the correct multi-asset initialisation after the legacy DOM handler has completed.
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    if(!vehicles.length)return;
+    vectoriSelectedAssetType='';
+    populateFilters();
+    filteredVehicles=[...vehicles];
+    renderVehicles(filteredVehicles);
+    const first=vehicles[0]; if(first)setCalculatorAsset(first);
+  },0);
+});

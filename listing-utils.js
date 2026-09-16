@@ -44,6 +44,16 @@
     return result;
   }
 
+
+  function distributedPages(items,pageSize){
+    const list=Array.isArray(items)?items:[];
+    const size=Math.max(1,Number(pageSize)||6);
+    const distributed=diversifyByDealer(list,list.length);
+    const pages=[];
+    for(let i=0;i<distributed.length;i+=size) pages.push(distributed.slice(i,i+size));
+    return pages;
+  }
+
   function dealerMix(items){
     const counts = {};
     (items || []).forEach(item => {
@@ -68,7 +78,7 @@
     };
   }
 
-  global.VECTORIListingUtils = {dealerKey, groupByDealer, diversifyByDealer, dealerMix, distributionAudit};
+  global.VECTORIListingUtils = {dealerKey, groupByDealer, diversifyByDealer, distributedPages, dealerMix, distributionAudit};
 })(typeof window !== 'undefined' ? window : globalThis);
 
 if(typeof module !== 'undefined') module.exports = globalThis.VECTORIListingUtils;

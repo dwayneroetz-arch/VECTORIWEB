@@ -91,7 +91,7 @@
   function jewelleryScenario(input={}){
     const price=n(input.price), valuation=finite(input.valuation)?n(input.valuation):null, premium=n(input.jewelleryInsuranceMonthly), storage=n(input.storageMonthly), valuationCost=n(input.valuationCost), maintenance=n(input.jewelleryMaintenanceMonthly), other=n(input.otherJewelleryMonthly), horizon=Math.max(1,n(input.horizon,60));
     const operatingMonthly=sum([premium,storage,maintenance,other]);
-    const futureValue=finite(input.futureValue)?n(input.futureValue):(valuation!==null?valuation:null);
+    const futureValue=finite(input.futureValue)?n(input.futureValue):null;
     const resaleCosts=n(input.resaleCosts);
     const netExitValue=futureValue!==null?Math.max(0,futureValue-resaleCosts):null;
     return {type:'fine_jewellery',price,valuation,premiumMonthly:premium,storageMonthly:storage,valuationCost,maintenanceMonthly:maintenance,otherMonthly:other,operatingMonthly,futureValue,resaleCosts,netExitValue,horizon};
@@ -109,7 +109,7 @@
     if(modules.finance){
       if(input.financeType==='lease_or_rental') fin=leaseScenario({...input,horizon});
       else if(input.financeType==='gfv') fin=gfvScenario({...input,horizon});
-      else fin=financeScenario({...input,horizon});
+      else fin=financeScenario({...input,extras:assetType==='property'?n(input.transferCosts)+n(input.bondRegistration):n(input.extras),horizon});
     }
     const ins=modules.insurance?insuranceScenario({...input,horizon}):null;
     const asset=auto||property||jewellery;
@@ -139,6 +139,7 @@
     if(modules.insurance) required.push(['insurance premium',input.premiumMonthly]);
     required.forEach(([label,value])=>{if(!finite(value)||Number(value)<0)evidence.push({label,status:'MISSING'});});
     if(assetValue===null)evidence.push({label:'future/exit asset value',status:'MISSING'});
+    if(assetType==='fine_jewellery' && !finite(input.valuation)) evidence.push({label:'current jewellery valuation/reference',status:'MISSING'});
     const completeness=Math.round(((required.length-evidence.length)/Math.max(1,required.length))*100);
     return {horizon,assetType,modules,assetScenario:asset,automotive:auto,property,jewellery,finance:fin,insurance:ins,monthlyCashOutflow:monthlyCash,cashOutflowHorizon:cashOutflow,assetValue,financeBalanceAtHorizon:balance,netEquity,economicCost,economicMonthlyCost:finite(economicCost)?economicCost/horizon:NaN,contingentInsuranceExposure,cashRemaining,affordabilityRatio,evidence,evidenceCompleteness:completeness};
   }
@@ -150,6 +151,6 @@
     if(r.economicCost!==null && r.economicCost<0 && finite(r.cashOutflowHorizon)) errors.push('Economic cost unexpectedly negative; verify asset value and horizon inputs.');
     return {ok:errors.length===0,errors};
   }
-  global.VECTORIOutcomeEngine={pmt,financeScenario,leaseScenario,gfvScenario,automotiveScenario,propertyScenario,jewelleryScenario,insuranceScenario,customerOutcome,scenarioRange,validateResult,version:'2.1.0'};
+  global.VECTORIOutcomeEngine={pmt,financeScenario,leaseScenario,gfvScenario,automotiveScenario,propertyScenario,jewelleryScenario,insuranceScenario,customerOutcome,scenarioRange,validateResult,version:'2.2.0'};
 })(typeof window !== 'undefined' ? window : globalThis);
 if(typeof module!=='undefined') module.exports=globalThis.VECTORIOutcomeEngine;

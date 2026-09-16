@@ -124,145 +124,47 @@
 
 
     <!-- =========================
-         SECTION 01 — FIND
+         SECTION 01 — FIND / ASSET MARKETS
     ========================= -->
-
-    <div class="platform-strip container" aria-label="VECTORI intelligence markets">
-      <span>Automotive</span><i></i><span>Property</span><i></i><span>Fine Jewellery</span><i></i><strong>One shared outcome engine</strong>
-    </div>
-
-    <div class="mobile-ad-band" aria-label="Advertisement">
-      <div class="ad-slot" data-format="Mobile Banner"></div>
-    </div>
-
     <section class="section" id="find">
-
       <div class="section-head">
-
         <div>
           <div class="eyebrow">01 — Find</div>
-          <h2>Find the right asset and the right evidence.</h2>
-          <p class="muted">
-            One marketplace architecture. Asset-specific intelligence. Shared finance, insurance and outcome logic.
-          </p>
+          <h2>Choose the asset. See the marketplace. Then run the intelligence.</h2>
+          <p class="muted">Automotive, property and fine jewellery use the same VECTORI marketplace shell, while each asset has its own evidence and outcome fields.</p>
         </div>
-
       </div>
 
+      <div class="asset-market-tabs" role="tablist" aria-label="Asset markets">
+        <button class="asset-market-tab is-active" type="button" data-asset-tab="" onclick="selectAssetMarket('')"><strong>All markets</strong><span>Unified marketplace</span></button>
+        <button class="asset-market-tab" type="button" data-asset-tab="automotive" onclick="selectAssetMarket('automotive')"><strong>Automotive</strong><span>Vehicles & ownership</span></button>
+        <button class="asset-market-tab" type="button" data-asset-tab="property" onclick="selectAssetMarket('property')"><strong>Property</strong><span>Homes & property costs</span></button>
+        <button class="asset-market-tab" type="button" data-asset-tab="fine_jewellery" onclick="selectAssetMarket('fine_jewellery')"><strong>Fine Jewellery</strong><span>Value, cover & resale</span></button>
+      </div>
 
       <div class="filter-panel">
-
         <div class="filter-grid">
-
-          <div class="field">
-            <label>Asset market</label>
-            <select id="filterAssetType">
-              <option value="">All asset markets</option>
-              <option value="automotive">Automotive</option>
-              <option value="property">Property</option>
-              <option value="fine_jewellery">Fine Jewellery</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Make / Brand</label>
-            <select id="filterMake">
-              <option value="">All makes</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Model</label>
-            <select id="filterModel">
-              <option value="">All models</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Variant / Search</label>
-            <input
-              id="filterSearch"
-              type="text"
-              placeholder="e.g. 1.4, GL+, SX"
-            >
-          </div>
-
-          <div class="field">
-            <label>Dealer</label>
-            <select id="filterDealer">
-              <option value="">All dealers</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Province</label>
-            <select id="filterProvince">
-              <option value="">All provinces</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Maximum price</label>
-            <input
-              id="filterMaxPrice"
-              type="number"
-              min="0"
-              placeholder="R"
-            >
-          </div>
-
-          <div class="field">
-            <label>Maximum mileage</label>
-            <input
-              id="filterMaxMileage"
-              type="number"
-              min="0"
-              placeholder="km"
-            >
-          </div>
-
-          <div class="field">
-            <label>Sort</label>
-            <select id="filterSort">
-              <option value="best">Best decision signal</option>
-              <option value="deal">Market position</option>
-              <option value="price">Lowest price</option>
-              <option value="year">Newest year</option>
-              <option value="burden">Lowest modelled burden</option>
-            </select>
-          </div>
-
+          <div class="field"><label>Asset market</label><select id="filterAssetType"><option value="">All asset markets</option><option value="automotive">Automotive</option><option value="property">Property</option><option value="fine_jewellery">Fine Jewellery</option></select></div>
+          <div class="field"><label>Make / Brand / Agency</label><select id="filterMake"><option value="">All</option></select></div>
+          <div class="field"><label>Model / Property / Item</label><select id="filterModel"><option value="">All</option></select></div>
+          <div class="field"><label>Search</label><input id="filterSearch" type="text" placeholder="Brand, suburb, item, variant…"></div>
+          <div class="field"><label>Dealer / Agent / Jeweller</label><select id="filterDealer"><option value="">All providers</option></select></div>
+          <div class="field"><label>Province / Location</label><select id="filterProvince"><option value="">All locations</option></select></div>
+          <div class="field"><label>Maximum price</label><input id="filterMaxPrice" type="number" min="0" placeholder="R"></div>
+          <div class="field" id="mileageFilterField"><label>Maximum mileage</label><input id="filterMaxMileage" type="number" min="0" placeholder="km"></div>
+          <div class="field"><label>Sort</label><select id="filterSort"><option value="best">Marketplace order</option><option value="deal">Market position</option><option value="price">Lowest price</option><option value="year">Newest year</option><option value="burden">Lowest modelled exposure</option></select></div>
         </div>
-
-        <div class="filter-actions">
-
-          <button class="btn btn-primary" onclick="applyFilters()">
-            Search inventory
-          </button>
-
-          <button class="btn btn-secondary" onclick="resetFilters()">
-            Reset
-          </button>
-
-        </div>
-
+        <div class="filter-actions"><button class="btn btn-primary" onclick="applyFilters()">Search inventory</button><button class="btn btn-secondary" onclick="resetFilters()">Reset</button></div>
       </div>
 
-
-      <div class="results-header">
-        <div class="results-count" id="resultsCount">
-          Loading vehicles...
-        </div>
-
-        <div class="small muted" id="dealerMixSummary">
-          Development/demo listings • source-derived data • not live stock
-        </div>
+      <div class="marketplace-rule">
+        <div><strong>Marketplace rule</strong><span>Where multiple authorised providers have eligible inventory, VECTORI distributes listings across providers instead of allowing one provider to occupy the entire result set.</span></div>
+        <div><strong>Commercial rule</strong><span>Sponsored placements occupy defined listing-equivalent slots and are labelled separately from VECTORI intelligence.</span></div>
       </div>
 
+      <div class="results-header"><div class="results-count" id="resultsCount">Loading listings…</div><div class="small muted" id="dealerMixSummary">Provider mix will appear here.</div></div>
       <div id="vehicleResults" class="vehicle-list"></div>
-
     </section>
-
 
     <!-- =========================
          SECTION 02 — COMPARE
@@ -302,77 +204,135 @@
     </div>
 
     <!-- =========================
-         SECTION 03 — VECTORI OUTCOME
+         SECTION 03 — VECTORI INTELLIGENCE / OUTCOME
     ========================= -->
     <section class="section" id="intelligence">
       <div class="section-head">
         <div>
-          <div class="eyebrow">03 — VECTORI Outcome</div>
-          <h2>Model what the decision actually costs.</h2>
-          <p class="muted">Automotive, insurance and finance feed one evidence-led outcome engine. Run one vertical or combine all three.</p>
+          <div class="eyebrow">03 — VECTORI Intelligence</div>
+          <h2>One intelligence core. Three asset adapters. Finance and insurance when applicable.</h2>
+          <p class="muted">The asset changes; the outcome architecture does not. VECTORI calculates the customer's real-world cash exposure, retained equity and economic cost from supplied evidence.</p>
         </div>
       </div>
 
-      <div class="outcome-module-picker" role="group" aria-label="Outcome modules">
-        <label class="module-chip"><input type="checkbox" id="moduleAuto" checked> <span>Automotive</span></label>
+      <div class="architecture-ribbon" aria-label="VECTORI architecture">
+        <span>Asset</span><b>→</b><span>Asset intelligence</span><b>→</b><span>Finance and/or insurance</span><b>→</b><strong>Real-world outcome</strong>
+      </div>
+
+      <div class="outcome-module-picker" role="group" aria-label="Intelligence modules">
+        <label class="module-chip module-asset"><span>Asset</span><strong id="selectedAssetModuleLabel">Automotive</strong></label>
         <label class="module-chip"><input type="checkbox" id="moduleInsurance" checked> <span>Insurance</span></label>
         <label class="module-chip"><input type="checkbox" id="moduleFinance" checked> <span>Finance</span></label>
       </div>
 
       <div class="intelligence-grid outcome-grid">
         <div class="panel">
-          <h3>Customer & asset profile</h3>
-          <p class="small muted">Every value is either supplied, calculated or explicitly assumed. Missing evidence is not silently filled.</p>
-          <div class="calc-grid">
-            <div class="field"><label>Vehicle</label><select id="calcVehicle" onchange="loadCalculatorVehicle()"><option value="">Select vehicle</option></select></div>
+          <h3 id="outcomeProfileTitle">Automotive profile</h3>
+          <p class="small muted" id="outcomeProfileHelp">Select a listing above or from the dropdown. Asset-specific fields appear automatically; missing evidence stays visible.</p>
+          <div class="calc-grid outcome-base-fields">
+            <div class="field"><label>Listing / asset</label><select id="calcVehicle" onchange="loadCalculatorVehicle()"><option value="">Select listing</option></select></div>
             <div class="field"><label>Asking price</label><input id="calcPrice" type="number" min="0"></div>
-            <div class="field"><label>Market benchmark</label><input id="calcMarket" type="number" min="0"></div>
-            <div class="field"><label>Future / exit asset value</label><input id="calcFutureValue" type="number" min="0" placeholder="Required for economic cost"></div>
-            <div class="field"><label>Monthly kilometres</label><input id="calcKm" type="number" value="1500" min="0"></div>
-            <div class="field"><label>Fuel / energy price</label><input id="calcFuel" type="number" step="0.01" value="26.92" min="0"></div>
-            <div class="field"><label>Consumption L/100km</label><input id="calcConsumption" type="number" step="0.1" min="0"></div>
-            <div class="field"><label>Maintenance R/km</label><input id="calcMaintenance" type="number" step="0.01" value="0.80" min="0"></div>
-            <div class="field"><label>Tyre set cost</label><input id="calcTyreCost" type="number" value="5000" min="0"></div>
-            <div class="field"><label>Tyre life km</label><input id="calcTyreLife" type="number" value="50000" min="1"></div>
-            <div class="field"><label>Licence / year</label><input id="calcLicence" type="number" value="1800" min="0"></div>
-            <div class="field"><label>Service plan / month</label><input id="calcServicePlan" type="number" value="0" min="0"></div>
-            <div class="field"><label>Tolls / month</label><input id="calcTolls" type="number" value="0" min="0"></div>
-            <div class="field"><label>Parking / month</label><input id="calcParking" type="number" value="0" min="0"></div>
-            <div class="field"><label>Other vehicle costs / month</label><input id="calcOtherVehicle" type="number" value="0" min="0"></div>
-            <div class="field"><label>Trade-in value</label><input id="calcTradeIn" type="number" value="0" min="0"></div>
-            <div class="field"><label>Finance structure</label><select id="calcFinanceType"><option value="instalment_sale">Instalment sale</option><option value="gfv">Guaranteed Future Value</option><option value="lease_or_rental">Lease / rental-style</option></select></div>
-            <div class="field"><label>Interest / profit rate %</label><input id="calcInterest" type="number" step="0.01" value="12.5" min="0"></div>
-            <div class="field"><label>Finance term months</label><input id="calcTerm" type="number" value="72" min="1" max="120"></div>
-            <div class="field"><label>Deposit</label><input id="calcDeposit" type="number" value="30000" min="0"></div>
-            <div class="field"><label>Balloon / GFV %</label><input id="calcBalloonPct" type="number" step="0.1" value="0" min="0" max="100"></div>
-            <div class="field"><label>Explicit GFV / balloon amount</label><input id="calcGfvAmount" type="number" min="0" placeholder="Optional"></div>
-            <div class="field"><label>Monthly finance fee</label><input id="calcAdminFee" type="number" step="0.01" value="69" min="0"></div>
-            <div class="field"><label>Initiation / upfront finance fees</label><input id="calcInitiationFee" type="number" step="0.01" value="0" min="0"></div>
-            <div class="field"><label>Insurance premium / month</label><input id="calcInsurance" type="number" value="1500" min="0"></div>
-            <div class="field"><label>Insurance excess reserve</label><input id="calcInsuranceExcess" type="number" value="0" min="0"></div>
-            <div class="field"><label>Shortfall / GAP cover / month</label><input id="calcShortfall" type="number" value="0" min="0"></div>
-            <div class="field"><label>Credit protection / month</label><input id="calcCreditProtection" type="number" value="0" min="0"></div>
-            <div class="field"><label>Other insurance / month</label><input id="calcOtherInsurance" type="number" value="0" min="0"></div>
-            <div class="field"><label>Net monthly income</label><input id="calcIncome" type="number" value="35000" min="0"></div>
-            <div class="field"><label>Existing monthly debt</label><input id="calcDebt" type="number" value="3000" min="0"></div>
-            <div class="field"><label>Monthly living costs</label><input id="calcLiving" type="number" value="18000" min="0"></div>
-            <div class="field"><label>Outcome horizon months</label><input id="calcHorizon" type="number" value="60" min="1" max="240"></div>
+            <div class="field"><label>Market/reference value</label><input id="calcMarket" type="number" min="0"></div>
+            <div class="field"><label>Future / exit value</label><input id="calcFutureValue" type="number" min="0" placeholder="Required for economic cost"></div>
+            <div class="field"><label>Trade-in / asset credit</label><input id="calcTradeIn" type="number" value="0" min="0"></div>
+            <div class="field"><label>Outcome horizon (months)</label><input id="calcHorizon" type="number" value="60" min="1" max="240"></div>
           </div>
-          <div class="status-box outcome-boundary"><strong>Important boundary</strong><br>VECTORI's outcome is analytical decision support. It is not a lender approval, insurance quote, regulated financial advice, underwriting decision or guarantee of future asset value.</div>
+
+          <div class="asset-specific-panel" id="autoFields">
+            <div class="asset-specific-head"><strong>Automotive intelligence</strong><span>Running and ownership economics</span></div>
+            <div class="calc-grid">
+              <div class="field"><label>Monthly kilometres</label><input id="calcKm" type="number" value="1500" min="0"></div>
+              <div class="field"><label>Fuel / energy price</label><input id="calcFuel" type="number" step="0.01" value="26.92" min="0"></div>
+              <div class="field"><label>Consumption L/100km</label><input id="calcConsumption" type="number" step="0.1" min="0"></div>
+              <div class="field"><label>Maintenance R/km</label><input id="calcMaintenance" type="number" step="0.01" value="0.80" min="0"></div>
+              <div class="field"><label>Tyre set cost</label><input id="calcTyreCost" type="number" value="5000" min="0"></div>
+              <div class="field"><label>Tyre life km</label><input id="calcTyreLife" type="number" value="50000" min="1"></div>
+              <div class="field"><label>Licence / year</label><input id="calcLicence" type="number" value="1800" min="0"></div>
+              <div class="field"><label>Service plan / month</label><input id="calcServicePlan" type="number" value="0" min="0"></div>
+              <div class="field"><label>Tolls / month</label><input id="calcTolls" type="number" value="0" min="0"></div>
+              <div class="field"><label>Parking / month</label><input id="calcParking" type="number" value="0" min="0"></div>
+              <div class="field"><label>Other vehicle costs / month</label><input id="calcOtherVehicle" type="number" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <div class="asset-specific-panel" id="propertyFields" hidden>
+            <div class="asset-specific-head"><strong>Property intelligence</strong><span>Acquisition, holding and exit economics</span></div>
+            <div class="calc-grid">
+              <div class="field"><label>Transfer costs</label><input id="calcTransferCosts" type="number" value="0" min="0"></div>
+              <div class="field"><label>Bond registration</label><input id="calcBondRegistration" type="number" value="0" min="0"></div>
+              <div class="field"><label>Rates / month</label><input id="calcRates" type="number" value="0" min="0"></div>
+              <div class="field"><label>Levies / month</label><input id="calcLevies" type="number" value="0" min="0"></div>
+              <div class="field"><label>Maintenance / month</label><input id="calcPropertyMaintenance" type="number" value="0" min="0"></div>
+              <div class="field"><label>Utilities / month</label><input id="calcUtilities" type="number" value="0" min="0"></div>
+              <div class="field"><label>Property insurance / month</label><input id="calcPropertyInsurance" type="number" value="0" min="0"></div>
+              <div class="field"><label>Rental income / month</label><input id="calcRentalIncome" type="number" value="0" min="0"></div>
+              <div class="field"><label>Other property costs / month</label><input id="calcOtherProperty" type="number" value="0" min="0"></div>
+              <div class="field"><label>Sale costs at exit</label><input id="calcSaleCosts" type="number" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <div class="asset-specific-panel" id="jewelleryFields" hidden>
+            <div class="asset-specific-head"><strong>Fine jewellery intelligence</strong><span>Value, protection, holding and resale economics</span></div>
+            <div class="calc-grid">
+              <div class="field"><label>Current valuation / reference</label><input id="calcValuation" type="number" min="0"></div>
+              <div class="field"><label>Jewellery insurance / month</label><input id="calcJewelleryInsurance" type="number" value="0" min="0"></div>
+              <div class="field"><label>Storage / month</label><input id="calcStorage" type="number" value="0" min="0"></div>
+              <div class="field"><label>Valuation cost</label><input id="calcValuationCost" type="number" value="0" min="0"></div>
+              <div class="field"><label>Maintenance / month</label><input id="calcJewelleryMaintenance" type="number" value="0" min="0"></div>
+              <div class="field"><label>Other jewellery costs / month</label><input id="calcOtherJewellery" type="number" value="0" min="0"></div>
+              <div class="field"><label>Resale costs at exit</label><input id="calcResaleCosts" type="number" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <div class="shared-finance-panel">
+            <div class="asset-specific-head"><strong>Finance intelligence</strong><span>Enabled only when Finance is selected</span></div>
+            <div class="calc-grid">
+              <div class="field"><label>Finance structure</label><select id="calcFinanceType"><option value="instalment_sale">Instalment sale</option><option value="gfv">Guaranteed Future Value</option><option value="lease_or_rental">Lease / rental-style</option></select></div>
+              <div class="field"><label>Interest / profit rate %</label><input id="calcInterest" type="number" step="0.01" value="12.5" min="0"></div>
+              <div class="field"><label>Finance term months</label><input id="calcTerm" type="number" value="72" min="1" max="120"></div>
+              <div class="field"><label>Deposit</label><input id="calcDeposit" type="number" value="30000" min="0"></div>
+              <div class="field"><label>Balloon / GFV %</label><input id="calcBalloonPct" type="number" step="0.1" value="0" min="0" max="100"></div>
+              <div class="field"><label>Explicit GFV / balloon amount</label><input id="calcGfvAmount" type="number" min="0" placeholder="Optional"></div>
+              <div class="field"><label>Monthly finance fee</label><input id="calcAdminFee" type="number" step="0.01" value="0" min="0"></div>
+              <div class="field"><label>Initiation / upfront fees</label><input id="calcInitiationFee" type="number" step="0.01" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <div class="shared-insurance-panel">
+            <div class="asset-specific-head"><strong>Insurance intelligence</strong><span>Policy-specific figures must come from the authorised provider or user</span></div>
+            <div class="calc-grid">
+              <div class="field"><label>Insurance premium / month</label><input id="calcInsurance" type="number" value="0" min="0"></div>
+              <div class="field"><label>Insurance excess exposure</label><input id="calcInsuranceExcess" type="number" value="0" min="0"></div>
+              <div class="field"><label>Shortfall / GAP / month</label><input id="calcShortfall" type="number" value="0" min="0"></div>
+              <div class="field"><label>Credit protection / month</label><input id="calcCreditProtection" type="number" value="0" min="0"></div>
+              <div class="field"><label>Other insurance / month</label><input id="calcOtherInsurance" type="number" value="0" min="0"></div>
+            </div>
+          </div>
+
+          <div class="customer-cash-panel">
+            <div class="asset-specific-head"><strong>Customer cash-flow context</strong><span>Not a lender affordability decision</span></div>
+            <div class="calc-grid">
+              <div class="field"><label>Net monthly income</label><input id="calcIncome" type="number" value="35000" min="0"></div>
+              <div class="field"><label>Existing monthly debt</label><input id="calcDebt" type="number" value="3000" min="0"></div>
+              <div class="field"><label>Monthly living costs</label><input id="calcLiving" type="number" value="18000" min="0"></div>
+            </div>
+          </div>
+
+          <div class="status-box outcome-boundary"><strong>Regulatory boundary</strong><br>VECTORI provides analytical decision support. It does not itself approve credit, underwrite insurance, perform a regulated property or jewellery dealing function, or guarantee a future asset value.</div>
           <div class="filter-actions"><button class="btn btn-primary" onclick="runCalculator()">Run real-world outcome</button><button class="btn btn-secondary" onclick="printReport()">Print outcome report</button></div>
         </div>
 
         <div class="panel outcome-result-panel">
-          <div id="calcOutputs" class="calc-output"><div class="empty-state">Select a vehicle, choose the relevant modules and run the outcome.</div></div>
-          <div id="decisionPanel"><div class="empty-state">The outcome engine will show cash exposure, economic cost, equity, affordability signals, scenarios and evidence completeness.</div></div>
+          <div id="calcOutputs" class="calc-output"><div class="empty-state">Choose an asset market and listing, select Finance and/or Insurance if relevant, then run the outcome.</div></div>
+          <div id="decisionPanel"><div class="empty-state">The common outcome engine will show cash exposure, economic cost, retained equity, scenario views and evidence completeness.</div></div>
         </div>
       </div>
 
       <div class="outcome-principles">
-        <div class="principle"><strong>Cash cost</strong><span>What leaves the customer's pocket over the selected horizon.</span></div>
-        <div class="principle"><strong>Economic cost</strong><span>Cash outflow adjusted for retained asset equity where an exit value is supplied.</span></div>
-        <div class="principle"><strong>Scenario range</strong><span>Base, stress and downside assumptions are shown separately; no invented probabilities.</span></div>
-        <div class="principle"><strong>Evidence lineage</strong><span>Observed, user-provided, calculated, assumed and missing inputs remain distinguishable.</span></div>
+        <div class="principle"><strong>One core</strong><span>Automotive, Property and Fine Jewellery use the same outcome contract with asset-specific adapters.</span></div>
+        <div class="principle"><strong>Finance and/or insurance</strong><span>Modules can be selected independently where the product is applicable and authorised.</span></div>
+        <div class="principle"><strong>Real-world figure</strong><span>Cash outflow and economic cost are separated so the customer can see both liquidity and retained value.</span></div>
+        <div class="principle"><strong>Evidence lineage</strong><span>Observed, supplied, calculated, assumed and missing inputs remain distinguishable.</span></div>
       </div>
     </section>
 
@@ -831,8 +791,8 @@
 
 
 <script src="outcome-engine.js" defer></script>
-<script src="listing-utils.js" defer></script>
-<script src="asset-engine.js" defer></script>
+  <script src="asset-engine.js" defer></script>
+  <script src="listing-utils.js" defer></script>
 <script src="app.js" defer></script>
 <div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.4</div>
 </body>
