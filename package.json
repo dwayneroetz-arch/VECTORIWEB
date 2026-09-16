@@ -1,1 +1,8 @@
-{"name":"vectori-global-standard-demo","version":"1.3.0","private":true,"scripts":{"test":"node tests/test_vectori.js"}}
+{
+  "name": "vectori-intelligence-platform",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests/test_outcome_engine.js"
+  }
+}

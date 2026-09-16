@@ -1,0 +1,123 @@
+{
+  "version": "2026-09-16",
+  "jurisdiction": "South Africa",
+  "status": "research taxonomy; policy terms and premiums must be sourced from authorised providers before customer use",
+  "categories": [
+    {
+      "id": "comprehensive",
+      "name": "Comprehensive motor insurance",
+      "features": [
+        "accidental damage",
+        "theft/hijacking",
+        "third-party liability",
+        "vehicle-specific policy terms and excess"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/vehicle/car",
+        "https://www.absa.co.za/personal/insure/my-car-and-home/explore/",
+        "https://www.standardbank.co.za/southafrica/personal/products-and-services/insure-what-matters/your-car"
+      ]
+    },
+    {
+      "id": "limited",
+      "name": "Limited / third-party cover",
+      "features": [
+        "provider-specific limited cover",
+        "third-party liability where applicable"
+      ],
+      "sources": [
+        "https://www.standardbank.co.za/southafrica/personal/about-us/financial-education/insurance/car-and-home-insurance"
+      ]
+    },
+    {
+      "id": "shortfall",
+      "name": "Credit shortfall / GAP-style cover",
+      "features": [
+        "difference between insurance payout and finance settlement, subject to policy terms"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/myself",
+        "https://www.absa.co.za/personal/insure/my-car-and-home/explore/extended-cover/",
+        "https://www.standardbank.co.za/southafrica/personal/products-and-services/insure-what-matters/your-car"
+      ]
+    },
+    {
+      "id": "return_to_invoice",
+      "name": "Return-to-invoice / deposit protection",
+      "features": [
+        "provider-specific protection against depreciation or deposit shortfall"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/myself",
+        "https://www.absa.co.za/personal/insure/my-car-and-home/explore/extended-cover/"
+      ]
+    },
+    {
+      "id": "credit_protection",
+      "name": "Credit / debt protection",
+      "features": [
+        "death, disability, retrenchment or other events depending on product"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/myself",
+        "https://www.absa.co.za/personal/loans/for-a-car/compare/",
+        "https://www.fnb.co.za/vehicle-finance/private-finance.html"
+      ]
+    },
+    {
+      "id": "warranty",
+      "name": "Mechanical breakdown / warranty",
+      "features": [
+        "specified repair/parts/labour cover subject to terms"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/vehicle/car",
+        "https://www.standardbank.co.za/southafrica/personal/products-and-services/insure-what-matters/your-car",
+        "https://www.absa.co.za/personal/insure/value-added-insurance-products/explore/"
+      ]
+    },
+    {
+      "id": "service_plan",
+      "name": "Service / maintenance plan",
+      "features": [
+        "scheduled servicing and/or parts/labour subject to plan"
+      ],
+      "sources": [
+        "https://www.standardbank.co.za/southafrica/personal/products-and-services/insure-what-matters/your-car"
+      ]
+    },
+    {
+      "id": "tyre_rim",
+      "name": "Tyre and rim cover",
+      "features": [
+        "accidental tyre/rim damage subject to policy terms"
+      ],
+      "sources": [
+        "https://www.standardbank.co.za/southafrica/personal/products-and-services/insure-what-matters/your-car"
+      ]
+    },
+    {
+      "id": "scratch_dent",
+      "name": "Scratch / dent cover",
+      "features": [
+        "minor cosmetic damage subject to limits and exclusions"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/vehicle/car",
+        "https://www.absa.co.za/personal/insure/my-car-and-home/value-added-product/"
+      ]
+    },
+    {
+      "id": "assistance",
+      "name": "Roadside / assistance / courtesy vehicle",
+      "features": [
+        "assistance or replacement mobility subject to product terms"
+      ],
+      "sources": [
+        "https://www.wesbank.co.za/home/insurance/cover/vehicle/car",
+        "https://www.absa.co.za/personal/insure/my-car-and-home/value-added-product/"
+      ]
+    }
+  ],
+  "rule": "Taxonomy is based on publicly documented South African provider products. It is not an exhaustive market census. No policy should be compared or quoted without current authorised provider data, policy wording, premium, excess, limits and exclusions."
+}

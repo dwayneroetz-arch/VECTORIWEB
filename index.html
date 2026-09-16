@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070b12">
   <meta name="description" content="VECTORI vehicle purchase intelligence — search, compare and model vehicle ownership costs.">
-  <title>VECTORI — Vehicle Purchase Intelligence</title>
+  <title>VECTORI — Vehicle Purchase Outcome</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
     <div class="nav-links" id="primaryNav">
       <a href="#find">01 Find</a>
       <a href="#compare">02 Compare</a>
-      <a href="#intelligence">03 Intelligence</a>
+      <a href="#intelligence">03 Outcome</a>
       <a href="#checks">04 Purchase Readiness</a>
       <a href="#dealer">05 Dealer Portal</a>
     </div>
@@ -53,7 +53,7 @@
 
         <div>
 
-          <div class="eyebrow">Vehicle Purchase Intelligence</div>
+          <div class="eyebrow">Vehicle Purchase Outcome</div>
 
           <h1>
             Find the better vehicle,
@@ -127,6 +127,10 @@
          SECTION 01 — FIND
     ========================= -->
 
+    <div class="platform-strip container" aria-label="VECTORI intelligence markets">
+      <span>Automotive intelligence</span><i></i><span>Insurance intelligence</span><i></i><span>Finance intelligence</span><i></i><strong>One real-world outcome engine</strong>
+    </div>
+
     <div class="mobile-ad-band" aria-label="Advertisement">
       <div class="ad-slot" data-format="Mobile Banner"></div>
     </div>
@@ -139,7 +143,7 @@
           <div class="eyebrow">01 — Find</div>
           <h2>Search the right vehicle.</h2>
           <p class="muted">
-            Search participating dealer inventory using practical buying criteria.
+            Automotive intelligence today. Insurance and finance intelligence next. One outcome engine across the decision.
           </p>
         </div>
 
@@ -288,224 +292,79 @@
     </div>
 
     <!-- =========================
-         SECTION 03 — INTELLIGENCE
+         SECTION 03 — VECTORI OUTCOME
     ========================= -->
-
     <section class="section" id="intelligence">
-
       <div class="section-head">
-
         <div>
-          <div class="eyebrow">03 — Intelligence</div>
-          <h2>Understand the purchase.</h2>
-          <p class="muted">
-            Move beyond asking price into market position, ownership burden,
-            affordability and stress testing.
-          </p>
+          <div class="eyebrow">03 — VECTORI Outcome</div>
+          <h2>Model what the decision actually costs.</h2>
+          <p class="muted">Automotive, insurance and finance feed one evidence-led outcome engine. Run one vertical or combine all three.</p>
         </div>
-
       </div>
 
+      <div class="outcome-module-picker" role="group" aria-label="Outcome modules">
+        <label class="module-chip"><input type="checkbox" id="moduleAuto" checked> <span>Automotive</span></label>
+        <label class="module-chip"><input type="checkbox" id="moduleInsurance" checked> <span>Insurance</span></label>
+        <label class="module-chip"><input type="checkbox" id="moduleFinance" checked> <span>Finance</span></label>
+      </div>
 
-      <div class="intelligence-grid">
-
-        <!-- CALCULATOR -->
-
+      <div class="intelligence-grid outcome-grid">
         <div class="panel">
-
-          <h3>True ownership cost</h3>
-
-          <p class="small muted">
-            Finance and ownership figures are modelled estimates, not lender,
-            insurer or service-provider quotations.
-          </p>
-
-
+          <h3>Customer & asset profile</h3>
+          <p class="small muted">Every value is either supplied, calculated or explicitly assumed. Missing evidence is not silently filled.</p>
           <div class="calc-grid">
-
-            <div class="field">
-              <label>Vehicle</label>
-              <select id="calcVehicle" onchange="loadCalculatorVehicle()">
-                <option value="">Select vehicle</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>Asking price</label>
-              <input id="calcPrice" type="number">
-            </div>
-
-            <div class="field">
-              <label>Market benchmark</label>
-              <input id="calcMarket" type="number">
-            </div>
-
-            <div class="field">
-              <label>Consumption L/100km</label>
-              <input id="calcConsumption" type="number" step="0.1">
-            </div>
-
-            <div class="field">
-              <label>Monthly kilometres</label>
-              <input id="calcKm" type="number" value="1500">
-            </div>
-
-            <div class="field">
-              <label>Fuel price R/L</label>
-              <input id="calcFuel" type="number" step="0.01" value="26.92">
-            </div>
-
-            <div class="field">
-              <label>Deposit</label>
-              <input id="calcDeposit" type="number" value="30000">
-            </div>
-
-            <div class="field">
-              <label>Interest rate %</label>
-              <input id="calcInterest" type="number" step="0.01" value="12.5">
-            </div>
-
-            <div class="field">
-              <label>Finance term months</label>
-              <input id="calcTerm" type="number" value="72" min="1" max="120">
-            </div>
-
-            <div class="field">
-              <label>Balloon / residual %</label>
-              <input id="calcBalloonPct" type="number" step="0.1" value="0" min="0" max="60">
-            </div>
-
-            <div class="field">
-              <label>Monthly admin fee</label>
-              <input id="calcAdminFee" type="number" step="0.01" value="69" min="0">
-            </div>
-
-            <div class="field">
-              <label>Finance initiation fee</label>
-              <input id="calcInitiationFee" type="number" step="0.01" value="0" min="0">
-            </div>
-
-            <div class="field">
-              <label>Insurance / month</label>
-              <input id="calcInsurance" type="number" value="1200">
-            </div>
-
-            <div class="field">
-              <label>Maintenance R/km</label>
-              <input id="calcMaintenance" type="number" step="0.01" value="0.80">
-            </div>
-
-            <div class="field">
-              <label>Licence / year</label>
-              <input id="calcLicence" type="number" value="1800">
-            </div>
-
-            <div class="field">
-              <label>Tyre set cost</label>
-              <input id="calcTyreCost" type="number" value="5000">
-            </div>
-
-            <div class="field">
-              <label>Tyre life km</label>
-              <input id="calcTyreLife" type="number" value="50000">
-            </div>
-
-            <div class="field">
-              <label>Future value</label>
-              <input
-                id="calcFutureValue"
-                type="number"
-                placeholder="Optional"
-              >
-            </div>
-
-            <div class="field">
-              <label>Ownership horizon months</label>
-              <input id="calcHorizon" type="number" value="60">
-            </div>
-
-            <div class="field">
-              <label>Gross monthly income</label>
-              <input id="calcIncome" type="number" value="35000">
-            </div>
-
-            <div class="field">
-              <label>Other monthly debt</label>
-              <input id="calcDebt" type="number" value="3000">
-            </div>
-
-            <div class="field">
-              <label>Monthly living costs</label>
-              <input id="calcLiving" type="number" value="18000" min="0">
-            </div>
-
-            <div class="field">
-              <label>Other monthly vehicle costs</label>
-              <input id="calcOtherVehicle" type="number" value="0" min="0" step="0.01">
-            </div>
-
-            <div class="field">
-              <label>Trade-in value</label>
-              <input id="calcTradeIn" type="number" value="0" min="0">
-            </div>
-
+            <div class="field"><label>Vehicle</label><select id="calcVehicle" onchange="loadCalculatorVehicle()"><option value="">Select vehicle</option></select></div>
+            <div class="field"><label>Asking price</label><input id="calcPrice" type="number" min="0"></div>
+            <div class="field"><label>Market benchmark</label><input id="calcMarket" type="number" min="0"></div>
+            <div class="field"><label>Future / exit asset value</label><input id="calcFutureValue" type="number" min="0" placeholder="Required for economic cost"></div>
+            <div class="field"><label>Monthly kilometres</label><input id="calcKm" type="number" value="1500" min="0"></div>
+            <div class="field"><label>Fuel / energy price</label><input id="calcFuel" type="number" step="0.01" value="26.92" min="0"></div>
+            <div class="field"><label>Consumption L/100km</label><input id="calcConsumption" type="number" step="0.1" min="0"></div>
+            <div class="field"><label>Maintenance R/km</label><input id="calcMaintenance" type="number" step="0.01" value="0.80" min="0"></div>
+            <div class="field"><label>Tyre set cost</label><input id="calcTyreCost" type="number" value="5000" min="0"></div>
+            <div class="field"><label>Tyre life km</label><input id="calcTyreLife" type="number" value="50000" min="1"></div>
+            <div class="field"><label>Licence / year</label><input id="calcLicence" type="number" value="1800" min="0"></div>
+            <div class="field"><label>Service plan / month</label><input id="calcServicePlan" type="number" value="0" min="0"></div>
+            <div class="field"><label>Tolls / month</label><input id="calcTolls" type="number" value="0" min="0"></div>
+            <div class="field"><label>Parking / month</label><input id="calcParking" type="number" value="0" min="0"></div>
+            <div class="field"><label>Other vehicle costs / month</label><input id="calcOtherVehicle" type="number" value="0" min="0"></div>
+            <div class="field"><label>Trade-in value</label><input id="calcTradeIn" type="number" value="0" min="0"></div>
+            <div class="field"><label>Finance structure</label><select id="calcFinanceType"><option value="instalment_sale">Instalment sale</option><option value="gfv">Guaranteed Future Value</option><option value="lease_or_rental">Lease / rental-style</option></select></div>
+            <div class="field"><label>Interest / profit rate %</label><input id="calcInterest" type="number" step="0.01" value="12.5" min="0"></div>
+            <div class="field"><label>Finance term months</label><input id="calcTerm" type="number" value="72" min="1" max="120"></div>
+            <div class="field"><label>Deposit</label><input id="calcDeposit" type="number" value="30000" min="0"></div>
+            <div class="field"><label>Balloon / GFV %</label><input id="calcBalloonPct" type="number" step="0.1" value="0" min="0" max="100"></div>
+            <div class="field"><label>Explicit GFV / balloon amount</label><input id="calcGfvAmount" type="number" min="0" placeholder="Optional"></div>
+            <div class="field"><label>Monthly finance fee</label><input id="calcAdminFee" type="number" step="0.01" value="69" min="0"></div>
+            <div class="field"><label>Initiation / upfront finance fees</label><input id="calcInitiationFee" type="number" step="0.01" value="0" min="0"></div>
+            <div class="field"><label>Insurance premium / month</label><input id="calcInsurance" type="number" value="1500" min="0"></div>
+            <div class="field"><label>Insurance excess reserve</label><input id="calcInsuranceExcess" type="number" value="0" min="0"></div>
+            <div class="field"><label>Shortfall / GAP cover / month</label><input id="calcShortfall" type="number" value="0" min="0"></div>
+            <div class="field"><label>Credit protection / month</label><input id="calcCreditProtection" type="number" value="0" min="0"></div>
+            <div class="field"><label>Other insurance / month</label><input id="calcOtherInsurance" type="number" value="0" min="0"></div>
+            <div class="field"><label>Net monthly income</label><input id="calcIncome" type="number" value="35000" min="0"></div>
+            <div class="field"><label>Existing monthly debt</label><input id="calcDebt" type="number" value="3000" min="0"></div>
+            <div class="field"><label>Monthly living costs</label><input id="calcLiving" type="number" value="18000" min="0"></div>
+            <div class="field"><label>Outcome horizon months</label><input id="calcHorizon" type="number" value="60" min="1" max="240"></div>
           </div>
-
-
-          <div class="status-box" style="margin-top:18px">
-            <strong style="color:#dce7f2">SA finance model</strong><br><br>
-            Balloon payments, initiation fees and monthly administration fees are modelled separately. A balloon reduces the instalment but remains a lump-sum obligation at term end. Actual lender pricing and fees must be confirmed by the finance provider.
-          </div>
-
-          <div class="filter-actions">
-
-            <button class="btn btn-primary" onclick="runCalculator()">
-              Analyse purchase
-            </button>
-
-            <button class="btn btn-secondary" onclick="printReport()">
-              Print report
-            </button>
-
-          </div>
-
-
-          <div id="calcOutputs" class="calc-output">
-
-            <div class="empty-state">
-              Select a vehicle and run the analysis.
-            </div>
-
-          </div>
-
+          <div class="status-box outcome-boundary"><strong>Important boundary</strong><br>VECTORI's outcome is analytical decision support. It is not a lender approval, insurance quote, regulated financial advice, underwriting decision or guarantee of future asset value.</div>
+          <div class="filter-actions"><button class="btn btn-primary" onclick="runCalculator()">Run real-world outcome</button><button class="btn btn-secondary" onclick="printReport()">Print outcome report</button></div>
         </div>
 
-
-        <!-- DECISION INTELLIGENCE -->
-
-        <div class="panel">
-
-          <h3>Decision intelligence</h3>
-
-          <p class="small muted">
-            VECTORI separates observed source facts, calculated values,
-            assumptions and insufficient evidence.
-          </p>
-
-          <div id="decisionPanel">
-
-            <div class="empty-state">
-              Run an analysis to generate a decision signal.
-            </div>
-
-          </div>
-
+        <div class="panel outcome-result-panel">
+          <div id="calcOutputs" class="calc-output"><div class="empty-state">Select a vehicle, choose the relevant modules and run the outcome.</div></div>
+          <div id="decisionPanel"><div class="empty-state">The outcome engine will show cash exposure, economic cost, equity, affordability signals, scenarios and evidence completeness.</div></div>
         </div>
-
       </div>
 
+      <div class="outcome-principles">
+        <div class="principle"><strong>Cash cost</strong><span>What leaves the customer's pocket over the selected horizon.</span></div>
+        <div class="principle"><strong>Economic cost</strong><span>Cash outflow adjusted for retained asset equity where an exit value is supplied.</span></div>
+        <div class="principle"><strong>Scenario range</strong><span>Base, stress and downside assumptions are shown separately; no invented probabilities.</span></div>
+        <div class="principle"><strong>Evidence lineage</strong><span>Observed, user-provided, calculated, assumed and missing inputs remain distinguishable.</span></div>
+      </div>
     </section>
-
 
     <!-- =========================
          SECTION 04 — PURCHASE READINESS
@@ -790,7 +649,7 @@
   <aside class="master-sidebar" aria-label="Advertising">
     <div class="ad-heading">Sponsored partners</div>
     <div class="ad-slot" data-format="Medium Rectangle"></div>
-    <div class="ad-slot ad-slot-compact" data-format="Half Page" style="position:sticky;top:92px;"></div>
+    <div class="ad-slot" data-format="Half Page" style="position:sticky;top:92px;"></div>
   </aside>
 
 </div> <!-- End Master Layout -->
@@ -820,7 +679,7 @@
         </strong>
 
         <div>
-          Vehicle Purchase Intelligence
+          Vehicle Purchase Outcome
         </div>
       </div>
 
@@ -970,6 +829,7 @@
 
 
 
+<script src="outcome-engine.js" defer></script>
 <script src="app.js" defer></script>
 <div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.4</div>
 </body>

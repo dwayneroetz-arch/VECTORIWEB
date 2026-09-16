@@ -1,62 +1,30 @@
-# VECTORI — Global Standard Demo v1.3
+# VECTORI Intelligence Platform v2.0
 
-**Find the better vehicle, not just the cheaper one.**
+VECTORI is structured as a monetizable premium intelligence platform with automotive, insurance and finance modules feeding one real-world outcome engine.
 
-Static deployment package for GitHub Pages and Cloudflare Pages.
+## What is implemented
+- Shared deterministic outcome engine (`outcome-engine.js`).
+- Automotive operating-cost model.
+- Finance structures: instalment sale, balloon, GFV, lease/rental-style and provider-specific structures represented as inputs.
+- Insurance cost/exposure inputs and a researched insurance-product taxonomy.
+- Combined or separate module selection.
+- Cash-outflow, economic-cost, net-equity and cash-flow outputs.
+- Stress and downside scenario views.
+- Evidence completeness and missing-data controls.
+- Finance-product research taxonomy and source register.
+- South Africa compliance-readiness matrix.
+- Mobile/web responsive presentation layer.
+- Regression tests for the core mathematical engine.
 
-## Files
-- `index.html` — main demo
-- `styles.css` — presentation
-- `app.js` — application logic
-- `data/inventory.json` — 153 development/demo records
-- `docs/` — architecture/research notes
-- `tests/test_vectori.js` — regression/property tests
-- `.nojekyll` — GitHub Pages helper
-- `_headers` — basic static security headers
-- `cloudflare-pages.toml` — deployment notes
+## Accuracy boundary
+Deterministic arithmetic is regression-tested. Real-world outcomes cannot be certified as 100% accurate because future asset values, insurance pricing, provider terms, customer circumstances and market conditions are not fully deterministic. VECTORI therefore exposes assumptions and missing evidence instead of fabricating certainty.
 
-## Inventory
-The browser loads `./data/inventory.json`. The app validates the JSON at startup and fails closed if it is missing, empty, contains duplicate/missing IDs, or invalid price/mileage values.
-
-The 150 imported records are **development/demo data derived from the supplied CSV**. Source listing URLs and listing IDs are retained for provenance. Missing fields remain missing; no dealer, location, consumption, ownership, service-history, warranty or market benchmark is fabricated.
-
-Three earlier VECTORI development examples are retained. These records must **not** be presented as authorised live AutoTrader inventory. Live inventory requires appropriate dealer/licensing/authorisation arrangements and permitted image/data rights.
-
-## GitHub Pages
-1. Create a GitHub repository.
-2. Upload the **contents of this folder** to the repository root.
-3. Commit `index.html` and `data/inventory.json`.
-4. GitHub: **Settings → Pages → Deploy from a branch → main → / (root)**.
-5. Save and wait for deployment.
-
-No Node build is required.
-
-## Cloudflare Pages
-1. Push this folder to GitHub.
-2. Create a Cloudflare Pages project and connect the GitHub repository.
-3. Production branch: `main`.
-4. Build command: `exit 0`.
-5. Build output directory: `/`.
-6. Deploy.
+## Production requirements
+Before regulated commercial operation, use authorised provider feeds, dated product terms, legal/compliance review, secure backend storage, audit logs, POPIA controls, consent/privacy flows and human/provider review for regulated decisions.
 
 ## Local test
-Because `fetch()` can be blocked from `file://`, serve the folder over HTTP:
-
-```bash
-python -m http.server 8080
-```
-
-Open `http://localhost:8080/`.
-
-With Node.js:
-
 ```bash
 npm test
+python -m http.server 8080
 ```
-
-## Production architecture
-Do not use GitHub or public JSON as the production inventory database. Intended path:
-
-`Authorised Dealer → API/feed/CSV → VECTORI ingestion → validation → provenance/freshness → database → frontend`
-
-Never put dealer/API secrets in `app.js`, `inventory.json`, GitHub, or browser-visible code.
+Then open `http://localhost:8080/`.
