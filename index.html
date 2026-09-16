@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070b12">
-  <meta name="description" content="VECTORI vehicle purchase intelligence — search, compare and model vehicle ownership costs.">
-  <title>VECTORI — Vehicle Purchase Outcome</title>
+  <meta name="description" content="VECTORI Asset Intelligence — a multi-vertical marketplace and outcome engine for automotive, property and fine jewellery, with finance and insurance intelligence.">
+  <title>VECTORI — Asset Intelligence Platform</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
     <div class="nav-links" id="primaryNav">
       <a href="#find">01 Find</a>
       <a href="#compare">02 Compare</a>
-      <a href="#intelligence">03 Outcome</a>
+      <a href="#intelligence">03 Intelligence</a>
       <a href="#checks">04 Purchase Readiness</a>
       <a href="#dealer">05 Dealer Portal</a>
     </div>
@@ -53,17 +53,17 @@
 
         <div>
 
-          <div class="eyebrow">Vehicle Purchase Outcome</div>
+          <div class="eyebrow">VECTORI Asset Intelligence</div>
 
           <h1>
-            Find the better vehicle,
-            <span style="color:var(--accent2)">not just the cheaper one.</span>
+            Understand the asset,
+            <span style="color:var(--accent2)">then model the real-world outcome.</span>
           </h1>
 
           <p class="lead">
-            VECTORI brings authorised dealer inventory, market evidence,
-            ownership cost, affordability and purchase intelligence into
-            one decision workspace.
+            VECTORI brings authorised marketplace inventory, asset evidence,
+            finance and insurance intelligence into one shared outcome
+            architecture across automotive, property and fine jewellery.
           </p>
 
           <div class="cta-row">
@@ -92,12 +92,12 @@
 
             <div class="metric">
               <strong>6</strong>
-              <span>vehicles compared</span>
+              <span>listings per result page</span>
             </div>
 
             <div class="metric">
-              <strong>360°</strong>
-              <span>purchase view</span>
+              <strong>3</strong>
+              <span>asset intelligence verticals</span>
             </div>
 
             <div class="metric">
@@ -128,7 +128,7 @@
     ========================= -->
 
     <div class="platform-strip container" aria-label="VECTORI intelligence markets">
-      <span>Automotive intelligence</span><i></i><span>Insurance intelligence</span><i></i><span>Finance intelligence</span><i></i><strong>One real-world outcome engine</strong>
+      <span>Automotive</span><i></i><span>Property</span><i></i><span>Fine Jewellery</span><i></i><strong>One shared outcome engine</strong>
     </div>
 
     <div class="mobile-ad-band" aria-label="Advertisement">
@@ -141,9 +141,9 @@
 
         <div>
           <div class="eyebrow">01 — Find</div>
-          <h2>Search the right vehicle.</h2>
+          <h2>Find the right asset and the right evidence.</h2>
           <p class="muted">
-            Automotive intelligence today. Insurance and finance intelligence next. One outcome engine across the decision.
+            One marketplace architecture. Asset-specific intelligence. Shared finance, insurance and outcome logic.
           </p>
         </div>
 
@@ -155,7 +155,17 @@
         <div class="filter-grid">
 
           <div class="field">
-            <label>Make</label>
+            <label>Asset market</label>
+            <select id="filterAssetType">
+              <option value="">All asset markets</option>
+              <option value="automotive">Automotive</option>
+              <option value="property">Property</option>
+              <option value="fine_jewellery">Fine Jewellery</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Make / Brand</label>
             <select id="filterMake">
               <option value="">All makes</option>
             </select>
@@ -244,8 +254,8 @@
           Loading vehicles...
         </div>
 
-        <div class="small muted">
-          Development/demo vehicles • source-derived data • not live stock
+        <div class="small muted" id="dealerMixSummary">
+          Development/demo listings • source-derived data • not live stock
         </div>
       </div>
 
@@ -643,15 +653,6 @@
 
   </main>
   
-  <!-- =========================
-       ADVERTISING SIDEBAR 
-  ========================= -->
-  <aside class="master-sidebar" aria-label="Advertising">
-    <div class="ad-heading">Sponsored partners</div>
-    <div class="ad-slot" data-format="Medium Rectangle"></div>
-    <div class="ad-slot" data-format="Half Page" style="position:sticky;top:92px;"></div>
-  </aside>
-
 </div> <!-- End Master Layout -->
 
 <!-- =========================
@@ -830,6 +831,8 @@
 
 
 <script src="outcome-engine.js" defer></script>
+<script src="listing-utils.js" defer></script>
+<script src="asset-engine.js" defer></script>
 <script src="app.js" defer></script>
 <div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.4</div>
 </body>

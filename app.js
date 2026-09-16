@@ -84,7 +84,13 @@ function pct(value){
 ============================================================ */
 
 function vehicleSvg(vehicle){
-  const label = `${vehicle.make} ${vehicle.model}`;
+  const assetType=String(vehicle.assetType||'automotive').toLowerCase();
+  const label = `${vehicle.make || vehicle.brand || ''} ${vehicle.model || vehicle.propertyType || vehicle.itemType || ''}`.trim();
+  if(assetType !== 'automotive'){
+    const heading=assetType==='property'?'VECTORI PROPERTY INTELLIGENCE':'VECTORI FINE JEWELLERY INTELLIGENCE';
+    const sub=assetType==='property'?'AUTHORISED PROPERTY LISTING':'AUTHORISED JEWELLERY LISTING';
+    return `<svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeHtml(label)} VECTORI asset image"><defs><linearGradient id="asset-${escapeHtml(vehicle.id)}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10202f"/><stop offset="100%" stop-color="#071018"/></linearGradient></defs><rect width="620" height="280" fill="url(#asset-${escapeHtml(vehicle.id)})"/><circle cx="310" cy="138" r="76" fill="none" stroke="#6bd8ff" stroke-width="2" opacity=".45"/><circle cx="310" cy="138" r="48" fill="none" stroke="#6bd8ff" stroke-width="2" opacity=".28"/><text x="310" y="44" text-anchor="middle" fill="#8ddfff" font-size="13" font-family="Arial" letter-spacing="2">${heading}</text><text x="310" y="145" text-anchor="middle" fill="#d9e8f4" font-size="24" font-family="Arial" font-weight="700">${escapeHtml(label)}</text><text x="310" y="185" text-anchor="middle" fill="#71879b" font-size="11" font-family="Arial" letter-spacing="1.5">${sub}</text></svg>`;
+  }
   const seed = vehicle.imageSeed || (vehicle.model ? vehicle.model.toLowerCase() : "swift");
 
   const shapes = {
@@ -332,85 +338,43 @@ function goToPage(page) {
 }
 
 function vehicleCard(v){
-  const position = marketPosition(v);
-  const selected = comparison.includes(v.id);
-
+  const position=marketPosition(v);
+  const selected=comparison.includes(v.id);
+  const assetType=v.assetType||'automotive';
+  const assetLabel=assetType==='fine_jewellery'?'Fine Jewellery':assetType==='property'?'Property':'Automotive';
+  const isAuto=assetType==='automotive';
   return `
     <article class="vehicle-card">
-      <div class="vehicle-image">
-        ${vehicleSvg(v)}
-      </div>
-
+      <div class="vehicle-image">${vehicleSvg(v)}</div>
       <div class="vehicle-info">
         <div class="vehicle-top">
           <div>
-            <div class="vehicle-title">
-              ${escapeHtml(v.make)} ${escapeHtml(v.model)}
-            </div>
-            <div class="vehicle-variant">
-              ${escapeHtml(v.variant)}
-            </div>
+            <div class="vehicle-title">${escapeHtml(v.make||v.brand||'')} ${escapeHtml(v.model||'')}</div>
+            <div class="vehicle-variant">${escapeHtml(v.variant||v.propertyType||v.itemType||'')}</div>
           </div>
         </div>
-
         <div class="vehicle-meta">
-          <span class="tag">${escapeHtml(yearLabel(v))}</span>
-          <span class="tag">${Number.isFinite(v.mileage) ? `${number(v.mileage)} km` : "Mileage not supplied"}</span>
-          <span class="tag">${escapeHtml(displayValue(v.fuel))}</span>
-          <span class="tag">${escapeHtml(displayValue(v.transmission))}</span>
-          <span class="tag">${Number.isFinite(v.consumption) ? `${v.consumption} L/100km` : "Consumption not supplied"}</span>
+          <span class="asset-badge">${assetLabel}</span>
+          ${isAuto?`<span class="tag">${escapeHtml(yearLabel(v))}</span><span class="tag">${Number.isFinite(v.mileage)?`${number(v.mileage)} km`:'Mileage not supplied'}</span><span class="tag">${escapeHtml(displayValue(v.fuel))}</span>`:''}
         </div>
-
-        <div class="vehicle-description">
-          ${escapeHtml(v.description || "")}
-        </div>
-
+        <div class="vehicle-dealer-badge">${escapeHtml(displayValue(v.dealer,'Dealer / agent not supplied'))}</div>
+        <div class="vehicle-description">${escapeHtml(v.description||'')}</div>
         <div class="vehicle-data">
-          <div class="data-box"><span>Dealer</span><strong>${escapeHtml(displayValue(v.dealer))}</strong></div>
-          <div class="data-box"><span>Province / location</span><strong>${escapeHtml(displayValue(v.province, displayValue(v.location)))}</strong></div>
-          <div class="data-box"><span>Listing ID</span><strong>${escapeHtml(displayValue(v.listingId, v.id))}</strong></div>
-          <div class="data-box"><span>Ownership / history</span><strong>${escapeHtml(v.owners !== null ? `${v.owners} previous owner(s)` : "Not supplied")}</strong></div>
-          <div class="data-box"><span>Service / warranty</span><strong>${escapeHtml([v.serviceHistory, v.warranty].filter(Boolean).join(" • ") || "Not supplied")}</strong></div>
-          <div class="data-box"><span>Evidence status</span><strong>${escapeHtml(v.evidence || "Standard")}</strong></div>
+          <div class="data-box"><span>Dealer / agent</span><strong>${escapeHtml(displayValue(v.dealer))}</strong></div>
+          <div class="data-box"><span>Location</span><strong>${escapeHtml(displayValue(v.province,displayValue(v.location)))}</strong></div>
+          <div class="data-box"><span>Listing ID</span><strong>${escapeHtml(displayValue(v.listingId,v.id))}</strong></div>
+          <div class="data-box"><span>Evidence status</span><strong>${escapeHtml(v.evidence||'Missing')}</strong></div>
         </div>
-
-        <div class="small muted" style="margin-top:10px">
-          Source: ${escapeHtml(displayValue(v.source, "VECTORI Database"))}
-          ${v.sourceUrl ? ` • <a href="${escapeHtml(v.sourceUrl)}" target="_blank" rel="noopener noreferrer">View source listing</a>` : ""}
-        </div>
+        <div class="small muted" style="margin-top:10px">Source: ${escapeHtml(displayValue(v.source,'VECTORI Database'))}${v.sourceUrl?` • <a href="${escapeHtml(v.sourceUrl)}" target="_blank" rel="noopener noreferrer">View source listing</a>`:''}</div>
       </div>
-
       <div class="vehicle-side">
+        <div><div class="price">${money(v.price)}</div><div class="market ${position.className}">${position.label}</div></div>
         <div>
-          <div class="price">
-            ${money(v.price)}
-          </div>
-          <div class="market ${position.className}">
-            ${position.label}
-          </div>
-        </div>
-
-        <div>
-          <button
-            class="btn btn-compare ${selected ? "is-selected" : ""}"
-            type="button"
-            aria-pressed="${selected ? "true" : "false"}"
-            onclick="toggleComparison('${escapeHtml(v.id)}', ${selected ? "false" : "true"})"
-          >
-            ${selected ? "✓ Compared" : "＋ Add to Compare"}
-          </button>
-
-          <button
-            class="btn btn-secondary"
-            style="margin-top:8px;width:100%"
-            onclick="analyseVehicle('${escapeHtml(v.id)}')"
-          >
-            Analyse
-          </button>
+          <button class="btn btn-compare ${selected?'is-selected':''}" type="button" aria-pressed="${selected?'true':'false'}" onclick="toggleComparison('${escapeHtml(v.id)}',${selected?'false':'true'})">${selected?'✓ Compared':'＋ Add to Compare'}</button>
+          ${isAuto?`<button class="btn btn-secondary" style="margin-top:8px;width:100%" onclick="analyseVehicle('${escapeHtml(v.id)}')">Run intelligence</button>`:`<button class="btn btn-secondary" style="margin-top:8px;width:100%" onclick="alert('The shared VECTORI outcome architecture is ready; connect the authorised ${assetLabel.toLowerCase()} finance/insurance feed to run the vertical-specific outcome.')">Intelligence path</button>`}
         </div>
       </div>
-    </article>
-  `;
+    </article>`;
 }
 
 /* ============================================================
@@ -1062,7 +1026,7 @@ const AdManager = {
     slot.classList.add('ad-container');
     const id = c ? c.id : 'fallback';
     const href = c ? c.destinationUrl : '#';
-    slot.innerHTML = `<div class="ad-label">Advertisement</div>${c ? c.content : `<div class="ad-empty">${escapeHtml(format)}<br>Space available</div>`}`;
+    slot.innerHTML = `<div class="ad-label">Advertisement${c?.company ? ' · '+escapeHtml(c.company) : ''}</div>${c ? c.content : `<div class="ad-empty">${escapeHtml(format)}<br>Space available</div>`}`;
     if('IntersectionObserver' in window){
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -1087,34 +1051,40 @@ const AdManager = {
 ============================================================ */
 
 async function loadInventory(){
-  const response = await fetch("./data/inventory.json", { cache: "no-store" });
+  let response=await fetch('./data/inventory.json',{cache:'no-store'});
+  let sourceFile='data/inventory.json';
+  if(!response.ok){
+    response=await fetch('./data/inventory.demo.json',{cache:'no-store'});
+    sourceFile='data/inventory.demo.json';
+  }
   if(!response.ok) throw new Error(`Inventory request failed (${response.status})`);
+  const data=await response.json();
+  if(!Array.isArray(data)||data.length===0) throw new Error('Inventory file is empty or invalid.');
 
-  const data = await response.json();
-  if(!Array.isArray(data) || data.length === 0) throw new Error("Inventory file is empty or invalid.");
-
-  const processed = data.map((v, idx) => {
-    const id = v.id != null ? String(v.id) : `VEH-${idx + 1}`;
+  const processed=data.map((v,idx)=>{
+    const id=v.id!=null?String(v.id):`ASSET-${idx+1}`;
+    const assetType=String(v.assetType||v.vertical||'automotive').toLowerCase();
+    const normalized=window.VECTORIAssetEngine?.normalize({...v,assetType}) || v;
     return {
-      ...v,
-      id: id,
-      make: displayValue(v.make, 'Unknown Make'),
-      model: displayValue(v.model, 'Unknown Model'),
-      variant: displayValue(v.variant, ''),
-      year: v.year != null && !isNaN(v.year) ? Number(v.year) : null,
-      price: v.price != null && !isNaN(v.price) ? Number(v.price) : null,
-      market: v.market != null && !isNaN(v.market) ? Number(v.market) : null,
-      mileage: v.mileage != null && !isNaN(v.mileage) ? Number(v.mileage) : (v.km != null && !isNaN(v.km) ? Number(v.km) : null),
-      consumption: v.consumption != null && !isNaN(v.consumption) ? Number(v.consumption) : null,
-      owners: v.owners != null && !isNaN(v.owners) ? Number(v.owners) : null,
-      dealer: v.dealer || v.dealership || '',
-      province: v.province || v.location || '',
-      evidence: v.evidence || 'Standard'
+      ...v,...normalized,id,assetType,
+      make:displayValue(v.make,displayValue(v.brand,'Unknown Make / Brand')),
+      brand:displayValue(v.brand,v.make||''),
+      model:displayValue(v.model,v.propertyType||v.itemType||'Unknown Asset'),
+      variant:displayValue(v.variant,''),
+      year:v.year!=null&&!isNaN(v.year)?Number(v.year):null,
+      price:v.price!=null&&!isNaN(v.price)?Number(v.price):null,
+      market:v.market!=null&&!isNaN(v.market)?Number(v.market):null,
+      mileage:v.mileage!=null&&!isNaN(v.mileage)?Number(v.mileage):(v.km!=null&&!isNaN(v.km)?Number(v.km):null),
+      consumption:v.consumption!=null&&!isNaN(v.consumption)?Number(v.consumption):null,
+      owners:v.owners!=null&&!isNaN(v.owners)?Number(v.owners):null,
+      dealer:v.dealer||v.dealership||v.agent||v.agency||v.jeweller||v.seller||'',
+      province:v.province||v.location||v.city||v.suburb||'',
+      evidence:v.evidence||'Missing',
+      source:v.source || (sourceFile.endsWith('.demo.json') ? 'VECTORI Demo Dataset' : 'Authorised inventory source')
     };
   });
-
-  vehicles.splice(0, vehicles.length, ...processed);
-  filteredVehicles = [...vehicles];
+  vehicles.splice(0,vehicles.length,...processed);
+  filteredVehicles=[...vehicles];
   return vehicles;
 }
 
@@ -1282,6 +1252,155 @@ function printReport(){
   const w=window.open(URL.createObjectURL(new Blob([html],{type:'text/html'})),'_blank'); if(w)w.onload=()=>setTimeout(()=>w.print(),300);
 }
 
+
+/* ============================================================
+   VECTORI PLATFORM WEAVE + MULTI-DEALER DISTRIBUTION
+============================================================ */
+
+function diversifyListings(list, limit){
+  if(!window.VECTORIListingUtils) return (list || []).slice(0, limit);
+  const explicitDealer = document.getElementById('filterDealer')?.value;
+  return window.VECTORIListingUtils.diversifyByDealer(list, limit, {disable:Boolean(explicitDealer)});
+}
+
+function renderDealerMix(list){
+  const el=document.getElementById('dealerMixSummary');
+  if(!el) return;
+  const audit=window.VECTORIListingUtils?.distributionAudit(list, itemsPerPage);
+  if(!audit || !audit.mix.length){ el.textContent='No listings available for this selection.'; return; }
+  const labels=audit.mix.map(x=>`${escapeHtml(x.dealer)} · ${x.count}`).join('  •  ');
+  el.innerHTML=`<div class="dealer-mix-bar"><span class="dealer-mix-label">Dealer mix</span><span>${labels}</span><span class="dealer-mix-note">Results are interleaved across available dealers; an explicit dealer filter remains exclusive.</span></div>`;
+}
+
+function wovenAdMarkup(index){
+  const format=index % 2 === 0 ? 'Medium Rectangle' : 'Large Rectangle';
+  const side=index % 2 === 0 ? 'ad-shift-right' : 'ad-shift-left';
+  return `<div class="woven-ad ${side}" aria-label="Sponsored placement"><div class="ad-slot" data-format="${format}"></div></div>`;
+}
+
+function refreshWovenAds(){
+  if(!window.AdManager) return;
+  document.querySelectorAll('#vehicleResults .woven-ad .ad-slot').forEach(slot=>{
+    const format=slot.dataset.format || 'Medium Rectangle';
+    window.AdManager.renderAd(slot, format);
+  });
+}
+
+function renderMarketStream(pageList){
+  const items=[];
+  pageList.forEach((vehicle,index)=>{
+    items.push(vehicleCard(vehicle));
+    if((index+1)%3===0){
+      items.push(wovenAdMarkup(Math.floor(index/3)));
+    }
+  });
+  return items.join('');
+}
+
+function renderVehicles(list){
+  const container = document.getElementById('vehicleResults');
+  const countEl = document.getElementById('resultsCount');
+  if(!container) return;
+
+  const totalItems = list.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const rawPageList = list.slice(start, end);
+  const pageList = diversifyListings(rawPageList, itemsPerPage);
+
+  if (countEl) {
+    countEl.textContent = totalItems > 0
+      ? `Showing ${start + 1}–${Math.min(end, totalItems)} of ${totalItems} listings (Page ${currentPage} of ${totalPages})`
+      : '0 listings found';
+  }
+
+  renderDealerMix(pageList);
+
+  if(!totalItems){
+    container.innerHTML = `<div class="empty-state">No listings match the selected criteria.</div>`;
+    renderPagination(0,1);
+    return;
+  }
+
+  container.innerHTML = renderMarketStream(pageList);
+  renderPagination(totalItems,totalPages);
+  refreshWovenAds();
+}
+
+function populateFilters(){
+  const assetTypes=[...new Set(vehicles.map(v=>v.assetType || 'automotive'))].filter(Boolean).sort();
+  const makes=[...new Set(vehicles.map(v=>v.make || v.brand))].filter(Boolean).sort();
+  const models=[...new Set(vehicles.map(v=>v.model || v.propertyType || v.itemType))].filter(Boolean).sort();
+  const dealers=[...new Set(vehicles.map(v=>displayValue(v.dealer)))].filter(v=>v!=='N/A').sort();
+  const provinces=[...new Set(vehicles.map(v=>v.province || v.location))].filter(Boolean).sort();
+
+  const assetSelect=document.getElementById('filterAssetType');
+  if(assetSelect){
+    assetSelect.innerHTML='<option value="">All asset markets</option>'+assetTypes.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v==='fine_jewellery'?'Fine Jewellery':v[0].toUpperCase()+v.slice(1))}</option>`).join('');
+  }
+  populateSelect('filterMake',makes,'All makes / brands');
+  populateSelect('filterModel',models,'All models / types');
+  populateSelect('filterDealer',dealers,'All dealers / agents');
+  populateSelect('filterProvince',provinces,'All provinces / locations');
+
+  const calc=document.getElementById('calcVehicle');
+  if(calc) calc.innerHTML='<option value="">Select listing</option>'+vehicles.filter(v=>(v.assetType||'automotive')==='automotive').map(v=>`<option value="${escapeHtml(v.id)}">${escapeHtml(vehicleLabel(v))}</option>`).join('');
+}
+
+function applyFilters(){
+  const assetType=document.getElementById('filterAssetType')?.value || '';
+  const make=document.getElementById('filterMake').value;
+  const model=document.getElementById('filterModel').value;
+  const search=document.getElementById('filterSearch').value.trim().toLowerCase();
+  const dealer=document.getElementById('filterDealer').value;
+  const province=document.getElementById('filterProvince').value;
+  const maxPrice=parseFloat(document.getElementById('filterMaxPrice').value);
+  const maxMileage=parseFloat(document.getElementById('filterMaxMileage').value);
+  const sort=document.getElementById('filterSort').value;
+
+  filteredVehicles=vehicles.filter(v=>{
+    const type=v.assetType || 'automotive';
+    if(assetType && type!==assetType) return false;
+    if(make && (v.make || v.brand)!==make) return false;
+    if(model && (v.model || v.propertyType || v.itemType)!==model) return false;
+    if(dealer && displayValue(v.dealer)!==dealer) return false;
+    if(province && (v.province || v.location)!==province) return false;
+    if(isFinite(maxPrice) && Number.isFinite(v.price) && v.price>maxPrice) return false;
+    if(isFinite(maxMileage) && Number.isFinite(v.mileage) && v.mileage>maxMileage) return false;
+    if(search){
+      const text=[vehicleLabel(v),v.make,v.brand,v.model,v.propertyType,v.itemType,v.variant,v.fuel,v.transmission,v.dealer,v.province,v.location,v.listingId].filter(Boolean).join(' ').toLowerCase();
+      if(!text.includes(search)) return false;
+    }
+    return true;
+  });
+
+  filteredVehicles.sort((a,b)=>{
+    if(sort==='price') return (Number.isFinite(a.price)?a.price:Infinity)-(Number.isFinite(b.price)?b.price:Infinity);
+    if(sort==='km') return (Number.isFinite(a.mileage)?a.mileage:Infinity)-(Number.isFinite(b.mileage)?b.mileage:Infinity);
+    if(sort==='year') return (Number.isFinite(b.year)?b.year:-Infinity)-(Number.isFinite(a.year)?a.year:-Infinity);
+    if(sort==='deal'){
+      const ad=Number.isFinite(a.market)&&a.market>0&&Number.isFinite(a.price)?(a.price-a.market)/a.market:Infinity;
+      const bd=Number.isFinite(b.market)&&b.market>0&&Number.isFinite(b.price)?(b.price-b.market)/b.market:Infinity;
+      return ad-bd;
+    }
+    if(sort==='burden') return modelledBurden(a)-modelledBurden(b);
+    return decisionScore(b)-decisionScore(a);
+  });
+
+  currentPage=1;
+  renderVehicles(filteredVehicles);
+}
+
+function resetFilters(){
+  ['filterAssetType','filterMake','filterModel','filterSearch','filterDealer','filterProvince','filterMaxPrice','filterMaxMileage'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const sort=document.getElementById('filterSort');if(sort)sort.value='best';
+  filteredVehicles=[...vehicles]; currentPage=1; renderVehicles(filteredVehicles);
+}
+
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
@@ -1292,6 +1411,8 @@ document.addEventListener(
       populateFilters();
       renderVehicles(vehicles);
       renderComparison();
+      AdManager.init();
+      refreshWovenAds();
 
       const calcEl = document.getElementById("calcVehicle");
       if (calcEl && vehicles.length > 0) {
@@ -1299,7 +1420,6 @@ document.addEventListener(
         loadCalculatorVehicle();
       }
 
-      AdManager.init();
     } catch(error) {
       console.error("VECTORI inventory load failed", error);
       showInventoryError(error);

@@ -79,10 +79,32 @@
     const premium=n(input.premiumMonthly), excess=n(input.excess), shortfall=n(input.shortfallCoverMonthly), creditProtection=n(input.creditProtectionMonthly), warranty=n(input.warrantyMonthly), other=n(input.otherMonthly), claimsReserve=n(input.expectedClaimsReserveMonthly), horizon=Math.max(1,n(input.horizon,60));
     return {premiumMonthly:premium,excess,shortfallMonthly:shortfall,creditProtectionMonthly:creditProtection,warrantyMonthly:warranty,otherMonthly:other,claimsReserveMonthly:claimsReserve,monthly:sum([premium,shortfall,creditProtection,warranty,other,claimsReserve]),contingentExposure:excess,horizon};
   }
+  function propertyScenario(input={}){
+    const price=n(input.price), transferCosts=n(input.transferCosts), bondRegistration=n(input.bondRegistration), rates=n(input.ratesMonthly), levies=n(input.leviesMonthly), maintenance=n(input.propertyMaintenanceMonthly), utilities=n(input.utilitiesMonthly), propertyInsurance=n(input.propertyInsuranceMonthly), other=n(input.otherPropertyMonthly), rentalIncome=n(input.rentalIncomeMonthly), horizon=Math.max(1,n(input.horizon,60));
+    const operatingMonthly=sum([rates,levies,maintenance,utilities,propertyInsurance,other])-rentalIncome;
+    const futureValue=finite(input.futureValue)?n(input.futureValue):null;
+    const saleCosts=n(input.saleCosts);
+    const acquisitionCash=price+transferCosts+bondRegistration;
+    const netExitValue=futureValue!==null?Math.max(0,futureValue-saleCosts):null;
+    return {type:'property',price,transferCosts,bondRegistration,ratesMonthly:rates,leviesMonthly:levies,maintenanceMonthly:maintenance,utilitiesMonthly:utilities,propertyInsuranceMonthly:propertyInsurance,otherMonthly:other,rentalIncomeMonthly:rentalIncome,operatingMonthly,acquisitionCash,futureValue,saleCosts,netExitValue,horizon};
+  }
+  function jewelleryScenario(input={}){
+    const price=n(input.price), valuation=finite(input.valuation)?n(input.valuation):null, premium=n(input.jewelleryInsuranceMonthly), storage=n(input.storageMonthly), valuationCost=n(input.valuationCost), maintenance=n(input.jewelleryMaintenanceMonthly), other=n(input.otherJewelleryMonthly), horizon=Math.max(1,n(input.horizon,60));
+    const operatingMonthly=sum([premium,storage,maintenance,other]);
+    const futureValue=finite(input.futureValue)?n(input.futureValue):(valuation!==null?valuation:null);
+    const resaleCosts=n(input.resaleCosts);
+    const netExitValue=futureValue!==null?Math.max(0,futureValue-resaleCosts):null;
+    return {type:'fine_jewellery',price,valuation,premiumMonthly:premium,storageMonthly:storage,valuationCost,maintenanceMonthly:maintenance,otherMonthly:other,operatingMonthly,futureValue,resaleCosts,netExitValue,horizon};
+  }
+
   function customerOutcome(input={}){
     const horizon=Math.max(1,n(input.horizon,60));
     const modules=input.modules||{automotive:true,insurance:true,finance:true};
-    const auto=modules.automotive?automotiveScenario({...input,horizon}):null;
+    const assetType=String(input.assetType||'automotive').toLowerCase();
+    const assetEnabled=modules.asset!==undefined?Boolean(modules.asset):Boolean(modules.automotive);
+    const auto=assetType==='automotive'&&assetEnabled?automotiveScenario({...input,horizon}):null;
+    const property=assetType==='property'&&assetEnabled?propertyScenario({...input,horizon}):null;
+    const jewellery=(assetType==='fine_jewellery'||assetType==='jewellery')&&assetEnabled?jewelleryScenario({...input,horizon}):null;
     let fin=null;
     if(modules.finance){
       if(input.financeType==='lease_or_rental') fin=leaseScenario({...input,horizon});
@@ -90,13 +112,16 @@
       else fin=financeScenario({...input,horizon});
     }
     const ins=modules.insurance?insuranceScenario({...input,horizon}):null;
-    const cashPurchase=(!modules.finance && modules.automotive)?Math.max(0,n(input.price)+n(input.extras)-n(input.tradeIn)):0;
-    const upfront=sum([cashPurchase, n(input.otherUpfront)]);
+    const asset=auto||property||jewellery;
+    const assetPrice=finite(input.price)?n(input.price):0;
+    const assetExtras=assetType==='property'?n(input.transferCosts)+n(input.bondRegistration):n(input.extras);
+    const cashPurchase=(!modules.finance && asset)?Math.max(0,assetPrice+assetExtras-n(input.tradeIn)):0;
+    const upfront=sum([cashPurchase,n(input.otherUpfront)]);
     const financeCash=fin?.cashOutflowHorizon||0;
-    const operating=auto?.operatingMonthly*horizon||0;
-    const insuranceCash=ins?.monthly*horizon||0;
+    const operating=(asset?.operatingMonthly||0)*horizon;
+    const insuranceCash=(ins?.monthly||0)*horizon;
     const cashOutflow=financeCash+operating+insuranceCash+upfront;
-    const assetValue=auto?.futureValue!==null && auto?.futureValue!==undefined ? auto.futureValue : null;
+    const assetValue=asset?.netExitValue!==undefined?asset.netExitValue:(asset?.futureValue!==null&&asset?.futureValue!==undefined?asset.futureValue:null);
     const balance=fin?.balanceAtHorizon||0;
     const contingentInsuranceExposure=ins?.contingentExposure||0;
     const netEquity=assetValue!==null?assetValue-balance:null;
@@ -105,16 +130,17 @@
     const income=n(input.netIncome||input.income);
     const existingDebt=n(input.existingDebt||input.debt);
     const living=n(input.livingCosts||input.living);
-    const cashRemaining=finite(income)?income-existingDebt-living-(auto?.operatingMonthly||0)-(ins?.monthly||0)-(fin?.monthlyPayment||0)-(fin?.monthlyFee||0):NaN;
-    const affordabilityRatio=finite(income)&&income>0?((auto?.operatingMonthly||0)+(ins?.monthly||0)+(fin?.monthlyPayment||0)+(fin?.monthlyFee||0))/income*100:NaN;
+    const cashRemaining=finite(income)?income-existingDebt-living-(asset?.operatingMonthly||0)-(ins?.monthly||0)-(fin?.monthlyPayment||0)-(fin?.monthlyFee||0):NaN;
+    const affordabilityRatio=finite(income)&&income>0?((asset?.operatingMonthly||0)+(ins?.monthly||0)+(fin?.monthlyPayment||0)+(fin?.monthlyFee||0))/income*100:NaN;
     const evidence=[];
-    const required=[['vehicle price',input.price],['monthly kilometres',input.monthlyKm]];
+    const required=[['asset price',input.price]];
+    if(assetType==='automotive') required.push(['monthly kilometres',input.monthlyKm]);
     if(modules.finance) required.push(['finance rate',input.rate],['finance term',input.term]);
     if(modules.insurance) required.push(['insurance premium',input.premiumMonthly]);
     required.forEach(([label,value])=>{if(!finite(value)||Number(value)<0)evidence.push({label,status:'MISSING'});});
     if(assetValue===null)evidence.push({label:'future/exit asset value',status:'MISSING'});
     const completeness=Math.round(((required.length-evidence.length)/Math.max(1,required.length))*100);
-    return {horizon,modules,automotive:auto,finance:fin,insurance:ins,monthlyCashOutflow:monthlyCash,cashOutflowHorizon:cashOutflow,assetValue,financeBalanceAtHorizon:balance,netEquity,economicCost,economicMonthlyCost:finite(economicCost)?economicCost/horizon:NaN,contingentInsuranceExposure,cashRemaining,affordabilityRatio,evidence, evidenceCompleteness:completeness};
+    return {horizon,assetType,modules,assetScenario:asset,automotive:auto,property,jewellery,finance:fin,insurance:ins,monthlyCashOutflow:monthlyCash,cashOutflowHorizon:cashOutflow,assetValue,financeBalanceAtHorizon:balance,netEquity,economicCost,economicMonthlyCost:finite(economicCost)?economicCost/horizon:NaN,contingentInsuranceExposure,cashRemaining,affordabilityRatio,evidence,evidenceCompleteness:completeness};
   }
   function scenarioRange(input, changes=[]){ return changes.map(change=>({name:change.name,result:customerOutcome({...input,...change.patch})})); }
   function validateResult(r){
@@ -124,6 +150,6 @@
     if(r.economicCost!==null && r.economicCost<0 && finite(r.cashOutflowHorizon)) errors.push('Economic cost unexpectedly negative; verify asset value and horizon inputs.');
     return {ok:errors.length===0,errors};
   }
-  global.VECTORIOutcomeEngine={pmt,financeScenario,leaseScenario,gfvScenario,automotiveScenario,insuranceScenario,customerOutcome,scenarioRange,validateResult,version:'2.0.0'};
+  global.VECTORIOutcomeEngine={pmt,financeScenario,leaseScenario,gfvScenario,automotiveScenario,propertyScenario,jewelleryScenario,insuranceScenario,customerOutcome,scenarioRange,validateResult,version:'2.1.0'};
 })(typeof window !== 'undefined' ? window : globalThis);
 if(typeof module!=='undefined') module.exports=globalThis.VECTORIOutcomeEngine;

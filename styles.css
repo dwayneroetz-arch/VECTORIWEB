@@ -308,3 +308,56 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:34px 0 60px}.footer-gr
 .outcome-headline{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:16px 0;border-bottom:1px solid var(--intel-line)}.outcome-headline span{color:#9eb1c2;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}.outcome-headline strong{font-size:2rem;color:#f3f8fd;letter-spacing:-.04em}.outcome-status{display:inline-flex;padding:6px 9px;border-radius:999px;background:rgba(85,199,255,.08);color:var(--intel-blue);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}.outcome-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}.outcome-metrics>div{padding:11px;border:1px solid var(--intel-line);border-radius:10px;background:rgba(255,255,255,.018)}.outcome-metrics span,.outcome-breakdown span{display:block;color:#7f93a5;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em}.outcome-metrics strong{display:block;margin-top:4px;color:#eaf5ff;font-size:.92rem}.outcome-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.outcome-breakdown>div{padding:10px;border-left:2px solid rgba(85,199,255,.35);background:rgba(255,255,255,.018)}.outcome-breakdown strong{display:block;font-size:.76rem;margin-bottom:4px}.scenario-row{display:flex;gap:8px;margin:12px 0}.scenario-btn{border:1px solid rgba(255,202,88,.2);background:rgba(255,202,88,.05);color:#e9d49a;border-radius:9px;padding:8px 10px;cursor:pointer}.scenario-banner{display:flex;justify-content:space-between;gap:12px;padding:11px 12px;margin-bottom:12px;border:1px solid rgba(255,102,120,.2);background:rgba(255,102,120,.06);border-radius:10px}.scenario-banner span{color:#c7d4df;font-size:.78rem}.evidence-pill{display:inline-block;padding:3px 6px;border-radius:999px;font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;margin:2px}.evidence-observed{background:rgba(57,217,138,.09);color:#7de5ad}.evidence-calculated{background:rgba(85,199,255,.09);color:#8ddfff}.evidence-assumed{background:rgba(255,202,88,.09);color:#f1d98d}.evidence-missing{background:rgba(255,102,120,.09);color:#ff9aa7}.outcome-principles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}.principle{padding:14px;border:1px solid var(--intel-line);border-radius:12px;background:rgba(255,255,255,.018)}.principle strong{display:block;color:#eaf5ff;margin-bottom:5px}.principle span{font-size:.75rem;color:#8195a7;line-height:1.5}
 @media(max-width:1180px){.outcome-result-panel{position:static}.outcome-principles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.platform-strip{border-radius:14px;justify-content:flex-start;line-height:1.5}.outcome-module-picker{gap:7px}.module-chip{padding:8px 11px}.outcome-metrics{grid-template-columns:1fr}.outcome-breakdown{grid-template-columns:1fr}.outcome-headline{align-items:flex-start;flex-direction:column}.outcome-headline strong{font-size:1.7rem}.outcome-principles{grid-template-columns:1fr}.scenario-banner{flex-direction:column}}
+
+/* ============================================================
+   VECTORI PLATFORM WEAVE — 75/25 BLENDED COMMERCIAL FOOTPRINT
+   Ads are woven into the marketplace stream rather than parked in
+   a permanent sidebar. Vehicle/listing cards keep equal footprint.
+============================================================ */
+.master-layout{display:block;width:min(100% - 32px,var(--content));margin:auto}
+.master-main{min-width:0;width:100%}
+.master-sidebar{display:none!important}
+
+#vehicleResults{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;align-items:stretch}
+#vehicleResults .vehicle-card{grid-column:span 3;min-width:0}
+#vehicleResults .woven-ad{grid-column:span 3;min-width:0;align-self:stretch;display:flex;align-items:stretch;justify-content:stretch}
+#vehicleResults .woven-ad.ad-shift-left{grid-column:1 / span 3}
+#vehicleResults .woven-ad.ad-shift-right{grid-column:10 / span 3}
+.woven-ad .ad-container{width:100%!important;max-width:none!important;height:100%!important;min-height:250px}
+.woven-ad .ad-creative{min-height:250px}
+.woven-ad .ad-label{font-size:8px}
+
+.dealer-mix-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 2px;padding:10px 12px;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.018)}
+.dealer-mix-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800}
+.dealer-mix-pill{font-size:.7rem;color:#d7e2ec;background:#101b28;border:1px solid #26364a;border-radius:999px;padding:5px 8px}
+.dealer-mix-note{font-size:.7rem;color:var(--muted);margin-left:auto}
+.vehicle-dealer-badge{display:inline-flex;align-items:center;max-width:100%;padding:5px 8px;border-radius:999px;background:rgba(103,214,255,.07);border:1px solid rgba(103,214,255,.16);color:#cceeff;font-size:.67rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.asset-badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#111d2a;border:1px solid #2b3e52;color:#bcd0df;font-size:.67rem;font-weight:800}
+
+.platform-strip{position:relative;z-index:1}
+
+/* Woven ad placement is deliberately non-sticky and alternates sides. */
+.woven-ad .ad-container{box-shadow:0 10px 30px rgba(0,0,0,.16)}
+
+@media (min-width:1181px){
+  #vehicleResults .vehicle-card:nth-of-type(4n+1){ }
+}
+@media (max-width:1180px){
+  #vehicleResults{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+  #vehicleResults .vehicle-card{grid-column:span 2}
+  #vehicleResults .woven-ad{grid-column:span 2}
+  #vehicleResults .woven-ad.ad-shift-left{grid-column:1 / span 2}
+  #vehicleResults .woven-ad.ad-shift-right{grid-column:5 / span 2}
+}
+@media (max-width:900px){
+  #vehicleResults{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  #vehicleResults .vehicle-card{grid-column:span 1}
+  #vehicleResults .woven-ad,#vehicleResults .woven-ad.ad-shift-left,#vehicleResults .woven-ad.ad-shift-right{grid-column:1 / -1}
+  .woven-ad .ad-container{min-height:180px}
+}
+@media (max-width:700px){
+  #vehicleResults{grid-template-columns:1fr;gap:14px}
+  #vehicleResults .vehicle-card,#vehicleResults .woven-ad,#vehicleResults .woven-ad.ad-shift-left,#vehicleResults .woven-ad.ad-shift-right{grid-column:1 / -1}
+  .woven-ad .ad-container{min-height:120px}
+  .dealer-mix-note{width:100%;margin-left:0}
+}

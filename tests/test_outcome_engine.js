@@ -41,3 +41,25 @@ const all=E.customerOutcome({...base,modules:{automotive:true,finance:true,insur
 const expectedCombined=f2.cashOutflowHorizon+(a.automotive.operatingMonthly*base.horizon)+i2.cashOutflowHorizon;
 approx(all.cashOutflowHorizon,expectedCombined,0.01);
 console.log('VECTORI property grid: PASS');
+
+const property = E.customerOutcome({
+  assetType:'property', modules:{automotive:true,finance:false,insurance:true},
+  price:1000000, transferCosts:40000, bondRegistration:25000,
+  ratesMonthly:2500, leviesMonthly:1800, propertyMaintenanceMonthly:1000,
+  utilitiesMonthly:1200, propertyInsuranceMonthly:500, futureValue:1100000,
+  saleCosts:55000, premiumMonthly:500, horizon:60
+});
+assert.strictEqual(property.assetType, 'property');
+assert.ok(property.property);
+assert.strictEqual(property.cashOutflowHorizon, property.property.acquisitionCash + (property.property.operatingMonthly + property.insurance.monthly) * 60);
+
+const jewellery = E.customerOutcome({
+  assetType:'fine_jewellery', modules:{automotive:true,finance:false,insurance:true},
+  price:50000, valuation:60000, jewelleryInsuranceMonthly:150,
+  storageMonthly:50, futureValue:58000, resaleCosts:3000,
+  premiumMonthly:150, horizon:60
+});
+assert.strictEqual(jewellery.assetType, 'fine_jewellery');
+assert.ok(jewellery.jewellery);
+assert.ok(Number.isFinite(jewellery.economicCost));
+console.log('VECTORI multi-asset outcome tests: PASS');

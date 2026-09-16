@@ -1,1 +1,0 @@
-{"name":"vectori-a-to-z-purchase-intelligence","version":"2.0.0","private":true,"scripts":{"test":"node tests/test_a_to_z.js","simulate":"node tests/simulate_layouts.js"}}
