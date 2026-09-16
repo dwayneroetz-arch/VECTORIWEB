@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b12">
+  <meta name="description" content="VECTORI vehicle purchase intelligence — search, compare and model vehicle ownership costs.">
+  <title>VECTORI — Vehicle Purchase Intelligence</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="nav">
+  <div class="nav-inner">
+
+    <a href="#find" class="brand">
+      <div class="logo"><span>VX</span></div>
+      <span>VECTORI</span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Open navigation">☰</button>
+
+    <div class="nav-links" id="primaryNav">
+      <a href="#find">01 Find</a>
+      <a href="#compare">02 Compare</a>
+      <a href="#intelligence">03 Intelligence</a>
+      <a href="#checks">04 Purchase Readiness</a>
+      <a href="#dealer">05 Dealer Portal</a>
+    </div>
+
+    <div class="demo-pill">DEMO • SA MODEL</div>
+
+  </div>
+</nav>
+
+<!-- =========================
+     MASTER LAYOUT
+========================= -->
+<div class="master-layout">
+  
+  <main class="master-main">
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <header class="hero">
+
+      <div class="hero-grid">
+
+        <div>
+
+          <div class="eyebrow">Vehicle Purchase Intelligence</div>
+
+          <h1>
+            Find the better vehicle,
+            <span style="color:var(--accent2)">not just the cheaper one.</span>
+          </h1>
+
+          <p class="lead">
+            VECTORI brings authorised dealer inventory, market evidence,
+            ownership cost, affordability and purchase intelligence into
+            one decision workspace.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#find">
+              Explore vehicles
+            </a>
+
+            <a class="btn btn-secondary" href="#dealer">
+              Dealer portal
+            </a>
+
+            <button class="btn btn-secondary" onclick="openModal('legalModal')">
+              Data & legal architecture
+            </button>
+          </div>
+
+        </div>
+
+        <div class="hero-card">
+
+          <div class="hero-card-title">
+            VECTORI decision workspace
+          </div>
+
+          <div class="hero-metrics">
+
+            <div class="metric">
+              <strong>6</strong>
+              <span>vehicles compared</span>
+            </div>
+
+            <div class="metric">
+              <strong>360°</strong>
+              <span>purchase view</span>
+            </div>
+
+            <div class="metric">
+              <strong>SA</strong>
+              <span>market focused</span>
+            </div>
+
+            <div class="metric">
+              <strong>LIVE*</strong>
+              <span>authorised inventory architecture</span>
+            </div>
+
+          </div>
+
+          <p class="small muted" style="margin:15px 0 0">
+            *Live inventory requires an approved dealer or licensed data feed.
+          </p>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+         SECTION 01 — FIND
+    ========================= -->
+
+    <div class="mobile-ad-band" aria-label="Advertisement">
+      <div class="ad-slot" data-format="Mobile Banner"></div>
+    </div>
+
+    <section class="section" id="find">
+
+      <div class="section-head">
+
+        <div>
+          <div class="eyebrow">01 — Find</div>
+          <h2>Search the right vehicle.</h2>
+          <p class="muted">
+            Search participating dealer inventory using practical buying criteria.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="filter-panel">
+
+        <div class="filter-grid">
+
+          <div class="field">
+            <label>Make</label>
+            <select id="filterMake">
+              <option value="">All makes</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Model</label>
+            <select id="filterModel">
+              <option value="">All models</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Variant / Search</label>
+            <input
+              id="filterSearch"
+              type="text"
+              placeholder="e.g. 1.4, GL+, SX"
+            >
+          </div>
+
+          <div class="field">
+            <label>Dealer</label>
+            <select id="filterDealer">
+              <option value="">All dealers</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Province</label>
+            <select id="filterProvince">
+              <option value="">All provinces</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Maximum price</label>
+            <input
+              id="filterMaxPrice"
+              type="number"
+              min="0"
+              placeholder="R"
+            >
+          </div>
+
+          <div class="field">
+            <label>Maximum mileage</label>
+            <input
+              id="filterMaxMileage"
+              type="number"
+              min="0"
+              placeholder="km"
+            >
+          </div>
+
+          <div class="field">
+            <label>Sort</label>
+            <select id="filterSort">
+              <option value="best">Best decision signal</option>
+              <option value="deal">Market position</option>
+              <option value="price">Lowest price</option>
+              <option value="year">Newest year</option>
+              <option value="burden">Lowest modelled burden</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="filter-actions">
+
+          <button class="btn btn-primary" onclick="applyFilters()">
+            Search inventory
+          </button>
+
+          <button class="btn btn-secondary" onclick="resetFilters()">
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="results-header">
+        <div class="results-count" id="resultsCount">
+          Loading vehicles...
+        </div>
+
+        <div class="small muted">
+          Development/demo vehicles • source-derived data • not live stock
+        </div>
+      </div>
+
+      <div id="vehicleResults" class="vehicle-list"></div>
+
+    </section>
+
+
+    <!-- =========================
+         SECTION 02 — COMPARE
+    ========================= -->
+
+    <section class="section" id="compare">
+
+      <div class="section-head">
+
+        <div>
+          <div class="eyebrow">02 — Compare</div>
+          <h2>Put the vehicles side by side.</h2>
+          <p class="muted">
+            Select up to six vehicles to compare the evidence that matters.
+          </p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="clearComparison()">
+          Clear comparison
+        </button>
+
+      </div>
+
+      <div id="compareArea">
+
+        <div class="empty-state">
+          Select vehicles from the Find section to begin a comparison.
+        </div>
+
+      </div>
+
+    </section>
+
+
+     <div class="inline-ad-wrap">
+      <div class="ad-slot" data-format="Large Rectangle"></div>
+    </div>
+
+    <!-- =========================
+         SECTION 03 — INTELLIGENCE
+    ========================= -->
+
+    <section class="section" id="intelligence">
+
+      <div class="section-head">
+
+        <div>
+          <div class="eyebrow">03 — Intelligence</div>
+          <h2>Understand the purchase.</h2>
+          <p class="muted">
+            Move beyond asking price into market position, ownership burden,
+            affordability and stress testing.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="intelligence-grid">
+
+        <!-- CALCULATOR -->
+
+        <div class="panel">
+
+          <h3>True ownership cost</h3>
+
+          <p class="small muted">
+            Finance and ownership figures are modelled estimates, not lender,
+            insurer or service-provider quotations.
+          </p>
+
+
+          <div class="calc-grid">
+
+            <div class="field">
+              <label>Vehicle</label>
+              <select id="calcVehicle" onchange="loadCalculatorVehicle()">
+                <option value="">Select vehicle</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Asking price</label>
+              <input id="calcPrice" type="number">
+            </div>
+
+            <div class="field">
+              <label>Market benchmark</label>
+              <input id="calcMarket" type="number">
+            </div>
+
+            <div class="field">
+              <label>Consumption L/100km</label>
+              <input id="calcConsumption" type="number" step="0.1">
+            </div>
+
+            <div class="field">
+              <label>Monthly kilometres</label>
+              <input id="calcKm" type="number" value="1500">
+            </div>
+
+            <div class="field">
+              <label>Fuel price R/L</label>
+              <input id="calcFuel" type="number" step="0.01" value="26.92">
+            </div>
+
+            <div class="field">
+              <label>Deposit</label>
+              <input id="calcDeposit" type="number" value="30000">
+            </div>
+
+            <div class="field">
+              <label>Interest rate %</label>
+              <input id="calcInterest" type="number" step="0.01" value="12.5">
+            </div>
+
+            <div class="field">
+              <label>Finance term months</label>
+              <input id="calcTerm" type="number" value="72" min="1" max="120">
+            </div>
+
+            <div class="field">
+              <label>Balloon / residual %</label>
+              <input id="calcBalloonPct" type="number" step="0.1" value="0" min="0" max="60">
+            </div>
+
+            <div class="field">
+              <label>Monthly admin fee</label>
+              <input id="calcAdminFee" type="number" step="0.01" value="69" min="0">
+            </div>
+
+            <div class="field">
+              <label>Finance initiation fee</label>
+              <input id="calcInitiationFee" type="number" step="0.01" value="0" min="0">
+            </div>
+
+            <div class="field">
+              <label>Insurance / month</label>
+              <input id="calcInsurance" type="number" value="1200">
+            </div>
+
+            <div class="field">
+              <label>Maintenance R/km</label>
+              <input id="calcMaintenance" type="number" step="0.01" value="0.80">
+            </div>
+
+            <div class="field">
+              <label>Licence / year</label>
+              <input id="calcLicence" type="number" value="1800">
+            </div>
+
+            <div class="field">
+              <label>Tyre set cost</label>
+              <input id="calcTyreCost" type="number" value="5000">
+            </div>
+
+            <div class="field">
+              <label>Tyre life km</label>
+              <input id="calcTyreLife" type="number" value="50000">
+            </div>
+
+            <div class="field">
+              <label>Future value</label>
+              <input
+                id="calcFutureValue"
+                type="number"
+                placeholder="Optional"
+              >
+            </div>
+
+            <div class="field">
+              <label>Ownership horizon months</label>
+              <input id="calcHorizon" type="number" value="60">
+            </div>
+
+            <div class="field">
+              <label>Gross monthly income</label>
+              <input id="calcIncome" type="number" value="35000">
+            </div>
+
+            <div class="field">
+              <label>Other monthly debt</label>
+              <input id="calcDebt" type="number" value="3000">
+            </div>
+
+            <div class="field">
+              <label>Monthly living costs</label>
+              <input id="calcLiving" type="number" value="18000" min="0">
+            </div>
+
+            <div class="field">
+              <label>Other monthly vehicle costs</label>
+              <input id="calcOtherVehicle" type="number" value="0" min="0" step="0.01">
+            </div>
+
+            <div class="field">
+              <label>Trade-in value</label>
+              <input id="calcTradeIn" type="number" value="0" min="0">
+            </div>
+
+          </div>
+
+
+          <div class="status-box" style="margin-top:18px">
+            <strong style="color:#dce7f2">SA finance model</strong><br><br>
+            Balloon payments, initiation fees and monthly administration fees are modelled separately. A balloon reduces the instalment but remains a lump-sum obligation at term end. Actual lender pricing and fees must be confirmed by the finance provider.
+          </div>
+
+          <div class="filter-actions">
+
+            <button class="btn btn-primary" onclick="runCalculator()">
+              Analyse purchase
+            </button>
+
+            <button class="btn btn-secondary" onclick="printReport()">
+              Print report
+            </button>
+
+          </div>
+
+
+          <div id="calcOutputs" class="calc-output">
+
+            <div class="empty-state">
+              Select a vehicle and run the analysis.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- DECISION INTELLIGENCE -->
+
+        <div class="panel">
+
+          <h3>Decision intelligence</h3>
+
+          <p class="small muted">
+            VECTORI separates observed source facts, calculated values,
+            assumptions and insufficient evidence.
+          </p>
+
+          <div id="decisionPanel">
+
+            <div class="empty-state">
+              Run an analysis to generate a decision signal.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SECTION 04 — PURCHASE READINESS
+    ========================= -->
+    <section class="section" id="checks">
+      <div class="section-head"><div><div class="eyebrow">04 — Purchase Readiness</div><h2>Check the evidence before you commit.</h2><p class="muted">A South African buying workflow should treat paperwork, roadworthiness, service history, licence status and ownership transfer as first-class decision inputs.</p></div></div>
+      <div class="portal-grid">
+        <div class="panel"><h3>Buyer checklist</h3><div class="steps">
+          <div class="step"><div class="step-number">✓</div><div><strong>Vehicle identity & history</strong><p>Confirm VIN/vehicle details, service records and available history evidence.</p></div></div>
+          <div class="step"><div class="step-number">✓</div><div><strong>Roadworthy / registration evidence</strong><p>For used-vehicle transactions, verify the documentation applicable to the transfer and current roadworthiness position.</p></div></div>
+          <div class="step"><div class="step-number">✓</div><div><strong>Licence status</strong><p>Check that licence fees and registration information are current before finalising the transaction.</p></div></div>
+          <div class="step"><div class="step-number">✓</div><div><strong>Test drive & inspection</strong><p>Do not allow a strong price score to replace physical inspection and a test drive.</p></div></div>
+        </div></div>
+        <div class="panel"><h3>VECTORI evidence rule</h3><p class="muted">Every important claim should carry a provenance state:</p><div class="status-box"><strong style="color:var(--good)">OBSERVED</strong><br>Directly supplied by an authorised source.</div><div class="status-box"><strong style="color:var(--accent2)">CALCULATED</strong><br>Derived mathematically from supplied inputs.</div><div class="status-box"><strong style="color:var(--warn)">ASSUMED</strong><br>User-selected or model default that can materially change the result.</div><div class="status-box"><strong style="color:var(--bad)">MISSING</strong><br>Insufficient evidence. VECTORI should not fill the gap by guessing.</div></div>
+      </div>
+    </section>
+
+    <!-- =========================
+         SECTION 05 — DEALER PORTAL
+    ========================= -->
+
+    <section class="section" id="dealer" style="border-bottom: 0;">
+
+      <div class="section-head">
+
+        <div>
+          <div class="eyebrow">05 — Dealer Portal</div>
+          <h2>Bring your inventory into VECTORI.</h2>
+
+          <p class="muted">
+            VECTORI is designed around authorised inventory rather than
+            unauthorised marketplace scraping.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="dealer-kpis">
+        <div class="metric"><strong>Authorised</strong><span>feed-first architecture</span></div>
+        <div class="metric"><strong>Validated</strong><span>schema & data quality gates</span></div>
+        <div class="metric"><strong>Traceable</strong><span>source & freshness metadata</span></div>
+        <div class="metric"><strong>Lead-ready</strong><span>buyer enquiry workflow</span></div>
+      </div>
+
+      <div class="portal-grid">
+
+        <!-- FORM -->
+
+        <div class="panel">
+
+          <h3>Dealer uptake request</h3>
+
+          <p class="small muted">
+            Submit your dealership details to create a demo onboarding request.
+            This prototype stores the request locally in your browser only.
+          </p>
+
+
+          <form id="dealerForm" onsubmit="submitDealer(event)">
+
+            <div class="calc-grid">
+
+              <div class="field">
+                <label>Dealership name</label>
+                <input id="dealerName" required>
+              </div>
+
+              <div class="field">
+                <label>Contact person</label>
+                <input id="dealerContact" required>
+              </div>
+
+              <div class="field">
+                <label>Business email</label>
+                <input id="dealerEmail" type="email" required>
+              </div>
+
+              <div class="field">
+                <label>Business phone</label>
+                <input id="dealerPhone">
+              </div>
+
+              <div class="field">
+                <label>Province</label>
+
+                <select id="dealerProvince" required>
+                  <option value="">Select province</option>
+                  <option>Eastern Cape</option>
+                  <option>Free State</option>
+                  <option>Gauteng</option>
+                  <option>KwaZulu-Natal</option>
+                  <option>Limpopo</option>
+                  <option>Mpumalanga</option>
+                  <option>North West</option>
+                  <option>Northern Cape</option>
+                  <option>Western Cape</option>
+                </select>
+
+              </div>
+
+              <div class="field">
+                <label>Preferred feed method</label>
+
+                <select id="dealerFeed" required>
+                  <option value="">
+                    Select method
+                  </option>
+
+                  <option>
+                    Dealer API / authorised integration
+                  </option>
+
+                  <option>
+                    Dealer CSV / JSON export
+                  </option>
+
+                  <option>
+                    Dealer management system integration
+                  </option>
+
+                  <option>
+                    Discuss an alternative
+                  </option>
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <div class="field" style="margin-top:12px">
+
+              <label>Notes</label>
+
+              <textarea
+                id="dealerNotes"
+                placeholder="Tell us about your inventory system, stock size or integration requirements."
+              ></textarea>
+
+            </div>
+
+
+            <div class="checkbox-row" style="margin:15px 0">
+
+              <input
+                type="checkbox"
+                id="dealerRights"
+                required
+              >
+
+              <label for="dealerRights">
+                I confirm that the dealership can authorise VECTORI to
+                access/use the selected inventory feed and that relevant
+                display, transformation, comparison and image rights can
+                be granted where applicable.
+              </label>
+
+            </div>
+
+
+            <button class="btn btn-primary" type="submit">
+              Submit uptake request
+            </button>
+
+          </form>
+
+
+          <div id="dealerStatus"></div>
+
+        </div>
+
+
+        <!-- DEALER INFORMATION -->
+
+        <div class="panel">
+
+          <h3>How onboarding works</h3>
+
+          <div class="steps">
+
+            <div class="step">
+
+              <div class="step-number">1</div>
+
+              <div>
+                <strong>Submit dealership details</strong>
+
+                <p>
+                  Tell VECTORI who you are and what inventory source
+                  you can authorise.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="step">
+
+              <div class="step-number">2</div>
+
+              <div>
+                <strong>Select an approved feed</strong>
+
+                <p>
+                  API, authorised CSV/JSON export or another approved
+                  integration route.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="step">
+
+              <div class="step-number">3</div>
+
+              <div>
+                <strong>Confirm data rights</strong>
+
+                <p>
+                  Confirm that VECTORI may access, display, transform,
+                  compare and analyse the supplied data where agreed.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="step">
+
+              <div class="step-number">4</div>
+
+              <div>
+                <strong>VECTORI validates the feed</strong>
+
+                <p>
+                  Inventory is validated, normalised, timestamped and
+                  published only when the required controls are satisfied.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="status-box">
+
+            <strong style="color:#dce8f4">
+              Production principle
+            </strong>
+
+            <br><br>
+
+            No marketplace scraping is required for the production
+            architecture. Inventory should enter VECTORI through a
+            source that the dealer or licensed provider has authorised.
+
+          </div>
+
+
+          <button
+            class="btn btn-secondary"
+            style="margin-top:14px"
+            onclick="downloadDealerBrief()"
+          >
+            Download dealer briefing
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+  
+  <!-- =========================
+       ADVERTISING SIDEBAR 
+  ========================= -->
+  <aside class="master-sidebar" aria-label="Advertising">
+    <div class="ad-heading">Sponsored partners</div>
+    <div class="ad-slot" data-format="Medium Rectangle"></div>
+    <div class="ad-slot" data-format="Half Page" style="position:sticky;top:92px;"></div>
+  </aside>
+
+</div> <!-- End Master Layout -->
+
+<!-- =========================
+     BOTTOM BANNER AD 
+========================= -->
+<div class="master-bottom-ad container">
+   <div class="ad-slot" data-format="Leaderboard"></div>
+   <div class="ad-slot bottom-wide" data-format="Wide Banner"></div>
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div>
+        <strong style="color:#dce7f2">
+          VECTORI
+        </strong>
+
+        <div>
+          Vehicle Purchase Intelligence
+        </div>
+      </div>
+
+
+      <div class="footer-note">
+
+        <strong>Prototype disclosure:</strong>
+
+        This demonstration contains historical development examples
+        and synthetic illustrative records. It does not represent live
+        dealer inventory, lender approval, insurance quotations,
+        inspection certification or legal advice.
+
+        Production deployment requires appropriate data licences,
+        dealer authorisation, image rights, privacy controls and
+        contractual permissions.
+
+      </div>
+
+
+      <div>
+        <button
+          class="btn btn-secondary"
+          onclick="openModal('legalModal')"
+        >
+          Legal architecture
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- =========================
+     LEGAL MODAL
+========================= -->
+
+<div class="modal" id="legalModal">
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <div>
+        <div class="eyebrow">VECTORI</div>
+        <h2 style="font-size:30px">
+          Data & legal architecture
+        </h2>
+      </div>
+
+      <button
+        class="close"
+        onclick="closeModal('legalModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <h3>1. Authorised data first</h3>
+
+    <p>
+      Production inventory should be obtained through an authorised
+      dealer API, licensed feed, dealer CSV/JSON export or another
+      contractual source that grants the necessary rights.
+    </p>
+
+
+    <h3>2. No automatic marketplace scraping</h3>
+
+    <p>
+      This prototype intentionally contains no automatic marketplace
+      scraper. Production integrations should be based on explicit
+      permission and contractual rights rather than assuming that
+      publicly visible information may automatically be copied,
+      stored or commercially reused.
+    </p>
+
+
+    <h3>3. POPIA</h3>
+
+    <p>
+      Personal information should be minimised. VECTORI's dealer
+      inventory architecture should primarily process business and
+      vehicle information rather than unnecessary personal data.
+      Appropriate security, purpose limitation, retention and access
+      controls should be applied in production.
+    </p>
+
+
+    <h3>4. ECTA and CPA</h3>
+
+    <p>
+      The production service should provide appropriate electronic
+      disclosures, transparent commercial information and fair
+      consumer-facing practices.
+    </p>
+
+
+    <h3>5. Finance calculations</h3>
+
+    <p>
+      Finance values shown by the prototype are mathematical estimates.
+      They are not credit approvals, lender quotations or guarantees.
+      Actual rates, fees, deposits, balloon payments, lender charges and credit
+      assessments may materially change the result. Balloon finance is modelled
+      as a residual amount due at term end; it is not free money.
+    </p>
+
+
+    <h3>6. Market evidence</h3>
+
+    <p>
+      VECTORI should distinguish between observed source data,
+      calculated metrics, assumptions and insufficient evidence.
+      A market benchmark must never be presented as fact when the
+      underlying evidence is unavailable or inadequate.
+    </p>
+
+
+    <h3>7. Image rights</h3>
+
+    <p>
+      The vehicle illustrations used in this prototype are generated
+      inline SVG demo illustrations. Production vehicle photographs
+      should only be displayed when the relevant source or dealer
+      agreement provides the required rights.
+    </p>
+
+
+    <div
+      class="status-box"
+      style="margin-top:25px"
+    >
+      Production implementation should be reviewed against the
+      applicable South African legal and contractual requirements
+      before commercial launch.
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<script src="app.js" defer></script>
+<div id="buildStamp" hidden>VECTORI Global-Standard SA Upgrade 1.4</div>
+</body>
+</html>
