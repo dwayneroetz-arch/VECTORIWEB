@@ -1,0 +1,27 @@
+{
+  "N": 20000,
+  "seed": 2431766541,
+  "out": {
+    "single": {
+      "completionRate": 0.76625,
+      "errorRate": 0.036802610114192495,
+      "evidenceCoverage": 0.5033286417236431,
+      "meanJourneyCost": 6.7681738149832436,
+      "usefulJourneys": 15325
+    },
+    "wizard": {
+      "completionRate": 0.8797,
+      "errorRate": 0.05382516767079686,
+      "evidenceCoverage": 0.7435685637687937,
+      "meanJourneyCost": 15.984536115223682,
+      "usefulJourneys": 17594
+    },
+    "hybrid": {
+      "completionRate": 0.8891,
+      "errorRate": 0.03998425373973681,
+      "evidenceCoverage": 0.8012580250253044,
+      "meanJourneyCost": 11.629170235936025,
+      "usefulJourneys": 17782
+    }
+  }
+}
