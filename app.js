@@ -6,7 +6,7 @@ let vehicles = [];
 let filteredVehicles = [];
 let comparison = [];
 let currentPage = 1;
-const itemsPerPage = 15; // 150 vehicles => 10 pages, with 15 vehicles per page.
+const itemsPerPage = 6; // Six vehicles per page: 3 columns × 2 rows on desktop.
 
 /* ==========================================================================
    GLOBAL UTILITY & LABEL HELPERS
@@ -269,7 +269,6 @@ function renderPagination(totalItems, totalPages) {
     if (resultsContainer) {
       pagEl = document.createElement("div");
       pagEl.id = "paginationControls";
-      pagEl.style.marginTop = "24px";
       resultsContainer.after(pagEl);
     } else {
       return;
@@ -281,30 +280,45 @@ function renderPagination(totalItems, totalPages) {
     return;
   }
 
+  const prevDisabled = currentPage === 1 ? "disabled aria-disabled=\"true\"" : "";
+  const nextDisabled = currentPage === totalPages ? "disabled aria-disabled=\"true\"" : "";
+
   let buttonsHtml = `
-    <button class="btn btn-secondary btn-sm" ${currentPage === 1 ? "disabled" : ""} aria-label="Previous page" onclick="goToPage(${currentPage - 1})">
-      &laquo; Prev
+    <button class="btn btn-secondary btn-sm pagination-arrow" ${prevDisabled} aria-label="Previous vehicle page" onclick="goToPage(${currentPage - 1})">
+      ← Previous
     </button>
   `;
 
-  for (let i = 1; i <= totalPages; i++) {
-    const isCurrent = i === currentPage;
+  const visiblePages = [];
+  const addPage = (page) => { if (page >= 1 && page <= totalPages && !visiblePages.includes(page)) visiblePages.push(page); };
+  addPage(1);
+  addPage(totalPages);
+  addPage(currentPage - 1);
+  addPage(currentPage);
+  addPage(currentPage + 1);
+  visiblePages.sort((a,b) => a-b);
+
+  let lastPage = 0;
+  visiblePages.forEach(page => {
+    if (page - lastPage > 1) buttonsHtml += '<span class="pagination-ellipsis" aria-hidden="true">…</span>';
+    const isCurrent = page === currentPage;
     buttonsHtml += `
-      <button class="btn ${isCurrent ? "btn-primary" : "btn-secondary"} btn-sm page-number" aria-label="Page ${i}" aria-current="${isCurrent ? "page" : "false"}" onclick="goToPage(${i})">
-        ${i}
+      <button class="btn ${isCurrent ? "btn-primary" : "btn-secondary"} btn-sm page-number" aria-label="Page ${page}" aria-current="${isCurrent ? "page" : "false"}" onclick="goToPage(${page})">
+        ${page}
       </button>
     `;
-  }
+    lastPage = page;
+  });
 
   buttonsHtml += `
-    <button class="btn btn-secondary btn-sm" ${currentPage === totalPages ? "disabled" : ""} aria-label="Next page" onclick="goToPage(${currentPage + 1})">
-      Next &raquo;
+    <button class="btn btn-secondary btn-sm pagination-arrow" ${nextDisabled} aria-label="Next vehicle page" onclick="goToPage(${currentPage + 1})">
+      Next →
     </button>
   `;
 
   pagEl.innerHTML = `
     <div class="pagination">${buttonsHtml}</div>
-    <div class="pagination-summary">Page ${currentPage} of ${totalPages} · ${itemsPerPage} vehicles per page</div>
+    <div class="pagination-summary">Page ${currentPage} of ${totalPages} · ${itemsPerPage} vehicles per page · <span class="swipe-hint">Swipe left/right to change pages</span></div>
   `;
 }
 
@@ -1125,11 +1139,48 @@ function initMobileNav(){
   document.addEventListener("keydown", event => { if(event.key === "Escape") close(); });
 }
 
+function initVehicleSwipe(){
+  const container = document.getElementById("vehicleResults");
+  if (!container || container.dataset.swipeReady === "true") return;
+
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  container.addEventListener("touchstart", event => {
+    if (!event.touches || event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    tracking = true;
+  }, { passive: true });
+
+  container.addEventListener("touchend", event => {
+    if (!tracking || !event.changedTouches || event.changedTouches.length !== 1) return;
+    tracking = false;
+
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+    const threshold = 55;
+
+    // Only treat predominantly horizontal gestures as page navigation.
+    if (Math.abs(dx) < threshold || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+
+    const totalPages = Math.ceil(filteredVehicles.length / itemsPerPage) || 1;
+    if (dx < 0 && currentPage < totalPages) goToPage(currentPage + 1);
+    if (dx > 0 && currentPage > 1) goToPage(currentPage - 1);
+  }, { passive: true });
+
+  container.dataset.swipeReady = "true";
+}
+
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
     try {
       initMobileNav();
+      initVehicleSwipe();
       await loadInventory();
       populateFilters();
       renderVehicles(vehicles);

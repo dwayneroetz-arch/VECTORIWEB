@@ -5,8 +5,8 @@
   --line:#233044;
   --text:#f2f6fb;
   --muted:#8d9bad;
-  --accent:#35a8ff;
-  --accent2:#67d6ff;
+  --accent:#1d8fff;
+  --accent2:#38bdf8;
   --good:#39d98a;
   --warn:#ffca58;
   --bad:#ff6678;
@@ -21,7 +21,7 @@ body{
   margin:0;
   min-width:320px;
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:radial-gradient(circle at 15% 0%,rgba(53,168,255,.12),transparent 30%),radial-gradient(circle at 90% 15%,rgba(103,214,255,.07),transparent 25%),var(--bg);
+  background:radial-gradient(circle at 15% 0%,rgba(29,143,255,.15),transparent 30%),radial-gradient(circle at 90% 15%,rgba(56,189,248,.09),transparent 25%),var(--bg);
   color:var(--text);
   line-height:1.5;
 }
@@ -46,7 +46,7 @@ img,svg{max-width:100%}
   display:flex;align-items:center;gap:18px;
 }
 .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.12em;text-decoration:none;flex:0 0 auto}
-.logo{width:38px;height:38px;border:1px solid rgba(103,214,255,.6);border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#14283b,#08111b);box-shadow:0 0 25px rgba(53,168,255,.15)}
+.logo{width:38px;height:38px;border:1px solid rgba(103,214,255,.6);border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#14283b,#08111b);box-shadow:0 0 25px rgba(29,143,255,.18)}
 .logo span{font-size:17px;color:var(--accent2)}
 .nav-links{display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.5vw,24px);margin-left:auto}
 .nav-links a{font-size:.82rem;color:#c7d3df;text-decoration:none;white-space:nowrap;padding:10px 4px}
@@ -54,7 +54,7 @@ img,svg{max-width:100%}
 .demo-pill{font-size:.7rem;letter-spacing:.08em;color:var(--accent2);border:1px solid rgba(103,214,255,.25);background:rgba(103,214,255,.06);border-radius:999px;padding:8px 11px;white-space:nowrap}
 .nav-toggle{display:none;margin-left:auto;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:9px 11px;line-height:1}
 
-.master-layout{width:min(100% - 32px,var(--content));margin:auto;display:grid;grid-template-columns:minmax(0,7fr) minmax(260px,3fr);gap:32px;align-items:start}
+.master-layout{width:min(100% - 32px,var(--content));margin:auto;display:grid;grid-template-columns:minmax(0,65fr) minmax(280px,35fr);gap:32px;align-items:start}
 .master-main{min-width:0}
 .master-sidebar{min-width:0;padding-top:86px;display:flex;flex-direction:column;gap:18px}
 .master-sidebar .ad-slot{width:100%}
@@ -87,7 +87,7 @@ h3{margin:0 0 10px;line-height:1.2}
   width:100%;min-width:0;color:var(--text);background:#09111a;border:1px solid #2a394d;border-radius:10px;padding:11px 12px;outline:none;
 }
 .field textarea{min-height:120px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,168,255,.12)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,143,255,.15)}
 
 .btn{border:1px solid transparent;border-radius:10px;padding:11px 15px;min-height:44px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:.18s ease}
 .btn:hover{transform:translateY(-1px)}
@@ -97,7 +97,7 @@ h3{margin:0 0 10px;line-height:1.2}
 
 .results-header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:16px 0}
 .results-count{font-weight:800}
-/* Vehicle selection: 3 cards across x 5 rows = 15 vehicles per page on desktop. */
+/* Vehicle selection: 3 cards across x 2 rows = 6 vehicles per page on desktop. */
 #vehicleResults{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
 .vehicle-card{display:flex;flex-direction:column;gap:12px;border-radius:18px;padding:12px;min-width:0;height:100%}
 .vehicle-image{height:155px;min-height:155px;border-radius:13px;overflow:hidden;background:#091019;border:1px solid rgba(255,255,255,.05)}
@@ -120,7 +120,11 @@ h3{margin:0 0 10px;line-height:1.2}
 .market.good{color:var(--good)}.market.warn{color:var(--warn)}.market.bad{color:var(--bad)}
 .vehicle-side .btn{width:100%}
 
-.pagination{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:22px}
+.pagination{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px;margin-top:22px}
+.pagination-arrow{min-width:108px}
+.pagination-ellipsis{color:var(--muted);padding:0 3px}
+#vehicleResults{touch-action:pan-y;user-select:none}
+.swipe-hint{color:var(--accent2)}
 
 .compare-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:14px;-webkit-overflow-scrolling:touch}
 .compare-table{width:max-content;min-width:100%;border-collapse:collapse;font-size:.84rem}
@@ -134,7 +138,7 @@ h3{margin:0 0 10px;line-height:1.2}
 .intelligence-grid,.portal-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:18px}
 .panel{border-radius:var(--radius);padding:22px;min-width:0}
 .calc-output{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
-.big-output{grid-column:1/-1;border:1px solid rgba(103,214,255,.2);background:rgba(53,168,255,.07);border-radius:14px;padding:16px}
+.big-output{grid-column:1/-1;border:1px solid rgba(103,214,255,.2);background:rgba(29,143,255,.09);border-radius:14px;padding:16px}
 .big-output span,.output-card span{display:block;color:var(--muted);font-size:.76rem}
 .big-output strong{display:block;font-size:1.7rem;margin-top:4px}
 .output-card{border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);border-radius:12px;padding:12px}
@@ -201,4 +205,95 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:34px 0 60px}.footer-gr
 @media (max-width:700px){
   #paginationControls .pagination{gap:5px}
   #paginationControls .page-number{min-width:34px;padding-left:9px;padding-right:9px}
+}
+
+/* ============================================================
+   VECTORI v2.2 — RESPONSIVE MOBILE / TABLET SAFETY LAYER
+   Desktop layout remains 3 columns × 2 rows (6 vehicles/page)
+   and the 65/35 main/ad shell remains unchanged above 1180px.
+============================================================ */
+
+/* Prevent long vehicle names, prices and buttons from forcing a card wider. */
+.vehicle-card,.vehicle-info,.vehicle-top,.vehicle-side{min-width:0}
+.vehicle-title,.vehicle-variant,.vehicle-description,.data-box,.vehicle-side{overflow-wrap:anywhere}
+.vehicle-top{align-items:flex-start}
+.vehicle-side>div:first-child{min-width:0}
+
+/* Touch devices: vertical scrolling remains natural while horizontal swipes
+   on the vehicle grid can change pages through the existing JS handler. */
+#vehicleResults{-webkit-tap-highlight-color:transparent;overscroll-behavior-x:contain}
+
+/* Tablet: preserve the three-column vehicle composition while allowing cards
+   and imagery to scale down cleanly. */
+@media (min-width:701px) and (max-width:1180px){
+  .container,.nav-inner,.master-layout{width:min(100% - 28px,var(--content))}
+  .master-layout{gap:22px}
+  .master-sidebar{gap:12px}
+  #vehicleResults{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .vehicle-card{padding:10px;border-radius:16px}
+  .vehicle-image{height:clamp(118px,14vw,145px);min-height:118px}
+  .vehicle-title{font-size:clamp(1rem,1.6vw,1.2rem)}
+  .vehicle-variant{font-size:.82rem}
+  .vehicle-description{font-size:.8rem}
+  .price{font-size:clamp(1.15rem,2vw,1.45rem)}
+  .data-box{padding:8px}
+  .data-box strong{font-size:.72rem}
+}
+
+/* Compact tablet / large phone: keep six vehicles per logical page, but use
+   two readable columns when three physical columns would become too narrow. */
+@media (min-width:481px) and (max-width:700px){
+  .container,.nav-inner,.master-layout{width:min(100% - 24px,var(--content))}
+  #vehicleResults{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .vehicle-image{height:150px;min-height:150px}
+  .vehicle-title{font-size:1.05rem}
+  .vehicle-description{font-size:.82rem}
+  .vehicle-data{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vehicle-side>div:last-child{display:grid;grid-template-columns:1fr;gap:8px}
+  .master-sidebar .ad-slot{max-width:100%;width:100%}
+  .master-sidebar .ad-container[style*="sticky"]{position:static!important}
+}
+
+/* Phone: one readable card per row. Pagination/swipe still operate on the
+   same six-vehicle pages; this is only a physical reflow for narrow screens. */
+@media (max-width:480px){
+  body{overflow-x:hidden}
+  .container,.nav-inner,.master-layout{width:min(100% - 20px,var(--content))}
+  #vehicleResults{grid-template-columns:1fr;gap:12px}
+  .vehicle-card{padding:10px;border-radius:15px}
+  .vehicle-image{height:clamp(170px,52vw,220px);min-height:170px}
+  .vehicle-title{font-size:1.08rem}
+  .vehicle-variant{font-size:.82rem}
+  .vehicle-description{font-size:.82rem}
+  .vehicle-data{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vehicle-side>div:first-child{text-align:left}
+  .vehicle-side>div:last-child{display:grid;grid-template-columns:1fr;gap:8px}
+  .price{font-size:1.3rem}
+  #paginationControls .pagination{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  #paginationControls .pagination-arrow{width:100%;min-width:0}
+  #paginationControls .page-number{min-width:0}
+  #paginationControls .pagination-arrow:first-child{grid-column:1}
+  #paginationControls .pagination-arrow:last-child{grid-column:2}
+  .pagination-ellipsis{display:none}
+  .pagination-summary{line-height:1.45;padding:0 6px}
+  .master-sidebar{display:flex;flex-direction:column;gap:12px}
+  .master-sidebar .ad-slot{width:100%;max-width:100%}
+  .master-sidebar .ad-container[style*="sticky"]{position:static!important}
+  .mobile-ad-band{padding:12px 0}
+  .mobile-ad-band .ad-slot{width:100%;max-width:100%!important}
+  .inline-ad-wrap{padding:8px 0}
+  .inline-ad-wrap .ad-slot{width:100%;max-width:100%!important}
+  .ad-container{border-radius:10px}
+  .ad-creative,.ad-wide,.ad-mobile{padding:14px 12px}
+  .ad-creative b,.ad-wide b,.ad-mobile b{font-size:.9rem}
+  .ad-creative span,.ad-wide span{font-size:.72rem}
+  .section{padding:46px 0}
+  .panel,.filter-panel,.hero-card{padding:15px}
+  .modal-card{max-height:calc(100vh - 20px);padding:15px}
+}
+
+/* Never allow fixed desktop ad dimensions to create horizontal overflow. */
+@media (max-width:1180px){
+  .ad-container{max-width:100%!important}
+  .master-bottom-ad .ad-slot{max-width:100%!important}
 }
