@@ -1,32 +1,137 @@
-# VECTORI Level 1 — Asset Intelligence & Real-World Outcome Engine
+# VECTORI Level 1.2 — Complete Multi-Vertical Demonstrator
 
-Functional commercial-scale demonstrator covering 15 design priorities:
-1. unified multi-vertical architecture
-2. central state model
-3. 10 variants per vertical (30 assets)
-4. dealer/provider diversity
-5. evidence/status ledger
-6. finance as independent module
-7. insurance as independent module
-8. property acquisition and SARS transfer-duty logic
-9. automotive running-cost model
-10. jewellery valuation/insurance/resale scenario model
-11. real-world outcome calculation
-12. 75/25 advertising/workspace separation
-13. explicit demo/estimated/missing boundaries
-14. source/governance layer
-15. automated simulations and browser smoke testing
+VECTORI is a multi-vertical asset-intelligence demonstrator spanning:
 
-## Run
+- Automotive
+- Property
+- Fine Jewellery
+- Finance as an independent module
+- Insurance as an independent module
+
+Operating model:
+
+**Asset → Intelligence → Finance / Insurance → Real-World Outcome**
+
+## Demo catalogue
+
+30 demo assets are included: 10 per vertical, with 10 distinct asset-provider records per vertical.
+
+All provider/asset/finance/insurance records are synthetic demo/scenario data unless explicitly marked as an official regulatory reference.
+
+## Intelligence modules
+
+### Automotive
+
+Market reference, acquisition, fuel, maintenance, licence, tyres, finance, insurance and future-value outcome.
+
+### Property
+
+Acquisition, SARS transfer-duty formula, VAT scenarios, transfer/legal costs, bond-registration scenario, rates, levies, utilities, maintenance, rental income/vacancy, insurance, future value and sale costs.
+
+### Fine Jewellery
+
+Metal/purity, weight, stone/4Cs, certificate, valuation, replacement value, fair-market, trade and scrap scenarios, insurance, storage and resale costs.
+
+### Finance
+
+Provider product, rate, term, deposit, balloon/GFV-style residual, monthly fee, initiation fee and total finance charges. Balloon financing uses a present-value calculation.
+
+### Insurance
+
+Provider product, sum-insured basis, premium, excess and independent enable/disable control. Selected insurance products feed the outcome engine and comparison engine.
+
+### Affordability
+
+Optional monthly income, existing debt and living-cost scenario with surplus and debt-service ratio. This is explicitly **illustrative** and is not a lender affordability assessment or credit decision.
+
+## Evidence boundary
+
+The catalogue explicitly distinguishes demo, provider-supplied, estimated, calculated, scenario and missing evidence. Missing evidence is not silently converted into verified fact.
+
+## Commercial layout
+
+The marketplace uses a 75/25 workspace-to-advertising structure. Sponsored content is visibly separated from intelligence and cannot rewrite calculation inputs.
+
+## Compliance control plane
+
+The demo contains a compliance guardrail audit and a source matrix covering, among other things:
+
+- SARS transfer duty and VAT references
+- Property Practitioners Act / PPRA
+- National Credit Act and affordability regulations
+- Insurance Act / FSCA FSP verification reference
+- POPIA, including automated-decision-making reference
+- Consumer Protection Act
+- Advertising Regulatory Board code reference
+- SADPMR jewellery licensing/register references
+- DMPR fuel-price reference
+
+The compliance layer is a **control baseline, not legal certification**. Production requires legal/compliance review of the exact business model and live workflows.
+
+## Tests
+
+### Core deterministic suite
 
 ```bash
-npm test
+node tests/simulations.mjs
+```
+
+Expected:
+
+```text
+VECTORI 1.1 simulation suite: 165 assertions PASS
+```
+
+### 10,000 randomized engine simulations
+
+```bash
+node tests/stress-10000.mjs
+```
+
+Current run:
+
+- 10,000 randomized scenarios
+- 137,827 invariant checks
+- 0 failures
+
+### Compliance guardrail audit
+
+```bash
+node tests/compliance-audit.mjs
+```
+
+Current run: 16/16 guardrail checks PASS.
+
+### Browser workflow stress
+
+`tests/browser-stress.mjs` is designed to run against the **deployed site**. It exercises randomized clicks/workflows including market switching, search, sorting, comparison, intelligence open/close, finance/insurance toggles and recalculation.
+
+Install Playwright once:
+
+```bash
+npm install -D playwright
+```
+
+Then run 10,000 browser workflows against the deployed URL:
+
+```bash
+node tests/browser-stress.mjs https://YOUR-PAGES-URL.pages.dev 10000
+```
+
+This live-site browser test is the final gate after deployment.
+
+## Run locally
+
+```bash
 python3 -m http.server 8080
 ```
-Open http://localhost:8080.
 
-## Data boundary
-All catalogue values are demo/scenario data. Official sources are used for the regulatory/data architecture and the property transfer-duty formula; current DMPR and SARB references are recorded in `data/sources.json`. No provider quote, valuation, insurance premium, credit decision or legal certification is represented as live.
+Then open:
 
-## Production scaling path
-Replace demo catalogue records with source-linked provider feeds while retaining the same record shape, evidence statuses, calculation APIs, UI modules and test contracts. Add authenticated provider registry, audit log, consent/POPIA controls, live quotation adapters, Deeds/municipal integrations, VIN/market feeds, SADPMR verification and human/provider review before production decisions.
+```text
+http://localhost:8080
+```
+
+## Production boundary
+
+This is a demonstrator, not a live provider marketplace. Live production requires authenticated data feeds, provider agreements, registry/identity verification, quotation adapters, immutable evidence/audit logs, privacy governance, regulated disclosures and ongoing regulatory monitoring.

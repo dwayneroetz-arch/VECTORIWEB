@@ -1,0 +1,5 @@
+name = "vectori-level"
+compatibility_date = "2026-09-17"
+[build]
+command = "exit 0"
+output_directory = "."

@@ -1,11 +1,148 @@
 {
-  "asOf":"2026-09-16",
-  "sources":[
-    {"id":"DMPR-FUEL","name":"Department of Mineral and Petroleum Resources — Fuel Prices","url":"https://www.dmpr.gov.za/Branches/Petroleum-Resources/Fuel-Prices","use":"Official monthly fuel-price schedule source. September 2026 adjustment effective 2 September 2026."},
-    {"id":"SARS-TD","name":"SARS — Transfer Duty","url":"https://www.sars.gov.za/tax-rates/transfer-duty/","use":"Current transfer-duty brackets used by the Level 1 property calculator."},
-    {"id":"SARB","name":"South African Reserve Bank","url":"https://www.resbank.co.za/","use":"Current macro/rate reference. SARB page showed prime 10.50% on 11 September 2026."},
-    {"id":"PPRA","name":"Property Practitioners Regulatory Authority","url":"https://theppra.org.za/","use":"Property marketing and practitioner-regulatory reference."},
-    {"id":"SADPMR","name":"South African Diamond and Precious Metals Regulator","url":"https://www.sadpmr.co.za/","use":"Jewellery/precious-metals permit and register reference."},
-    {"id":"POPIA","name":"Protection of Personal Information Act","url":"https://www.gov.za/documents/protection-personal-information-act","use":"Privacy and automated decision-making boundary reference."}
+  "regulatory": [
+    {
+      "id": "SRC-SARS-TD",
+      "authority": "SARS",
+      "title": "Transfer Duty",
+      "url": "https://www.sars.gov.za/tax-rates/transfer-duty/",
+      "effective": "2026-04-01",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Current published transfer-duty table used by the demo calculation engine."
+    },
+    {
+      "id": "SRC-DMPR-FUEL",
+      "authority": "DMPR",
+      "title": "Fuel Prices",
+      "url": "https://www.dmpr.gov.za/Branches/Petroleum-Resources/Fuel-Prices",
+      "effective": "2026-09-02",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Official monthly fuel-price publication; demo running-cost inputs remain scenario values."
+    },
+    {
+      "id": "SRC-PPRA",
+      "authority": "PPRA",
+      "title": "Licensing & Registrations",
+      "url": "https://theppra.org.za/licensing-and-registrations/",
+      "effective": "2026-09-16",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Used for property-practitioner registry/evidence workflow design."
+    },
+    {
+      "id": "SRC-SADPMR-LIC",
+      "authority": "SADPMR",
+      "title": "Licences and Permits",
+      "url": "https://www.sadpmr.co.za/licenses-and-permits/",
+      "effective": "2026-09-16",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Used for jewellery provider evidence workflow design."
+    },
+    {
+      "id": "SRC-SADPMR-REG",
+      "authority": "SADPMR",
+      "title": "Registers",
+      "url": "https://www.sadpmr.co.za/registers/",
+      "effective": "2026-09-16",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Used for jewellery registry verification workflow design."
+    },
+    {
+      "id": "SRC-POPIA",
+      "authority": "Information Regulator / SA Government",
+      "title": "Protection of Personal Information Act",
+      "url": "https://www.gov.za/documents/protection-personal-information-act",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Privacy architecture reference; demo does not collect personal information."
+    },
+    {
+      "id": "SRC-INS",
+      "authority": "SA Government",
+      "title": "Insurance Act 18 of 2017",
+      "url": "https://www.gov.za/documents/acts/insurance-act-18-2017-english-afrikaans-18-jan-2018",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Insurance governance reference."
+    },
+    {
+      "id": "SRC-NCA",
+      "authority": "SA Government",
+      "title": "National Credit Act",
+      "url": "https://www.gov.za/documents/national-credit-act",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Credit/finance governance reference."
+    },
+    {
+      "id": "SRC-CPA",
+      "authority": "SA Government",
+      "title": "Consumer Protection Act 68 of 2008",
+      "url": "https://www.gov.za/documents/consumer-protection-act",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Consumer marketing and misleading-representation reference; production advertising controls require legal/compliance review."
+    },
+    {
+      "id": "SRC-ARB",
+      "authority": "Advertising Regulatory Board",
+      "title": "Code of Advertising Practice",
+      "url": "https://www.arb.org.za/The_Codes/",
+      "effective": "2026-04-07",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Advertising substantiation and truthful-presentation reference; membership/complaint exposure depends on applicable arrangements."
+    },
+    {
+      "id": "SRC-FSCA",
+      "authority": "FSCA",
+      "title": "Authorised Financial Service Providers",
+      "url": "https://www.fsca.co.za/FSB-Search/",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Production control for FSP verification before insurance/financial intermediary claims are displayed."
+    },
+    {
+      "id": "SRC-NCA-REGS",
+      "authority": "SA Government",
+      "title": "National Credit Regulations including Affordability Assessment Regulations",
+      "url": "https://www.gov.za/documents/notices/national-credit-act-regulations-13-mar-2015",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Affordability-assessment reference; demo affordability is illustrative and must not be presented as a lender assessment."
+    },
+    {
+      "id": "SRC-POPIA-71",
+      "authority": "Information Regulator / SA Government",
+      "title": "POPIA Section 71 Automated Decision Making",
+      "url": "https://www.justice.gov.za/legislation/acts/2013-004.pdf",
+      "effective": "current",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Automated decision-making safeguard reference for any future personalised/profiling features."
+    },
+    {
+      "id": "SRC-PPRA-DISCLOSURE",
+      "authority": "PPRA",
+      "title": "Mandatory Disclosure / Compliance Guidance",
+      "url": "https://theppra.org.za/compliance-and-investigations/inspections-and-investigation-guidelines/",
+      "effective": "2025-2026 guidance",
+      "status": "VERIFIED_REFERENCE",
+      "note": "Production property workflow must incorporate applicable practitioner disclosure and certificate controls."
+    }
+  ],
+  "marketData": [
+    {
+      "id": "SRC-TRANSUNION",
+      "authority": "TransUnion",
+      "title": "Auto Vehicle Valuations",
+      "url": "https://www.transunion.co.za/product/auto-vehicle-valuations",
+      "status": "REFERENCE_ONLY",
+      "note": "Potential production market-valuation source; not connected in demo."
+    },
+    {
+      "id": "SRC-DEEDS",
+      "authority": "SA Government",
+      "title": "Deeds Registry Information",
+      "url": "https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information",
+      "status": "REFERENCE_ONLY",
+      "note": "Potential production property title evidence source; not connected in demo."
+    }
   ]
 }

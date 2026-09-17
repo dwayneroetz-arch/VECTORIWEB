@@ -1,0 +1,384 @@
+{
+  "automotive": [
+    {
+      "id": "AUTO-P01",
+      "name": "Demo Auto Partner A",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance A",
+      "insuranceProduct": "Demo Comprehensive A"
+    },
+    {
+      "id": "AUTO-P02",
+      "name": "Demo Auto Partner B",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance B",
+      "insuranceProduct": "Demo Comprehensive B"
+    },
+    {
+      "id": "AUTO-P03",
+      "name": "Demo Auto Partner C",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance C",
+      "insuranceProduct": "Demo Comprehensive C"
+    },
+    {
+      "id": "AUTO-P04",
+      "name": "Demo Auto Partner D",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance D",
+      "insuranceProduct": "Demo Comprehensive D"
+    },
+    {
+      "id": "AUTO-P05",
+      "name": "Demo Auto Partner E",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance E",
+      "insuranceProduct": "Demo Comprehensive E"
+    },
+    {
+      "id": "AUTO-P06",
+      "name": "Demo Auto Partner F",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance F",
+      "insuranceProduct": "Demo Comprehensive F"
+    },
+    {
+      "id": "AUTO-P07",
+      "name": "Demo Auto Partner G",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance G",
+      "insuranceProduct": "Demo Comprehensive G"
+    },
+    {
+      "id": "AUTO-P08",
+      "name": "Demo Auto Partner H",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance H",
+      "insuranceProduct": "Demo Comprehensive H"
+    },
+    {
+      "id": "AUTO-P09",
+      "name": "Demo Auto Partner I",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance I",
+      "insuranceProduct": "Demo Comprehensive I"
+    },
+    {
+      "id": "AUTO-P10",
+      "name": "Demo Auto Partner J",
+      "type": "dealer",
+      "status": "DEMO_REGISTERED",
+      "financeProduct": "Demo Vehicle Finance J",
+      "insuranceProduct": "Demo Comprehensive J"
+    }
+  ],
+  "property": [
+    {
+      "id": "PROP-P01",
+      "name": "Demo Property Partner A",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance A",
+      "insuranceProduct": "Demo Home Cover A"
+    },
+    {
+      "id": "PROP-P02",
+      "name": "Demo Property Partner B",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance B",
+      "insuranceProduct": "Demo Home Cover B"
+    },
+    {
+      "id": "PROP-P03",
+      "name": "Demo Property Partner C",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance C",
+      "insuranceProduct": "Demo Home Cover C"
+    },
+    {
+      "id": "PROP-P04",
+      "name": "Demo Property Partner D",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance D",
+      "insuranceProduct": "Demo Home Cover D"
+    },
+    {
+      "id": "PROP-P05",
+      "name": "Demo Property Partner E",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance E",
+      "insuranceProduct": "Demo Home Cover E"
+    },
+    {
+      "id": "PROP-P06",
+      "name": "Demo Property Partner F",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance F",
+      "insuranceProduct": "Demo Home Cover F"
+    },
+    {
+      "id": "PROP-P07",
+      "name": "Demo Property Partner G",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance G",
+      "insuranceProduct": "Demo Home Cover G"
+    },
+    {
+      "id": "PROP-P08",
+      "name": "Demo Property Partner H",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance H",
+      "insuranceProduct": "Demo Home Cover H"
+    },
+    {
+      "id": "PROP-P09",
+      "name": "Demo Property Partner I",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance I",
+      "insuranceProduct": "Demo Home Cover I"
+    },
+    {
+      "id": "PROP-P10",
+      "name": "Demo Property Partner J",
+      "type": "property-practitioner",
+      "status": "DEMO_REGISTRY_CHECK",
+      "financeProduct": "Demo Home Finance J",
+      "insuranceProduct": "Demo Home Cover J"
+    }
+  ],
+  "jewellery": [
+    {
+      "id": "JEW-P01",
+      "name": "Demo Jeweller A",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance A",
+      "insuranceProduct": "Demo Valuables Cover A"
+    },
+    {
+      "id": "JEW-P02",
+      "name": "Demo Jeweller B",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance B",
+      "insuranceProduct": "Demo Valuables Cover B"
+    },
+    {
+      "id": "JEW-P03",
+      "name": "Demo Jeweller C",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance C",
+      "insuranceProduct": "Demo Valuables Cover C"
+    },
+    {
+      "id": "JEW-P04",
+      "name": "Demo Jeweller D",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance D",
+      "insuranceProduct": "Demo Valuables Cover D"
+    },
+    {
+      "id": "JEW-P05",
+      "name": "Demo Jeweller E",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance E",
+      "insuranceProduct": "Demo Valuables Cover E"
+    },
+    {
+      "id": "JEW-P06",
+      "name": "Demo Jeweller F",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance F",
+      "insuranceProduct": "Demo Valuables Cover F"
+    },
+    {
+      "id": "JEW-P07",
+      "name": "Demo Jeweller G",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance G",
+      "insuranceProduct": "Demo Valuables Cover G"
+    },
+    {
+      "id": "JEW-P08",
+      "name": "Demo Jeweller H",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance H",
+      "insuranceProduct": "Demo Valuables Cover H"
+    },
+    {
+      "id": "JEW-P09",
+      "name": "Demo Jeweller I",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance I",
+      "insuranceProduct": "Demo Valuables Cover I"
+    },
+    {
+      "id": "JEW-P10",
+      "name": "Demo Jeweller J",
+      "type": "jeweller",
+      "status": "DEMO_SADPMR_CHECK",
+      "financeProduct": "Demo Jewellery Finance J",
+      "insuranceProduct": "Demo Valuables Cover J"
+    }
+  ],
+  "finance": [
+    {
+      "id": "FIN-A",
+      "name": "Demo Vehicle Finance A",
+      "category": "automotive",
+      "rate": 10.5,
+      "rateType": "variable-demo",
+      "term": 72,
+      "monthlyFee": 69,
+      "initiationFee": 1200,
+      "ncrStatus": "DEMO_REGISTERED",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "FIN-B",
+      "name": "Demo Vehicle Finance B",
+      "category": "automotive",
+      "rate": 11.25,
+      "rateType": "fixed-demo",
+      "term": 72,
+      "monthlyFee": 69,
+      "initiationFee": 1200,
+      "ncrStatus": "DEMO_REGISTERED",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "FIN-C",
+      "name": "Demo Home Finance A",
+      "category": "property",
+      "rate": 10.75,
+      "rateType": "variable-demo",
+      "term": 240,
+      "monthlyFee": 75,
+      "initiationFee": 6037,
+      "ncrStatus": "DEMO_REGISTERED",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "FIN-D",
+      "name": "Demo Home Finance B",
+      "category": "property",
+      "rate": 11.1,
+      "rateType": "fixed-demo",
+      "term": 240,
+      "monthlyFee": 75,
+      "initiationFee": 6037,
+      "ncrStatus": "DEMO_REGISTERED",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "FIN-E",
+      "name": "Demo Jewellery Finance A",
+      "category": "jewellery",
+      "rate": 13.5,
+      "rateType": "fixed-demo",
+      "term": 36,
+      "monthlyFee": 49,
+      "initiationFee": 850,
+      "ncrStatus": "DEMO_REGISTERED",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "FIN-F",
+      "name": "Demo Jewellery Finance B",
+      "category": "jewellery",
+      "rate": 14.25,
+      "rateType": "fixed-demo",
+      "term": 48,
+      "monthlyFee": 49,
+      "initiationFee": 850,
+      "ncrStatus": "DEMO_REGISTERED",
+      "evidence": "DEMO"
+    }
+  ],
+  "insurance": [
+    {
+      "id": "INS-A",
+      "name": "Demo Comprehensive A",
+      "category": "automotive",
+      "premiumFactor": 0.0031,
+      "excess": 8500,
+      "sumInsuredBasis": "market/demo",
+      "fspoStatus": "DEMO_FSP_CHECK",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "INS-B",
+      "name": "Demo Comprehensive B",
+      "category": "automotive",
+      "premiumFactor": 0.0035,
+      "excess": 10000,
+      "sumInsuredBasis": "market/demo",
+      "fspoStatus": "DEMO_FSP_CHECK",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "INS-C",
+      "name": "Demo Home Cover A",
+      "category": "property",
+      "premiumFactor": 0.00045,
+      "excess": 7500,
+      "sumInsuredBasis": "building/demo",
+      "fspoStatus": "DEMO_FSP_CHECK",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "INS-D",
+      "name": "Demo Home Cover B",
+      "category": "property",
+      "premiumFactor": 0.00052,
+      "excess": 9000,
+      "sumInsuredBasis": "building/demo",
+      "fspoStatus": "DEMO_FSP_CHECK",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "INS-E",
+      "name": "Demo Valuables Cover A",
+      "category": "jewellery",
+      "premiumFactor": 0.00215,
+      "excess": 2500,
+      "sumInsuredBasis": "valuation/demo",
+      "fspoStatus": "DEMO_FSP_CHECK",
+      "evidence": "DEMO"
+    },
+    {
+      "id": "INS-F",
+      "name": "Demo Valuables Cover B",
+      "category": "jewellery",
+      "premiumFactor": 0.00245,
+      "excess": 3500,
+      "sumInsuredBasis": "valuation/demo",
+      "fspoStatus": "DEMO_FSP_CHECK",
+      "evidence": "DEMO"
+    }
+  ]
+}
