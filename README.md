@@ -1,53 +1,145 @@
-# VECTORI Asset Intelligence Platform 2.2
+# VECTORI Level 1.2 — Complete Multi-Vertical Demonstrator
 
-VECTORI is a monetizable premium asset-intelligence platform built around one shared outcome architecture.
+VECTORI is a multi-vertical asset-intelligence demonstrator spanning:
 
-## Asset verticals
 - Automotive
 - Property
 - Fine Jewellery
+- Finance as an independent module
+- Insurance as an independent module
 
-Each vertical has its own asset adapter and evidence fields but feeds the same finance, insurance, scenario and real-world outcome engine.
+Operating model:
 
-## Marketplace layout
-Desktop results use two four-slot rows:
-- 3 listing cards + 1 sponsored slot
-- 1 sponsored slot + 3 listing cards
+**Asset → Intelligence → Finance / Insurance → Real-World Outcome**
 
-That produces a 75% listing / 25% sponsored slot footprint without creating a permanent advertising column. On mobile, the stream becomes one column with inline sponsored placements.
+## Demo catalogue
 
-## Dealer distribution
-Where multiple providers have qualifying inventory, the full filtered result set is interleaved across providers before pagination. An explicit dealer/agent/jeweller filter remains exclusive.
+30 demo assets are included: 10 per vertical, with 10 distinct asset-provider records per vertical.
 
-## Outcome engine
-The common engine produces:
-- monthly real cash exposure
-- horizon cash outflow
-- expected/entered exit value
-- finance balance
-- net equity
-- economic cost
-- operating cost
-- insurance exposure
-- evidence completeness
-- stress/downside scenarios
+All provider/asset/finance/insurance records are synthetic demo/scenario data unless explicitly marked as an official regulatory reference.
 
-Property transfer and bond-registration costs are included in finance principal when supplied. A fine-jewellery current valuation is not automatically treated as a future exit value.
+## Intelligence modules
 
-## Accuracy boundary
-Deterministic arithmetic is regression-tested. Real-world future values, provider terms, insurance prices, condition, maintenance, market movement and customer circumstances remain uncertain. VECTORI exposes missing evidence rather than fabricating certainty.
+### Automotive
 
-## Compliance boundary
-The package includes South African compliance-readiness controls covering the Property Practitioners Act/PPRA, SADPMR precious-metals permissions, NCA/credit, FAIS/financial intermediation, insurance conduct and Policyholder Protection Rules, POPIA, CPA, ECTA and advertising identification. This is not legal certification. Production launch requires legal/compliance review of VECTORI's exact role, provider contracts, authorisations, data rights and consumer journeys.
+Market reference, acquisition, fuel, maintenance, licence, tyres, finance, insurance and future-value outcome.
+
+### Property
+
+Acquisition, SARS transfer-duty formula, VAT scenarios, transfer/legal costs, bond-registration scenario, rates, levies, utilities, maintenance, rental income/vacancy, insurance, future value and sale costs.
+
+### Fine Jewellery
+
+Metal/purity, weight, stone/4Cs, certificate, valuation, replacement value, fair-market, trade and scrap scenarios, insurance, storage and resale costs.
+
+### Finance
+
+Provider product, rate, term, deposit, balloon/GFV-style residual, monthly fee, initiation fee and total finance charges. Balloon financing uses a present-value calculation.
+
+### Insurance
+
+Provider product, sum-insured basis, premium, excess and independent enable/disable control. Selected insurance products feed the outcome engine and comparison engine.
+
+### Affordability
+
+Optional monthly income, existing debt and living-cost scenario with surplus and debt-service ratio. This is explicitly **illustrative** and is not a lender affordability assessment or credit decision.
+
+## Evidence boundary
+
+The catalogue explicitly distinguishes demo, provider-supplied, estimated, calculated, scenario and missing evidence. Missing evidence is not silently converted into verified fact.
+
+## Commercial layout
+
+The marketplace uses a 75/25 workspace-to-advertising structure. Sponsored content is visibly separated from intelligence and cannot rewrite calculation inputs.
+
+## Compliance control plane
+
+The demo contains a compliance guardrail audit and a source matrix covering, among other things:
+
+- SARS transfer duty and VAT references
+- Property Practitioners Act / PPRA
+- National Credit Act and affordability regulations
+- Insurance Act / FSCA FSP verification reference
+- POPIA, including automated-decision-making reference
+- Consumer Protection Act
+- Advertising Regulatory Board code reference
+- SADPMR jewellery licensing/register references
+- DMPR fuel-price reference
+
+The compliance layer is a **control baseline, not legal certification**. Production requires legal/compliance review of the exact business model and live workflows.
 
 ## Tests
+
+### Core deterministic suite
+
 ```bash
-npm test
+node tests/simulations.mjs
 ```
 
-## Local server
-```bash
-python -m http.server 8080
+Expected:
+
+```text
+VECTORI 1.1 simulation suite: 165 assertions PASS
 ```
 
-Then open `http://localhost:8080/`.
+### 10,000 randomized engine simulations
+
+```bash
+node tests/stress-10000.mjs
+```
+
+Current run:
+
+- 10,000 randomized scenarios
+- 137,827 invariant checks
+- 0 failures
+
+### Compliance guardrail audit
+
+```bash
+node tests/compliance-audit.mjs
+```
+
+Current run: 16/16 guardrail checks PASS.
+
+### Browser workflow stress
+
+`tests/browser-stress.mjs` is designed to run against the **deployed site**. It exercises randomized clicks/workflows including market switching, search, sorting, comparison, intelligence open/close, finance/insurance toggles and recalculation.
+
+Install Playwright once:
+
+```bash
+npm install -D playwright
+```
+
+Then run 10,000 browser workflows against the deployed URL:
+
+```bash
+node tests/browser-stress.mjs https://YOUR-PAGES-URL.pages.dev 10000
+```
+
+This live-site browser test is the final gate after deployment.
+
+## Run locally
+
+```bash
+python3 -m http.server 8080
+```
+
+Then open:
+
+```text
+http://localhost:8080
+```
+
+## Production boundary
+
+This is a demonstrator, not a live provider marketplace. Live production requires authenticated data feeds, provider agreements, registry/identity verification, quotation adapters, immutable evidence/audit logs, privacy governance, regulated disclosures and ongoing regulatory monitoring.
+
+
+## 1.2.1 presentation hardening
+- Provider-name search now resolves against provider records.
+- Lowest modelled cost sort now sorts by economic cost rather than net outcome.
+- Comparison respects the Property income scenario toggle.
+- Scenario inputs are clamped to the values actually used by the calculation engine.
+- Presentation date refreshed to 19 Sep 2026.

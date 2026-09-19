@@ -1,1 +1,0 @@
-{"name":"vectori-level1","version":"3.0.0-level1","private":true,"type":"module","scripts":{"test":"node tests/simulations.mjs","serve":"python3 -m http.server 8080"}}

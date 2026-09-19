@@ -1,8 +1,1 @@
-{
-  "name": "vectori-intelligence-platform",
-  "version": "2.2.0",
-  "private": true,
-  "scripts": {
-    "test": "node tests/test_outcome_engine.js && node tests/test_platform_architecture.js && node tests/simulations.js && node tests/test_platform_2_2.js"
-  }
-}
+{"name":"vectori-level1-complete","version":"1.2.1","private":true,"type":"module","scripts":{"test":"node tests/simulations.mjs","serve":"python3 -m http.server 8080","stress":"node tests/stress-10000.mjs","compliance":"node tests/compliance-audit.mjs"}}
