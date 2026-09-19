@@ -49,3 +49,11 @@ A browser-run against localhost could not be executed in this analysis environme
 ## Compliance boundary
 
 The package is a **demo / pre-production control baseline**, not a legal certification. Production compliance requires live provider verification, regulated product/ad disclosures, POPIA governance, auditability, source/effective-date controls and legal/compliance review for the exact operating model.
+
+
+## 1.2.1 regression pass
+- JavaScript syntax check: PASS
+- Deterministic suite: 165 assertions PASS
+- 10,000 scenario stress suite: 137,827 checks PASS
+- Compliance guardrail audit: 16 checks PASS
+- Presentation hardening: provider search, cost sorting, property comparison rental toggle, input clamping, date refresh.

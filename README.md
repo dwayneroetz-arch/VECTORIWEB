@@ -135,3 +135,11 @@ http://localhost:8080
 ## Production boundary
 
 This is a demonstrator, not a live provider marketplace. Live production requires authenticated data feeds, provider agreements, registry/identity verification, quotation adapters, immutable evidence/audit logs, privacy governance, regulated disclosures and ongoing regulatory monitoring.
+
+
+## 1.2.1 presentation hardening
+- Provider-name search now resolves against provider records.
+- Lowest modelled cost sort now sorts by economic cost rather than net outcome.
+- Comparison respects the Property income scenario toggle.
+- Scenario inputs are clamped to the values actually used by the calculation engine.
+- Presentation date refreshed to 19 Sep 2026.
